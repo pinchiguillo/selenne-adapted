@@ -16,12 +16,11 @@ from datetime import datetime
 import datetime as dt
 
 #Unike
-from discord.ui import Button, View
+#from discord.ui import Button, View
 
 from dcs.AI import reg
 from dcs.functions import f_lib
 
-from discord.ui import Button, View
 
 #Inicializar bot
 init()
@@ -77,18 +76,27 @@ print(f'{Fore.MAGENTA}Loading bot.main...{Fore.RESET}')
 async def purge(ctx):
     await ctx.send('Starting Purge...')
     roles_ = []
-    roles_.append(discord.utils.get(ctx.guild.roles, name='Tester'))
-    roles_.append(discord.utils.get(ctx.guild.roles, name='Muted'))
-    await ctx.guild.prune_members(days = 7, compute_prune_count = False, roles = roles_, reason='AFK')
+    roles_.append(discord.utils.get(ctx.guild.roles, name='Usuario'))
+    await ctx.guild.prune_members(days = 14, compute_prune_count = False, roles = None, reason='AFK')
     await ctx.send('Done')
 
 @bot.command()
-async def hello(ctx):
-    print('btn')
-    button = Button(label = 'Click Me!', style = discord.ButtonStyle.green)
-    view = View()
-    view.add_item(button)
-    await ctx.send('Hi', view = view)
+async def pr(ctx, con):
+    channel = bot.get_channel(int(860336491255300106))
+    embed=discord.Embed(title="Purga", description="Reacciona para salvarte de la purga", color=0xff8800)
+    await channel.send(con,embed=embed)
+    
+@bot.event
+async def on_reaction_add(reaction, user):
+  ChID = '860358021548212244'
+  print('react_1')
+  print(str(reaction.emoji))
+  if reaction.message.channel.id != ChID:
+    return
+  else:
+        print('detect')
+        CSGO = discord.utils.get(user.server.roles, name="Salvado")
+        await reaction.author.add_role(CSGO)
 
 print(f'{Fore.GREEN}DONE{Fore.RESET}')
 #                                                                               Adittional COGS

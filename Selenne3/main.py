@@ -116,7 +116,8 @@ async def on_message(message):
             mentioned = f_lib.appear(bot.bot_name, msg)
             
             #Detectar mencion
-            if mentioned or bot.bypass or not guild:
+            #if mentioned or bot.bypass or not guild:
+            if 2 == 3:
                 #Activar/Desactivar Bypass
                 if msg in bot.bot_name:
                     await ch.send('Si?')

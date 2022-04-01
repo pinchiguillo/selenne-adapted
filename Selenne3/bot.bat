@@ -1,3 +1,3 @@
 @echo off
-title NoName Discord Bot
+title Selenne Discord Bot
 python main.py

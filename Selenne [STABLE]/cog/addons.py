@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+import asyncio
 
 from youtube_dl import YoutubeDL
 
@@ -113,8 +114,7 @@ class TicTacToe(discord.ui.View):
             return self.Tie
 
         return None
-
-
+2
 class games(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -274,13 +274,16 @@ class music(commands.Cog):
             else:
                 await self.vc.move_to(self.music_queue[0][1])
             
-            print(self.music_queue)
+            #print(self.music_queue)
             #remove the first element as you are currently playing it
             self.music_queue.pop(0)
 
             self.vc.play(discord.FFmpegPCMAudio(m_url, **self.FFMPEG_OPTIONS), after=lambda e: self.play_next())
         else:
             self.is_playing = False
+            await asyncio.sleep(15)
+            await self.vc.disconnect()
+        
 
     @commands.command(name="mp", help="Plays a selected song from youtube")
     async def mp(self, ctx, *args):
@@ -314,8 +317,13 @@ class music(commands.Cog):
             await ctx.send("No music in queue")
 
     @commands.command(name="ms", help="Skips the current song being played")
+    @commands.has_permissions(administrator=True)
     async def ms(self, ctx):
         if self.vc != "" and self.vc:
             self.vc.stop()
             #try to play next in the queue if it exists
             await self.play_music()
+    
+    @commands.command()
+    async def ml(self, ctx):
+        await self.vc.disconnect()

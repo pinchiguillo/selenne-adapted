@@ -35,7 +35,7 @@ async def setup_hook():
 
     import cog.addons
     await bot.add_cog(cog.addons.games(bot))
-    #await bot.add_cog(cog.addons.music(bot)) #OUTDATED
+    await bot.add_cog(cog.addons.music(bot))
     import cog.Zuteki
     await bot.add_cog(cog.Zuteki.message(bot))
     import cog.ZenkuBlocks

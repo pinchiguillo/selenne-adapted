@@ -41,7 +41,7 @@ async def setup_hook():
     import cog.ZenkuBlocks
     await bot.add_cog(cog.ZenkuBlocks.all(bot))
 
-    #import cog.Selenne
+    import cog.Selenne
     #await bot.add_cog(cog.Selenne.core(bot))    #Unable to Load
 
     #Reload Buttons

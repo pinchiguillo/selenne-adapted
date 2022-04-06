@@ -4,15 +4,15 @@ from discord.ext import commands
 class message(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.zuteki_id = 913949547514974249 #dev_room
-        self.zuteki_newsch = 913949547514974252
+        self.zuteki_id = 959659781960917002 #dev_room
+        self.zuteki_newsch = 959659782338400268
 
     #Commands
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def display(self, ctx, menu:str = 'Help'):
         if ctx.guild.id == self.zuteki_id:
-            h = '''```s.display normas``` muestra las normas del servidor\n```s.display sanciones``` muestra las sanciones del servidor\n```s.display nacionalidades``` Unique Display'''
+            h = '''```s.display normas``` muestra las normas del servidor\n```s.display sanciones``` muestra las sanciones del servidor\n```s.display nacionalidades``` Unique Display\n```s.display juegos```Unique Display'''
             if menu.lower() == 'help':
                 embed=discord.Embed(title="Zuteki Display Command", description=h, color=0x660000)
                 await ctx.reply(embed=embed)
@@ -181,7 +181,30 @@ class message(commands.Cog):
                 i += 1
                 embed.set_image(url = 'https://media.discordapp.net/attachments/957326343241076816/957326520299421786/paletas_paises_es.png')
                 await ctx.send(embed=embed)
-
+            elif menu.lower() == 'juegos':
+                colours = [0xffc800, 0xff00ea, 0x00e1ff,0xd40808]
+                i = 0
+                #Minecraft
+                embed=discord.Embed(color=colours[i])
+                i += 1
+                embed.set_image(url = 'https://media.discordapp.net/attachments/959659783026270228/960262569174655036/banner_minecraft.jpg')
+                await ctx.send(embed=embed)
+                #Lol
+                embed=discord.Embed(color=colours[i])
+                i += 1
+                embed.set_image(url = 'https://media.discordapp.net/attachments/959659783026270228/960262569531179048/banner_lol.jpg?width=1202&height=676')
+                await ctx.send(embed=embed)
+                #Genshin
+                embed=discord.Embed(color=colours[i])
+                i += 1
+                embed.set_image(url = 'https://media.discordapp.net/attachments/959659783026270228/960262569866719332/banner_genshin.jpg')
+                await ctx.send(embed=embed)
+                #COD
+                embed=discord.Embed(color=colours[i])
+                i += 1
+                embed.set_image(url = 'https://media.discordapp.net/attachments/959659783026270228/960262570273542184/banner_cod.png')
+                await ctx.send(embed=embed)
+                
             else:
                 embed=discord.Embed(title="Zuteki Display Command", description=h, color=0x660000)
                 await ctx.reply(embed=embed)

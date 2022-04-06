@@ -326,4 +326,5 @@ class music(commands.Cog):
     
     @commands.command()
     async def ml(self, ctx):
-        await self.vc.disconnect()
+        if self.is_playing == False:
+            await self.vc.disconnect()

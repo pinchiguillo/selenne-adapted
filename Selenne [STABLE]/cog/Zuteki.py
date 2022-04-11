@@ -4,7 +4,7 @@ from discord.ext import commands
 class message(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.zuteki_id = 959659781960917002 #dev_room
+        self.zuteki_id = 959659781960917002
         self.zuteki_newsch = 959659782338400268
 
     #Commands
@@ -12,7 +12,7 @@ class message(commands.Cog):
     @commands.has_permissions(administrator=True)
     async def display(self, ctx, menu:str = 'Help'):
         if ctx.guild.id == self.zuteki_id:
-            h = '''```s.display normas``` muestra las normas del servidor\n```s.display sanciones``` muestra las sanciones del servidor\n```s.display nacionalidades``` Unique Display\n```s.display juegos```Unique Display'''
+            h = '''```s.display normas``` muestra las normas del servidor\n```s.display sanciones``` muestra las sanciones del servidor\n```s.display nacionalidades``` Unique Display\n```s.display juegos```Unique Display\n```s.display verificacion```Unique Display'''
             if menu.lower() == 'help':
                 embed=discord.Embed(title="Zuteki Display Command", description=h, color=0x660000)
                 await ctx.reply(embed=embed)
@@ -54,7 +54,7 @@ class message(commands.Cog):
     ⚔️ No utilizar @everyone Esto se usa para cosas importantes. Sólo pueden usarlo los Administradores; Moderadores, u owner, para avisaros de cambios y demás. '''
 
                 embed=discord.Embed(title="❖ Reglas de Zuteki", description=normas, color=0xff0000)
-                embed.set_thumbnail(url="https://cdn.discordapp.com/icons/541658092639879189/a7d9a4e0a5c781fce57763c80f455ed3.jpg?size=128")
+                embed.set_thumbnail(url="https://cdn.discordapp.com/icons/959659781960917002/e1cd8fc924e9ca1bd7c9c4b54636d5e6.jpg?size=128")
                 embed.set_footer(text="Administración | Zuteki")
                 await ctx.send(embed=embed)
             elif menu.lower() == 'sanciones':
@@ -74,7 +74,7 @@ class message(commands.Cog):
 '''
 
                 embed=discord.Embed(title="❖ Sanciones de Zuteki", description=normas, color=0xff0000)
-                embed.set_thumbnail(url="https://cdn.discordapp.com/icons/541658092639879189/a7d9a4e0a5c781fce57763c80f455ed3.jpg?size=128")
+                embed.set_thumbnail(url="https://cdn.discordapp.com/icons/959659781960917002/e1cd8fc924e9ca1bd7c9c4b54636d5e6.jpg?size=128")
                 embed.set_footer(text="Administración | Zuteki")
                 await ctx.send(embed=embed)
             elif menu.lower() == 'nacionalidades':
@@ -204,7 +204,14 @@ class message(commands.Cog):
                 i += 1
                 embed.set_image(url = 'https://media.discordapp.net/attachments/959659783026270228/960262570273542184/banner_cod.png')
                 await ctx.send(embed=embed)
-                
+            elif menu.lower() == 'verificacion':
+                veri = '''Para mantener la seguridad en el servidor hemos habilitado un sistema de verificacion.\nReacciona para poder acceder al resto del servidor
+'''
+
+                embed=discord.Embed(title="❖ Verificación de Zuteki", description = veri, color=0xff0000)
+                embed.set_thumbnail(url="https://cdn.discordapp.com/icons/959659781960917002/e1cd8fc924e9ca1bd7c9c4b54636d5e6.jpg?size=128")
+                embed.set_footer(text="Administración | Zuteki")
+                await ctx.send(embed=embed)
             else:
                 embed=discord.Embed(title="Zuteki Display Command", description=h, color=0x660000)
                 await ctx.reply(embed=embed)
@@ -216,7 +223,7 @@ class message(commands.Cog):
             ch = await self.bot.fetch_channel(self.zuteki_newsch)
             embed=discord.Embed(title="📢 Anuncio", description=str(args), color=0x660000)
             embed.set_author(name="Zuteki")
-            embed.set_thumbnail(url="https://cdn.discordapp.com/icons/541658092639879189/a7d9a4e0a5c781fce57763c80f455ed3.jpg?size=128")
+            embed.set_thumbnail(url="https://cdn.discordapp.com/icons/959659781960917002/e1cd8fc924e9ca1bd7c9c4b54636d5e6.jpg?size=128")
             #embed.add_field(name="a", value="a", inline=False)
             await ch.send('@everyone', embed=embed)
      

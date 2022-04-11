@@ -31,6 +31,10 @@ class esssentials(commands.Cog):
     async def invite(self, ctx):
         await ctx.send('Not Reloaded')
 
+    @commands.command()
+    async def clear(self, ctx, ammount = 1000):
+	    await ctx.channel.purge(limit = ammount)
+
 class on_join(commands.Cog):
     def __init__(self, bot):
         self.bot = bot

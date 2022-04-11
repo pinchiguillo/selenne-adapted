@@ -1,6 +1,7 @@
 #Selenne Stable Version
 #By DCS Network
 
+from cog.addons import music_upd
 import discord
 from discord.ext import commands
 import json
@@ -23,6 +24,8 @@ class Selenne(commands.Bot):
     async def on_ready(self):
         print(f'Logged in as {self.user} (ID: {self.user.id})')
         print('------')
+        self.pid = await self.fetch_user(000000000000000000)
+        await self.pid.send('Ya vuelvo a estar conectada')
 
 bot = Selenne()
 bot.remove_command('help')
@@ -36,6 +39,7 @@ async def setup_hook():
     import cog.addons
     await bot.add_cog(cog.addons.games(bot))
     await bot.add_cog(cog.addons.music(bot))
+    await bot.add_cog(cog.addons.music_upd(bot))
     import cog.Zuteki
     await bot.add_cog(cog.Zuteki.message(bot))
     import cog.ZenkuBlocks

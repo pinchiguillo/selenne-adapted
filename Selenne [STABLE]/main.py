@@ -5,6 +5,7 @@ from cog.addons import music_upd
 import discord
 from discord.ext import commands
 import json
+import asyncio
 
 #Internal
 import dcs.bot
@@ -25,7 +26,9 @@ class Selenne(commands.Bot):
         print(f'Logged in as {self.user} (ID: {self.user.id})')
         print('------')
         self.pid = await self.fetch_user(000000000000000000)
-        await self.pid.send('Ya vuelvo a estar conectada')
+        m = await self.pid.send('Ya vuelvo a estar conectada')
+        await asyncio.sleep(5)
+        await m.delete()
 
 bot = Selenne()
 bot.remove_command('help')
@@ -44,6 +47,9 @@ async def setup_hook():
     await bot.add_cog(cog.Zuteki.message(bot))
     import cog.ZenkuBlocks
     await bot.add_cog(cog.ZenkuBlocks.all(bot))
+
+    import cog.devroom
+    await bot.add_cog(cog.devroom.testers(bot))
 
     import cog.Selenne
     #await bot.add_cog(cog.Selenne.core(bot))    #Unable to Load

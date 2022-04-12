@@ -441,4 +441,5 @@ class music_upd(commands.Cog):
             embed = discord.Embed(title = "Selenne Music Help", description = h, color = 0xfe2a9b)
             await ctx.send(embed = embed)
 
+
     #OLD CMD

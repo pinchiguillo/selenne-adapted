@@ -1,18 +1,21 @@
 import discord
 from discord.ext import commands
+import asyncio
 
 class message(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.zuteki_id = 959659781960917002
         self.zuteki_newsch = 959659782338400268
+        self.zuteki_reportch = 963215746530418728
+        self.zuteki_suggenstch = 959659782569070623
 
     #Commands
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def display(self, ctx, menu:str = 'Help'):
         if ctx.guild.id == self.zuteki_id:
-            h = '''```s.display normas``` muestra las normas del servidor\n```s.display sanciones``` muestra las sanciones del servidor\n```s.display nacionalidades``` Unique Display\n```s.display juegos```Unique Display\n```s.display verificacion```Unique Display'''
+            h = '''```s.display normas``` muestra las normas del servidor\n```s.display sanciones``` muestra las sanciones del servidor\n```s.display nacionalidades``` Unique Display\n```s.display juegos```Unique Display\n```s.display verificacion```Unique Display\n```s.display report```Report Display'''
             if menu.lower() == 'help':
                 embed=discord.Embed(title="Zuteki Display Command", description=h, color=0x660000)
                 await ctx.reply(embed=embed)
@@ -204,17 +207,26 @@ class message(commands.Cog):
                 i += 1
                 embed.set_image(url = 'https://media.discordapp.net/attachments/959659783026270228/960262570273542184/banner_cod.png')
                 await ctx.send(embed=embed)
-            elif menu.lower() == 'verificacion':
+            elif menu.lower() == 'categorias':
                 veri = '''Para mantener la seguridad en el servidor hemos habilitado un sistema de verificacion.\nReacciona para poder acceder al resto del servidor
 '''
 
-                embed=discord.Embed(title="❖ Verificación de Zuteki", description = veri, color=0xff0000)
+                embed=discord.Embed(title="❖ Categorias de Zuteki", description = veri, color=0xff0000)
+                embed.set_thumbnail(url="https://cdn.discordapp.com/icons/959659781960917002/e1cd8fc924e9ca1bd7c9c4b54636d5e6.jpg?size=128")
+                embed.set_footer(text="Administración | Zuteki")
+                await ctx.send(embed=embed)
+            elif menu.lower() == 'reportes':
+                veri = '''Utiliza este canal para reportar al Staff cualquier problema ocurrido en el servidor.\nUtiliza: ```s.report [reporte]``` para enviar un reporte.\n\nCon este metodo solo se puede mandar texto, si para procesar el reporte es necesario material auxiliar como imagenes u otras pruebas un miembro del staff se pondra en contacto por privado.\n\nSolo se aceptaran reportes de incidentes ocurridos dentro de Zuteki, para problemas externos ir directamente al soporte de Discord
+'''
+
+                embed=discord.Embed(title="❖ Reportes en Zuteki", description = veri, color=0xff0000)
                 embed.set_thumbnail(url="https://cdn.discordapp.com/icons/959659781960917002/e1cd8fc924e9ca1bd7c9c4b54636d5e6.jpg?size=128")
                 embed.set_footer(text="Administración | Zuteki")
                 await ctx.send(embed=embed)
             else:
                 embed=discord.Embed(title="Zuteki Display Command", description=h, color=0x660000)
                 await ctx.reply(embed=embed)
+            
 
     @commands.command()
     @commands.has_permissions(administrator=True)
@@ -226,4 +238,28 @@ class message(commands.Cog):
             embed.set_thumbnail(url="https://cdn.discordapp.com/icons/959659781960917002/e1cd8fc924e9ca1bd7c9c4b54636d5e6.jpg?size=128")
             #embed.add_field(name="a", value="a", inline=False)
             await ch.send('@everyone', embed=embed)
+
+    @commands.command()
+    async def report(self, ctx, *, body):
+        if ctx.guild.id == self.zuteki_id:
+            ch = await self.bot.fetch_channel(self.zuteki_reportch)
+            embed=discord.Embed(title = 'Nuevo Reporte', color = 0xfa0000)
+            embed.add_field(name = 'Usuario:', value = f'{ctx.author.mention}({ctx.author.id})', inline=False)
+            await ch.send(embed=embed)
+            await ctx.message.delete()
+            await ctx.author.send('Tu reporte ha sido enviado con exito')
+    
+    @commands.command()
+    async def suggest(self, ctx, *, body):
+        if ctx.guild.id == self.zuteki_id:
+            ch = await self.bot.fetch_channel(self.zuteki_suggenstch)
+            embed=discord.Embed(title = 'Nueva Sugerencia', description = body, color = 0x1b84b1)
+            embed.add_field(name = 'Usuario:', value = f'{ctx.author.mention}', inline=False)
+            sug = await ch.send(embed=embed)
+            await sug.add_reaction('✅')
+            await sug.add_reaction('❎')
+            await ctx.message.delete()
+            resp = await ctx.send('Gracias por la sugerencia')
+            await asyncio.sleep(5)
+            await resp.delete()
      

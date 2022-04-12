@@ -16,35 +16,11 @@ class all(commands.Cog):
     async def ophelp(self, ctx):
         if ctx.guild.id == self.ZenkuBlocks:
             embed=discord.Embed(title="Ayuda Admins", description="Listado de comandos que requieren administrador", color=0x00ccff)
-            embed.add_field(name="news", value="use z/news -help", inline=False)
-            embed.add_field(name="reboot", value="reinicia el bot", inline=False)
-            embed.add_field(name="proximamente", value="proximamente", inline=False)
+            embed.add_field(name="news", value="use ```s.news -help``` for more information", inline=False)
             await ctx.send(embed=embed)
 
     @commands.command()
-    #@commands.has_role(root_role)
-    async def online(self, ctx):
-        if ctx.guild.id == self.ZenkuBlocks:
-            bot = self.bot
-            channel = bot.get_channel(self.ZenkuBlocks_news_ch)
-            embed=discord.Embed(title="Server Online", color=discord.Color.green())
-            await channel.send(embed=embed)
-            await ctx.send('Mensaje enviado a Canal de Anuncios')
-
-    @commands.command()
-    #@commands.has_role(root_role)
-    async def news_embed(self, ctx, _title, body):
-        if ctx.guild.id == self.ZenkuBlocks:
-            bot = self.bot
-            try:
-                channel = bot.get_channel(self.ZenkuBlocks_news_ch)
-                embed = discord.Embed(title = _title, description=body, color=discord.Color.blue())
-                await channel.send(embed=embed)
-            except:
-                await ctx.send('The channel is not selected')
-
-    @commands.command()
-    #@commands.has_role(root_role)
+    @commands.has_permissions(administrator = True)
     async def news_text(self, ctx, *, body=None):
         if ctx.guild.id == self.ZenkuBlocks:
             bot = self.bot
@@ -52,13 +28,13 @@ class all(commands.Cog):
             await channel.send(body)
 
     @commands.command()
-    #@commands.has_role(root_role)
+    @commands.has_permissions(administrator = True)
     async def private(self, ctx, auth : discord.Member, body):
         if ctx.guild.id == self.ZenkuBlocks:
             await auth.send(body)
 
     @commands.command()
-    #@commands.has_role(root_role)
+    @commands.has_permissions(administrator = True)
     async def survey(self, ctx, mention, body):
         if ctx.guild.id == self.ZenkuBlocks:
             bot = self.bot
@@ -73,32 +49,32 @@ class all(commands.Cog):
                 await msg.add_reaction('❎')
             except:
                 await channel.send('Lo escribiste mal!, el formato es z/survey @mention "cuerto", (revisa las comillas)')
-    
-    @commands.command()
-    async def bug(self, ctx, body):
-        if ctx.guild.id == self.ZenkuBlocks:
-            bot = self.bot
-            channel = bot.get_channel(self.ZenkuBlocks_purge_ch)
-            author = ctx.message.author
-            embed = discord.Embed(title = 'BUG REPORT', description=body, color=discord.Color.red())
-            embed.add_field(name = 'Author', value = author, inline = False)
-            await channel.send(embed=embed)
-            await ctx.send('Gracias por el reporte!')
 
     @commands.command()
-    async def suggest(self, ctx, body):
+    @commands.has_permissions(administrator = True)
+    async def news(self, ctx, *, args = 'help'):
         if ctx.guild.id == self.ZenkuBlocks:
-            bot = self.bot
-            channel = bot.get_channel(self.ZenkuBlocks_purge_ch)
-            author = ctx.message.author
-            embed = discord.Embed(title = 'Suggest', description=body, color=discord.Color.green())
-            embed.add_field(name = 'Author', value = author, inline = False)
-            await channel.send(embed=embed)
-            await ctx.send('Gracias por la sugerencia!')
+            channel = self.bot.get_channel(self.ZenkuBlocks_news_ch)
+            if '-text' in args:
+                msg = args.removeprefix('-text')
+                await channel.send(msg)
 
-    @commands.command()
+            elif '-embed' in args:
+                await ctx.send('Unconfigured')
+            elif '-survey' in args:
+                await ctx.send('Unconfigured')
+            else:
+                h = f'''```s.news -text [text]```\nEnvia un anuncio simple de texto al canal <#{self.ZenkuBlocks_news_ch}>
+                \n```s.news -embed [embed args]```\nEnvia un embed al canal <#{self.ZenkuBlocks_news_ch}>
+                \n```s.news -survey [text]```\nCrea una encuesta en el canal <#{self.ZenkuBlocks_news_ch}>
+                '''
+
+                embed=discord.Embed(title="ZenkuBlocks News Command", description=h, color = 0x0091ff)
+                await ctx.reply(embed=embed)
+
+    '''@commands.command()
     #@commands.has_role(root_role)
-    async def news(self, ctx, i1, i2 = '', i3 = ''):
+    async def _news(self, ctx, i1, i2 = '', i3 = ''):
         if ctx.guild.id == self.ZenkuBlocks:
             bot = self.bot
             channel = bot.get_channel(self.ZenkuBlocks_news_ch)
@@ -149,3 +125,4 @@ class all(commands.Cog):
                 embed=discord.Embed(title='Message sent to #【📢】anuncios', description=otp, color=discord.Color.blue())
                 embed.add_field(name='User', value=ctx.message.author, inline=True)
                 await ctx.send(embed=embed)
+'''

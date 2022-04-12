@@ -1,10 +1,12 @@
 import discord
 from discord.ext import commands
 import asyncio
+import os
 
 class esssentials(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.botowner = 000000000000000000
     
     @commands.command()
     async def ping(self, ctx):
@@ -12,20 +14,21 @@ class esssentials(commands.Cog):
     
     @commands.command()
     async def bye(self, ctx):
-        if ctx.author.id == 000000000000000000:
+        if ctx.author.id == self.botowner:
             await ctx.reply('bye!')
+            exit()
+
+    @commands.command()
+    async def reboot(self, ctx):
+        if ctx.author.id == self.botowner:
+            await ctx.reply('Rebooting bot...')
+            os.system('start /min bot.bat')
             exit()
 
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def echo(self, ctx, *, args):
         await ctx.send(args)
-
-    @commands.command()
-    async def bye(self, ctx):
-        if ctx.author.id == 000000000000000000:
-            await ctx.reply('bye!')
-            await self.bot.close()
 
     @commands.command() # OUTDATED
     async def invite(self, ctx):

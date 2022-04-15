@@ -33,7 +33,10 @@ class Selenne(commands.Bot):
 bot = Selenne()
 bot.remove_command('help')
 
-#Cogs
+#Universal Vars
+bot.owner = config.owner
+
+#SetUp
 @bot.event
 async def setup_hook():
     import cog.dcs
@@ -52,7 +55,12 @@ async def setup_hook():
     await bot.add_cog(cog.devroom.testers(bot))
 
     import cog.Selenne
-    #await bot.add_cog(cog.Selenne.core(bot))    #Unable to Load
+    #await bot.add_cog(cog.Selenne.core(bot))
+
+
+    #NEW GEN
+    await bot.load_extension('extension.essentials')
+    await bot.load_extension('extension.Selenne')
 
     #Reload Buttons
     pass

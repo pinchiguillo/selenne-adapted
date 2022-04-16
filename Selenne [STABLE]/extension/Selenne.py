@@ -245,6 +245,18 @@ async def on_message(message):
                     f'En la mudanza perdi la receta de los macarrones, buscala en internet'
                 ]
                 await ch.send(ans[random.randint(0, len(ans) - 1)])
+            elif 'cuenta' in msg:
+                if 'chiste' in msg:
+                    with open('db/chistes.txt', 'r', encoding='utf-8') as f:
+                        chistestxt = f.read()
+                        ans = chistestxt.split('\n|')
+                    await ch.send(ans[random.randint(0, len(ans) - 1)])
+                else:
+                    ans = [
+                        f'0, 1, 2, 3, 4, 5, 6, 7, 8, 9...',
+                        f'Que quieres que cuente?'
+                    ]
+                    await ch.send(ans[random.randint(0, len(ans) - 1)])
 
             #Exception:
             else:

@@ -59,7 +59,8 @@ async def setup_hook():
 
 
     #NEW GEN
-    await bot.load_extension('extension.essentials')
+    await bot.load_extension('extension.manager')
+    
     await bot.load_extension('extension.Selenne')
 
     #Reload Buttons

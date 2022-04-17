@@ -7,8 +7,24 @@ async def setup(b):
     
     bot.add_listener(on_message)
 
-    bot.add_command(ping)
+    bot.add_command(extension)
 
+version = 'Default: 1.1'
+ename = 'Default'
+
+@commands.command()
+async def extension(ctx, args = None):
+    if ctx.author.id == bot.owner:
+        if args == 'reload':
+            try:
+                await bot.reload_extension('')
+                await ctx.send(f'**{ename}** reloaded')
+            except:
+                await ctx.send(f'Error while reloading {ename}. Try rebooting the whole bot')
+        else:
+            await ctx.send(f'Current Version: **{version}**')
+    else:
+        await ctx.send('**YOU DONT HAVE PERMISSIONS TO DO THIS**')
 
 @commands.Cog.listener()
 async def on_message(message):

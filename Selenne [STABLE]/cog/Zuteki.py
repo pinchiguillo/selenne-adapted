@@ -20,64 +20,66 @@ class message(commands.Cog):
                 embed=discord.Embed(title="Zuteki Display Command", description=h, color=0x660000)
                 await ctx.reply(embed=embed)
             elif menu.lower() == 'normas':
-                normas = '''⚔️ Evita entrar en conflictos con usuarios que puedan dar problemas. Cualquier mensaje o contenido de su desagrado por DM/Privado, favor de Bloquear. Zuteki no se hará responsable de los acontecimientos externos al servidor. Por último, le recomendamos dirigirse a soporte de discord.
+                normas = '''❖ Evita entrar en conflictos con usuarios que puedan dar problemas. Cualquier mensaje o contenido de su desagrado por DM/Privado, favor de Bloquear. Zuteki no se hará responsable de los acontecimientos externos al servidor. Por último, le recomendamos dirigirse a soporte de discord.
 
-    ⚔️ Debes acatar y obedecer como indica en Reglas de Comunidad Discord y Términos y Condiciones de Discord. No cumplirlas es una sanción severa.
+    ❖ Debes acatar y obedecer como indica en Reglas de Comunidad Discord y Términos y Condiciones de Discord. No cumplirlas es una sanción severa.
 
-    ⚔️ Esta rotundamente prohibido enviar contenido NSFW (+18) en cualquier canal donde interactúe. 
+    ❖ Esta rotundamente prohibido enviar contenido NSFW (+18) en cualquier canal donde interactúe. 
 
-    ⚔️ Prohibido usurpación o suplantación de usuario. Esto quiere decir nick/apodo o avatar con el fin de difamar, extorsionar o dañar a un usuario.
+    ❖ Prohibido usurpación o suplantación de usuario. Esto quiere decir nick/apodo o avatar con el fin de difamar, extorsionar o dañar a un usuario.
 
-    ⚔️ Evitar el uso constante de palabras soeces y además de usar mayúsculas en su totalidad. Esto quiere decir moderar su vocabulario y evitar el uso de mayúsculas.
+    ❖ Evitar el uso constante de palabras soeces y además de usar mayúsculas en su totalidad. Esto quiere decir moderar su vocabulario y evitar el uso de mayúsculas.
 
-    ⚔️ Difundir una invitación de otro servidor que no sea de Zuteki es motivo de sanción a criterio de administración o moderación. Evite a toda costa.
+    ❖ Difundir una invitación de otro servidor que no sea de Zuteki es motivo de sanción a criterio de administración o moderación. Evite a toda costa.
 
-    ⚔️ Prohibido evadir una sanción con multicuentas, esto podría complicar su permanencia en el servidor.
+    ❖ Prohibido evadir una sanción con multicuentas, esto podría complicar su permanencia en el servidor.
 
-    ⚔️ Sanción máxima cualquier intento de "Raid". Si notamos algún indicio de raideo se aplica pena máxima "Ban permanente".
+    ❖ Sanción máxima cualquier intento de "Raid". Si notamos algún indicio de raideo se aplica pena máxima "Ban permanente".
 
-    ⚔️ Evite hacer spam o flood en cualquier canal. Esto incluye: imágenes/gif, textos repetidos o emojis, automáticamente la directiva de uno de nuestros bots lo borrara.
+    ❖ Evite hacer spam o flood en cualquier canal. Esto incluye: imágenes/gif, textos repetidos o emojis, automáticamente la directiva de uno de nuestros bots lo borrara.
 
-    ⚔️ Evite mencionar contenido de spoiler de cualquier anime, manga, novela y/o comic web en cualquier canal en el que se interactúe, para eso está el canal <#860351889471832084>, o simplemente "Marcar como spoiler" en el recuadro para imagen/gif o video. Incumplirlo es motivo de sanción (Warn o mute). 
+    ❖ Evite mencionar contenido de spoiler de cualquier anime, manga, novela y/o comic web en cualquier canal en el que se interactúe, para eso está el canal <#860351889471832084>, o simplemente "Marcar como spoiler" en el recuadro para imagen/gif o video. Incumplirlo es motivo de sanción (Warn o mute). 
 
-    ⚔️ Prohibido mandar links, videos y imágenes que logre crashear el discord.
+    ❖ Prohibido mandar links, videos y imágenes que logre crashear el discord.
 
-    ⚔️ Prohibido el autofarm (aunque sea usando bots).
+    ❖ Prohibido el autofarm (aunque sea usando bots).
 
-    ⚔️ Tened cuidado con temas que puedan generar discordia. Está claro que cada uno tenemos nuestro punto de vista sobre "x" cosa y podemos hablar de ello, pero sin generar malos rollos. Que sean discusiones sanas en las que habléis de forma razonable, sin malas palabras. Recordad, respeto y buenas palabras, ante todo.
+    ❖ Tened cuidado con temas que puedan generar discordia. Está claro que cada uno tenemos nuestro punto de vista sobre "x" cosa y podemos hablar de ello, pero sin generar malos rollos. Que sean discusiones sanas en las que habléis de forma razonable, sin malas palabras. Recordad, respeto y buenas palabras, ante todo.
 
-    ⚔️ Prohibido tener una conducta denigratoria ya sea por raza, cultura, nacionalidad, etnia u orientación sexual. Esto incluye acoso sexual y a menores. NO discriminación, NI acoso.
+    ❖ Prohibido tener una conducta denigratoria ya sea por raza, cultura, nacionalidad, etnia u orientación sexual. Esto incluye acoso sexual y a menores. NO discriminación, NI acoso.
 
-    ⚔️ Prohibido toxicidad de cualquier tipo hacia cualquier integrante dentro de la comunidad. Es motivo de sanción.
+    ❖ Prohibido toxicidad de cualquier tipo hacia cualquier integrante dentro de la comunidad. Es motivo de sanción.
 
-    ⚔️ Prohibido incitar el odio hacia el staff mostrando "pruebas" o cualquier elemento que apunte tal motivo, se debe evitar a toda costa la comunidad toxica dentro del servidor.
+    ❖ Prohibido incitar el odio hacia el staff mostrando "pruebas" o cualquier elemento que apunte tal motivo, se debe evitar a toda costa la comunidad toxica dentro del servidor.
 
-    ⚔️ No pedir rangos, está prohibido pedir ser Administrador; Moderador, u otros. 
+    ❖ No pedir rangos, está prohibido pedir ser Administrador; Moderador, u otros. 
 
-    ⚔️ No utilizar @everyone Esto se usa para cosas importantes. Sólo pueden usarlo los Administradores; Moderadores, u owner, para avisaros de cambios y demás. '''
+    ❖ Prohibido el uso de multicuentas dentro del servidor. 
+
+    ❖ No utilizar @everyone Esto se usa para cosas importantes. Sólo pueden usarlo los Administradores; Moderadores, u owner, para avisaros de cambios y demás. '''
 
                 embed=discord.Embed(title="❖ Reglas de Zuteki", description=normas, color=0xff0000)
-                embed.set_thumbnail(url="https://cdn.discordapp.com/icons/959659781960917002/e1cd8fc924e9ca1bd7c9c4b54636d5e6.jpg?size=128")
+                embed.set_thumbnail(url=ctx.guild.icon)
                 embed.set_footer(text="Administración | Zuteki")
                 await ctx.send(embed=embed)
             elif menu.lower() == 'sanciones':
-                normas = '''⚔️ 3 warns equivalente a un mute.
+                normas = '''❖ 3 warns equivalente a un mute.
 
-⚔️ 3 mutes equivalente a un kick.
+❖ 3 mutes equivalente a un kick.
 
-⚔️ La acumulación de los 2 puntos anteriores, puede aplicar a un Ban.
+❖ La acumulación de los 2 puntos anteriores, puede aplicar a un Ban.
 
-⚔️ A criterio de los miembros de staff pueden aplicar Ban o Tempban directamente si lo amerita.
+❖ A criterio de los miembros de staff pueden aplicar Ban o Tempban directamente si lo amerita.
 
 
-⚔️ Según las acciones que cometas puede variar las sanciones correspondientes dependiendo de la gravedad del asunto. Evita problemas y lee el reglamento.
+❖ Según las acciones que cometas puede variar las sanciones correspondientes dependiendo de la gravedad del asunto. Evita problemas y lee el reglamento.
 
 
 ~ Advertir previamente a una sanción está bajo criterio del Staff ~
 '''
 
                 embed=discord.Embed(title="❖ Sanciones de Zuteki", description=normas, color=0xff0000)
-                embed.set_thumbnail(url="https://cdn.discordapp.com/icons/959659781960917002/e1cd8fc924e9ca1bd7c9c4b54636d5e6.jpg?size=128")
+                embed.set_thumbnail(url=ctx.guild.icon)
                 embed.set_footer(text="Administración | Zuteki")
                 await ctx.send(embed=embed)
             elif menu.lower() == 'nacionalidades':
@@ -212,7 +214,7 @@ class message(commands.Cog):
 '''
 
                 embed=discord.Embed(title="❖ Categorias de Zuteki", description = veri, color=0xff0000)
-                embed.set_thumbnail(url="https://cdn.discordapp.com/icons/959659781960917002/e1cd8fc924e9ca1bd7c9c4b54636d5e6.jpg?size=128")
+                embed.set_thumbnail(url=ctx.guild.icon)
                 embed.set_footer(text="Administración | Zuteki")
                 await ctx.send(embed=embed)
             elif menu.lower() == 'reportes':
@@ -220,14 +222,44 @@ class message(commands.Cog):
 '''
 
                 embed=discord.Embed(title="❖ Reportes en Zuteki", description = veri, color=0xff0000)
-                embed.set_thumbnail(url="https://cdn.discordapp.com/icons/959659781960917002/e1cd8fc924e9ca1bd7c9c4b54636d5e6.jpg?size=128")
+                embed.set_thumbnail(url=ctx.guild.icon)
+                embed.set_footer(text="Administración | Zuteki")
+                await ctx.send(embed=embed)
+            elif menu.lower() == 'presentaciones':
+                txt = '''Información del canal
+Canal exclusivo para presentación, no es para chatear, tampoco es obligatorio presentarse ya que es de manera voluntaria, sin embargo se le borrará su presentación si no se acoge a la plantilla dada o parecido y pueden incluso añadir alguna cosa adicional o detalle a su gusto.
+
+Plantilla de presentación
+❖ Apodo:
+❖ Edad:
+❖ Género:
+❖ Personalidad:
+❖ Hobby:
+❖ Música:
+❖ Juegos:
+❖ País:'''
+                embed=discord.Embed(title="❖ Plantilla Presentaciones", description=txt, color=0xff0000)
+                embed.set_thumbnail(url=ctx.guild.icon)
+                embed.set_footer(text="Administración | Zuteki")
+                await ctx.send(embed=embed)
+            elif menu.lower() == 'nitro':
+                txt = '''Al boostear el servidor se te entregaran una serie de recompensas que te permitirán acceder a canales privados de boostes, se te entregara el rango Gran maestro y se recibirá una cantidad de experiencia dentro del servidor
+
+**Recompensas:**
+
+» Se les entregará 20000 puntos de experiencia, el primer boosteo(primer mes) recibirá 20000 puntos y en el segundo boosteo(segundo mes) recibirá la misma cantidad, pero ya del tercer boosteo
+en adelante no recibirá más experiencia hasta el otro año. Total 40000 puntos de experiencia al año.
+
+**Proximamente se añadiran nuevas recompensas**
+'''
+                embed=discord.Embed(title="❖ Informacion Boost del servidor", description=txt, color=0xff0000)
+                embed.set_thumbnail(url=ctx.guild.icon)
                 embed.set_footer(text="Administración | Zuteki")
                 await ctx.send(embed=embed)
             else:
                 embed=discord.Embed(title="Zuteki Display Command", description=h, color=0x660000)
                 await ctx.reply(embed=embed)
             
-
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def anounce(self, ctx, *, args):
@@ -235,7 +267,7 @@ class message(commands.Cog):
             ch = await self.bot.fetch_channel(self.zuteki_newsch)
             embed=discord.Embed(title="📢 Anuncio", description=str(args), color=0x660000)
             embed.set_author(name="Zuteki")
-            embed.set_thumbnail(url="https://cdn.discordapp.com/icons/959659781960917002/e1cd8fc924e9ca1bd7c9c4b54636d5e6.jpg?size=128")
+            embed.set_thumbnail(url=ctx.guild.icon)
             #embed.add_field(name="a", value="a", inline=False)
             await ch.send('@everyone', embed=embed)
 
@@ -262,4 +294,3 @@ class message(commands.Cog):
             resp = await ctx.send('Gracias por la sugerencia')
             await asyncio.sleep(5)
             await resp.delete()
-     

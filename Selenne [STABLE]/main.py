@@ -44,10 +44,9 @@ async def setup_hook():
 
     import cog.addons
     await bot.add_cog(cog.addons.games(bot))
-    await bot.add_cog(cog.addons.music(bot))
     await bot.add_cog(cog.addons.music_upd(bot))
     import cog.Zuteki
-    await bot.add_cog(cog.Zuteki.message(bot))
+    #await bot.add_cog(cog.Zuteki.message(bot))
     import cog.ZenkuBlocks
     await bot.add_cog(cog.ZenkuBlocks.all(bot))
 
@@ -62,6 +61,8 @@ async def setup_hook():
     await bot.load_extension('extension.manager')
     
     await bot.load_extension('extension.Selenne')
+    await bot.load_extension('extension.server.zuteki')
+
 
     #Reload Buttons
     pass

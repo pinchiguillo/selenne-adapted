@@ -1,3 +1,4 @@
+from re import A
 import discord
 from discord.ext import commands
 
@@ -7,13 +8,21 @@ async def setup(b):
     
     bot.add_command(em)
 
-version = 'ExtensionsManager: 1.1'
+version = 'ExtensionsManager: 1.3'
 ename = 'Extensions Manager'
 
 @commands.command()
 async def em(ctx, mode = None, *, args = 'manager'):
     if ctx.author.id == bot.owner:
-        help = '- reload [extension] => Reloads the whole extension(if no args reloads Extension manager)\n- display => Displays all the active extensions\n- load [extension] => loads an extension\n- unload [extension] => unloads an extension\n- version  => displays Extensions Manager Current Version\n- v => displays Extensions Manager Current Version'
+        help = '''- reload [extension] => Reloads the whole extension(if no args reloads Extension manager)
+- display => Displays all the active extensions
+- load [extension] => loads an extension
+- unload [extension] => unloads an extension
+- version  => displays Extensions Manager Current Version
+- v => displays Extensions Manager Current Version
+- addstartup => Adds the extension to the startup list
+- startup => Adds the extension to the startup list
+- removestartup => Removes the extension to the startup list'''
         if mode == 'reload':
             name = args
             if args == 'manager':
@@ -22,8 +31,8 @@ async def em(ctx, mode = None, *, args = 'manager'):
                 await bot.reload_extension(f'extension.{args}')
                 await ctx.send(f'**{name}** reloaded')
 
-            except:
-                await ctx.send(f'Error while reloading **{name}**')
+            except Exception as error:
+                await ctx.send(f'Error while reloading **{name}**\n```{error}```')
         elif mode == 'display':
             ex = list(bot.extensions)
             extensions_list = ''            
@@ -36,21 +45,44 @@ async def em(ctx, mode = None, *, args = 'manager'):
             try:
                 await bot.load_extension(f'extension.{args}')
                 await ctx.send(f'**{args}** loaded')
-            except:
-                await ctx.send(f'Error while loading **{args}**')
+            except Exception as error:
+                await ctx.send(f'Error while loading **{args}**\n```{error}```')
 
         elif mode == 'unload':
             try:
                 await bot.unload_extension(f'extension.{args}')
                 await ctx.send(f'**{args}** unloaded')
-            except:
-                await ctx.send(f'Error while unloading **{args}**')
+            except Exception as error:
+                await ctx.send(f'Error while unloading **{args}**\n```{error}```')
 
         elif mode == 'help':
             await ctx.send(f'```{help}```')
 
         elif mode == 'v' or mode == 'version':
             await ctx.send(f'Running **{version}**')
+
+        elif mode == 'addstartup' or mode == 'startup':
+            #Comprobar si exsite la extension
+            try:
+                await bot.load_extension(f'extension.{args}')
+                with open(f'startup_extensions.cfg', 'a') as f:
+                    f.write(f'extension.{args}\n')
+                await ctx.send(f'**{args}** successfully added to startup')
+            except Exception as error:
+                await ctx.send(f'**Unable to load extension**:\n```{error}```\nCheck if the extension is unloaded or if the extension loads via **s.em load**')
+
+        elif mode == 'removestartup':
+            with open(f'startup_extensions.cfg', 'r') as f:
+                startup_list = f.readlines()
+            if f'extension.{args}\n' in startup_list:
+                index = startup_list.index(f'extension.{args}\n')
+                startup_list.pop(index)
+                w = ' '.join([str(item) for item in startup_list])
+                with open(f'startup_extensions.cfg', 'w') as f:
+                    f.write(w)
+                await ctx.send(f'**{args}** successfully removed from startup')
+            else:
+                await ctx.send(f'**{args}** Is not in the startup list')
 
         else:
             await ctx.send(f'Wrong Syntax\n```{help}```')

@@ -1,20 +1,49 @@
 import discord
 from discord.ext import commands
 
+import os
+
 async def setup(b):
     global bot
     bot = b
     
-    bot.add_command(essentials)
+    bot.add_command(ping)
+    bot.add_command(bye)
+    bot.add_command(reboot)
+    bot.add_command(echo)
+    bot.add_command(invite)
+    bot.add_command(clear)
 
 
 version = 'Essentials: Alfa'
 ename = 'Essentials'
+    
+@commands.command()
+async def ping(self, ctx):
+    await ctx.send('Pong')    
 
 @commands.command()
-async def essentials(ctx, mode = None, args = None):
-    if mode == 'help':
-        h = 'Cant Display Help'
-        await ctx.send(h)
-    else:
-        await ctx.send('Use **s.essentials help** in order to get help')
+async def bye(self, ctx):
+    if ctx.author.id == bot.owner:
+        await ctx.reply('bye!')
+        exit()
+
+@commands.command()
+async def reboot(ctx):
+    if ctx.author.id == bot.owner:
+        await ctx.reply('Rebooting bot...')
+        os.system('start /min bot.bat')
+        exit()
+
+@commands.command()
+@commands.has_permissions(administrator=True)
+async def echo(ctx, *, args):
+    await ctx.send(args)
+
+@commands.command() # OUTDATED
+async def invite(ctx):
+    await ctx.send('Not Reloaded')
+
+@commands.command()
+async def clear(ctx, ammount = 10000):
+	await ctx.channel.purge(limit = ammount)

@@ -3,6 +3,8 @@ from discord.ext import commands
 
 import asyncio
 
+from discord.permissions import permission_alias
+
 async def setup(b):
     global bot
     bot = b
@@ -12,11 +14,14 @@ async def setup(b):
     bot.add_command(suggest)
     bot.add_command(display)
 
+    bot.add_listener(on_message)
+
 server_id = 959659781960917002
 
 newsch = 959659782338400268
 reportch = 963215746530418728
 suggestch = 959659782569070623
+logch = 965699651351220274
 servercolor = 0x660000
 
 @commands.command()
@@ -302,3 +307,22 @@ en adelante no recibirá más experiencia hasta el otro año. Total 40000 puntos
         else:
             embed=discord.Embed(title="Zuteki Display Command", description=h, color=0x660000)
             await ctx.reply(embed=embed)
+
+@commands.Cog.listener()
+async def on_message(message):
+    if message.guild.id == server_id and not message.author.bot:
+        role = 962725878255714365
+
+        log = await message.guild.fetch_channel(logch)
+        verified = False
+        for r in message.author.roles:
+            if role == r.id:
+                verified = True
+        
+        if not verified:
+            try:
+                await message.author.kick()
+                await log.send(f'{message.author.display}({message.author}) ha sido expulsado Reason: **escribir sin estar verificado**')
+                
+            except discord.errors.Forbidden:
+                await log.send(f'{message.author.display}({message.author}) **Error al expulsar** Reason: **escribir sin estar verificado**')

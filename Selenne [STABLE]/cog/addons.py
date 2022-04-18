@@ -440,6 +440,3 @@ class music_upd(commands.Cog):
             h = '''```s.m p [youtube link]``` Pone musica desde youtube, tambien pueden ser playlists publicas\n```s.m q```Muestra la cola de canciones\n```s.m s```Salta la cancion que esta sonando\n```s.m l```Selenne abandona el canal de voz de manera forzada'''
             embed = discord.Embed(title = "Selenne Music Help", description = h, color = 0xfe2a9b)
             await ctx.send(embed = embed)
-
-
-    #OLD CMD

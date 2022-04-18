@@ -39,30 +39,19 @@ bot.owner = config.owner
 #SetUp
 @bot.event
 async def setup_hook():
-    import cog.dcs
-    await bot.add_cog(cog.dcs.esssentials(bot))
-
-    import cog.addons
-    await bot.add_cog(cog.addons.games(bot))
-    await bot.add_cog(cog.addons.music_upd(bot))
-    import cog.Zuteki
-    #await bot.add_cog(cog.Zuteki.message(bot))
-    import cog.ZenkuBlocks
-    await bot.add_cog(cog.ZenkuBlocks.all(bot))
-
-    import cog.devroom
-    await bot.add_cog(cog.devroom.testers(bot))
-
-    import cog.Selenne
-    #await bot.add_cog(cog.Selenne.core(bot))
-
-
+    
     #NEW GEN
     await bot.load_extension('extension.manager')
-    
-    await bot.load_extension('extension.Selenne')
-    await bot.load_extension('extension.server.zuteki')
 
+    import cog.addons
+    await bot.add_cog(cog.addons.music_upd(bot)) #Update to extension needed
+    
+    with open('startup_extensions.cfg', 'r') as f:
+        startup_extensions = f.readlines()
+        for extension in startup_extensions:
+            l = extension.removesuffix('\n')
+            await bot.load_extension(f'{l}')
+    
 
     #Reload Buttons
     pass

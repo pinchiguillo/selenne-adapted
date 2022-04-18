@@ -8,7 +8,7 @@ async def setup(b):
     
     bot.add_command(em)
 
-version = 'ExtensionsManager: 1.3'
+version = 'ExtensionsManager: 2.1'
 ename = 'Extensions Manager'
 
 @commands.command()
@@ -20,7 +20,6 @@ async def em(ctx, mode = None, *, args = 'manager'):
 - unload [extension] => unloads an extension
 - version  => displays Extensions Manager Current Version
 - v => displays Extensions Manager Current Version
-- addstartup => Adds the extension to the startup list
 - startup => Adds the extension to the startup list
 - removestartup => Removes the extension to the startup list'''
         if mode == 'reload':
@@ -61,15 +60,23 @@ async def em(ctx, mode = None, *, args = 'manager'):
         elif mode == 'v' or mode == 'version':
             await ctx.send(f'Running **{version}**')
 
-        elif mode == 'addstartup' or mode == 'startup':
+        elif mode == 'startup':
             #Comprobar si exsite la extension
-            try:
-                await bot.load_extension(f'extension.{args}')
-                with open(f'startup_extensions.cfg', 'a') as f:
-                    f.write(f'extension.{args}\n')
-                await ctx.send(f'**{args}** successfully added to startup')
-            except Exception as error:
-                await ctx.send(f'**Unable to load extension**:\n```{error}```\nCheck if the extension is unloaded or if the extension loads via **s.em load**')
+            if args == 'manager':
+                with open(f'startup_extensions.cfg', 'r') as f:
+                    startup_list = f.readlines()
+                msg = ''
+                for extension in startup_list:
+                    msg += '- ' + extension.removeprefix('extension.')
+                await ctx.send(f'```{msg}```')
+            else:
+                try:
+                    await bot.load_extension(f'extension.{args}')
+                    with open(f'startup_extensions.cfg', 'a') as f:
+                        f.write(f'extension.{args}\n')
+                    await ctx.send(f'**{args}** successfully added to startup')
+                except Exception as error:
+                    await ctx.send(f'**Unable to load extension**:\n```{error}```\nCheck if the extension is unloaded or if the extension loads via **s.em load**')
 
         elif mode == 'removestartup':
             with open(f'startup_extensions.cfg', 'r') as f:

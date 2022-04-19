@@ -15,6 +15,7 @@ async def setup(b):
     bot.add_command(display)
 
     bot.add_listener(on_message)
+    bot.add_listener(on_voice_state_update)
 
 server_id = 959659781960917002
 
@@ -321,8 +322,27 @@ async def on_message(message):
         
         if not verified:
             try:
-                await message.author.kick()
-                await log.send(f'{message.author.display}({message.author}) ha sido expulsado Reason: **escribir sin estar verificado**')
+                await message.author.kick(reason='Escribir sin estar verificado')
+                await log.send(f'{message.author.mention}({message.author.id}) ha sido expulsado Reason: **escribir sin estar verificado**')
                 
             except discord.errors.Forbidden:
-                await log.send(f'{message.author.display}({message.author}) **Error al expulsar** Reason: **escribir sin estar verificado**')
+                await log.send(f'{message.author.mention}({message.author.id}) **Error al expulsar** Reason: **escribir sin estar verificado**')
+
+@commands.Cog.listener()
+async def on_voice_state_update(member, after, before):
+    if member.guild.id == server_id and not member.bot:
+        role = 962725878255714365
+
+        log = await member.guild.fetch_channel(logch)
+        verified = False
+        for r in member.roles:
+            if role == r.id:
+                verified = True
+        
+        if not verified:
+            try:
+                await member.kick(reason='Conectarse a voz sin estar verificado')
+                await log.send(f'{member.mention}({member.id}) ha sido expulsado Reason: **Conectarse a voz sin estar verificado**')
+                
+            except discord.errors.Forbidden:
+                await log.send(f'{member.mention}({member.id}) **Error al expulsar** Reason: **Conectarse a voz sin estar verificado**')

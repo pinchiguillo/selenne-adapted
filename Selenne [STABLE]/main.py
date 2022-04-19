@@ -35,6 +35,7 @@ bot.remove_command('help')
 
 #Universal Vars
 bot.owner = config.owner
+bot.color = config.color
 
 #SetUp
 @bot.event

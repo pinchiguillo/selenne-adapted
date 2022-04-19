@@ -6,7 +6,7 @@ async def setup(b):
     bot = b
 
 
-    bot.add_command(sao)
+    bot.add_command(countdown_date_to_be_reached_in_days_hours_minutes_and_seconds_Made_by_Pinchiguillo)
 
 @commands.command()
 async def sao(ctx):
@@ -17,3 +17,7 @@ async def sao(ctx):
     embed.add_field(name = 'Fecha de Finalización', value = '07/1/2024 14:55', inline=True)
     embed.add_field(name = 'Tiempo Restante', value = '[error:data.cant.load]', inline=True)
     await ctx.send(embed=embed)
+
+@commands.command()
+async def countdown_date_to_be_reached_in_days_hours_minutes_and_seconds_Made_by_Pinchiguillo(ctx):
+    await ctx.send('Prueba a usar s.c :)')

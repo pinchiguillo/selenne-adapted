@@ -1,0 +1,11 @@
+Este es el primer comunicado que hacemos desde el equipo de desarrollo de Selenne.
+Nuesto objetivo con este comunicado no es solo daros las gracias por usar nuestro bot, si no tambien comentar como va a seguir el dessarrollo del bot.
+
+Actualmente somo 3 desarrolladores trabajando en este proyecto, y ninguno tiene intenciones de abandonar el desarrollo de Selenne, no obstante se acercan fechas dificiles para nosotros por lo que las actualizaciones del bot se frenaran un poco.
+
+En cuanto a los cambios que hemos estado realizando cabe destacar la implementacion de modulos como MyTierList, Countdowns o TicTacToe que por si solos ya añaden mucho contenido al bot, no obstante todavia no son perfectos asi que pueden aparecer bugs. Nos encantaria que se nos comunicaran con el fin de corregirlos lo antes posible.
+Tambien extensiones como Music, todavia estan pendientes de actualizacion y sabemos que tienen bugs, pero estamos esperando a realizar una nueva version del modulo desde cero.
+
+Para finalizar este mensaje nos gustaria pediros que hablarais con Selenne llamandola simplemente por su nombre para que asi la AI pueda ir aprendiendo y con el tiempo combertirse en un CHAT BOT.
+
+Muchas gracias por leernos y que tengan una feliz semana.

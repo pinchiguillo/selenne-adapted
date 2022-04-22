@@ -342,6 +342,7 @@ async def on_voice_state_update(member, after, before):
         if not verified:
             try:
                 await member.kick(reason='Conectarse a voz sin estar verificado')
+                await member.send('Si quires escribir en Zuteki tienes que verificarte')
                 await log.send(f'{member.mention}({member.id}) ha sido expulsado Reason: **Conectarse a voz sin estar verificado**')
                 
             except discord.errors.Forbidden:

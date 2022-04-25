@@ -34,8 +34,11 @@ bot = Selenne()
 bot.remove_command('help')
 
 #Universal Vars
+bot.nullchar = '\u200b'
 bot.owner = config.owner
 bot.color = config.color
+bot.colours = config.colours
+bot.developers = config.developers
 
 #SetUp
 @bot.event

@@ -15,12 +15,13 @@ async def setup(b):
     bot.add_command(clear)
 
 
-version = 'Essentials: Alfa'
+version = 'Essentials: Beta'
 ename = 'Essentials'
     
 @commands.command()
 async def ping(self, ctx):
-    await ctx.send('Pong')    
+    if ctx.author.id in bot.developers:
+        await ctx.send('Pong')    
 
 @commands.command()
 async def bye(self, ctx):
@@ -30,7 +31,7 @@ async def bye(self, ctx):
 
 @commands.command()
 async def reboot(ctx):
-    if ctx.author.id == bot.owner:
+    if ctx.author.id in bot.developers:
         await ctx.reply('Rebooting bot...')
         os.system('start /min bot.bat')
         exit()

@@ -8,6 +8,7 @@ async def setup(b):
     bot = b
     
     bot.add_command(ex)
+    bot.add_command(botvars)
 
 version = 'DeveloperTools: 1.1'
 ename = 'DeveloperTools'
@@ -23,3 +24,7 @@ async def ex(ctx, args = None):
         await ctx.send('Executed')
     except Exception as error:
         await ctx.send(f'**ERROR**: ```%s```' % error)
+
+@commands.command()
+async def botvars(ctx):
+    await ctx.send(f'```bot.owner => type:int(), the id of the owner of the bot\nbot.color => type:hex(), the default color for the bot embeds\nbot.colours => type:dict(hex()), a list of predefined colour codes\nbot.developers => type:list(), a list of developers that have the bot```')

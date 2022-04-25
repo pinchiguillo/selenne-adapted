@@ -12,7 +12,7 @@ async def setup(b):
 version = 'Default: 1.1'
 ename = 'Default'
 
-db_path = 'db/botnews.json'
+db_path = 'db/afkmanager.json'
 
 @commands.command()
 async def bn(ctx, args = None):

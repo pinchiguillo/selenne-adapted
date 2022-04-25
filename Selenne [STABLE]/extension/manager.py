@@ -13,7 +13,7 @@ ename = 'Extensions Manager'
 
 @commands.command()
 async def em(ctx, mode = None, *, args = 'manager'):
-    if ctx.author.id == bot.owner:
+    if ctx.author.id in bot.developers:
         help = '''- reload [extension] => Reloads the whole extension(if no args reloads Extension manager)
 - display => Displays all the active extensions
 - load [extension] => loads an extension

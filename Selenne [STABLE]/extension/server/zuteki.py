@@ -311,6 +311,8 @@ en adelante no recibirá más experiencia hasta el otro año. Total 40000 puntos
 
 @commands.Cog.listener()
 async def on_message(message):
+    if not message.guild:
+        return
     if message.guild.id == server_id and not message.author.bot:
         role = 962725878255714365
 

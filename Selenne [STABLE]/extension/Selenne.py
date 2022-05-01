@@ -50,8 +50,9 @@ async def on_message(message):
 
         #Detectar si es llamado el bot y eliminar su mencion de la str
         mentioned = f_lib.appear(bot_name, msg)
-
-        if mentioned and not message.author.bot or not message.guild and not message.author.bot:
+        
+        if mentioned and not message.author.bot:
+        #if mentioned and not message.author.bot or not message.guild and not message.author.bot:
             if msg in bot_name:
                 ans = [
                     f'Hola {message.author.display_name}, como estas?'
@@ -257,11 +258,15 @@ async def on_message(message):
                         f'Que quieres que cuente?'
                     ]
                     await ch.send(ans[random.randint(0, len(ans) - 1)])
+            elif 'sex' in msg:
+                await ch.send('No gracias')
+            elif 'pesada' in msg:
+                await message.reply(f'Pesado tu')
 
             #Exception:
             else:
                 await ch.send('Error al generar una respuesta. El mensaje ha sido guardado en la base de datos.')
-                with open('db/AIexceptions.log', 'a') as f:
+                with open('db/AIexceptions.log', 'a', encoding='utf-8') as f:
                     date = datetime.datetime.now()
                     try:
                         f.write(f'[{date}] \'{message.guild}\':{message.guild.id} ==> \'{message.author}\':{message.author.id}) >> {message.content}\n')

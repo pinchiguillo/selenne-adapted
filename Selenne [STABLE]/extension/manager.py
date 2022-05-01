@@ -8,7 +8,7 @@ async def setup(b):
     
     bot.add_command(em)
 
-version = 'ExtensionsManager: 2.1'
+version = 'ExtensionsManager: 2.2'
 ename = 'Extensions Manager'
 
 @commands.command()
@@ -27,38 +27,58 @@ async def em(ctx, mode = None, *, args = 'manager'):
             if args == 'manager':
                 name = 'Extension Manager'
             try:
+                #Reload the Extension
                 await bot.reload_extension(f'extension.{args}')
-                await ctx.send(f'**{name}** reloaded')
+                
+                #Display Msg
+                embed=discord.Embed(title = 'ExtensionsManager', description = f'**{name}** reloaded', color = bot.color)
+                await ctx.send(embed=embed)
 
             except Exception as error:
-                await ctx.send(f'Error while reloading **{name}**\n```{error}```')
+                embed=discord.Embed(title = 'ExtensionsManager', description = f'Error while reloading **{name}**\n```{error}```', color = bot.color)
+                await ctx.send(embed=embed)
+
         elif mode == 'display':
             ex = list(bot.extensions)
             extensions_list = ''            
             for extension in ex:
                 tmp = extension.removeprefix('extension.')
                 extensions_list += f'\n- {tmp}'
-            await ctx.send(f'```{extensions_list}```')
+            
+            embed=discord.Embed(title = 'ExtensionsManager', description = extensions_list, color = bot.color)
+            await ctx.send(embed=embed)
 
         elif mode == 'load':
             try:
+                #Load Extension
                 await bot.load_extension(f'extension.{args}')
-                await ctx.send(f'**{args}** loaded')
+                
+                #Dysplay Msg
+                embed=discord.Embed(title = 'ExtensionsManager', description = f'**{args}** loaded', color = bot.color)
+                await ctx.send(embed=embed)
             except Exception as error:
-                await ctx.send(f'Error while loading **{args}**\n```{error}```')
+                embed=discord.Embed(title = 'ExtensionsManager', description = f'Error while loading **{args}**\n```{error}```', color = bot.color)
+                await ctx.send(embed=embed)
 
         elif mode == 'unload':
             try:
+                #Unload Extension
                 await bot.unload_extension(f'extension.{args}')
-                await ctx.send(f'**{args}** unloaded')
+
+                #Dysplay msg
+                embed=discord.Embed(title = 'ExtensionsManager', description = f'**{args}** unloaded', color = bot.color)
+                await ctx.send(embed=embed)
             except Exception as error:
-                await ctx.send(f'Error while unloading **{args}**\n```{error}```')
+                embed=discord.Embed(title = 'ExtensionsManager', description = f'Error while unloading **{args}**\n```{error}```', color = bot.color)
+                await ctx.send(embed=embed)
 
         elif mode == 'help':
-            await ctx.send(f'```{help}```')
+            embed=discord.Embed(title = 'ExtensionsManager', description = help, color = bot.color)
+            await ctx.send(embed=embed)
 
         elif mode == 'v' or mode == 'version':
-            await ctx.send(f'Running **{version}**')
+            embed=discord.Embed(title = 'ExtensionsManager', description = f'Running **{version}**', color = bot.color)
+            await ctx.send(embed=embed)
 
         elif mode == 'startup':
             #Comprobar si exsite la extension
@@ -68,15 +88,22 @@ async def em(ctx, mode = None, *, args = 'manager'):
                 msg = ''
                 for extension in startup_list:
                     msg += '- ' + extension.removeprefix('extension.')
-                await ctx.send(f'```{msg}```')
+                
+                #Dysplay msg
+                embed=discord.Embed(title = 'ExtensionsManager', description = msg, color = bot.color)
+                await ctx.send(embed=embed)
             else:
                 try:
                     await bot.load_extension(f'extension.{args}')
                     with open(f'startup_extensions.cfg', 'a') as f:
                         f.write(f'extension.{args}\n')
-                    await ctx.send(f'**{args}** successfully added to startup')
+                    
+                    #Dysplay msg
+                    embed=discord.Embed(title = 'ExtensionsManager', description = f'**{args}** successfully added to startup', color = bot.color)
+                    await ctx.send(embed=embed)
                 except Exception as error:
-                    await ctx.send(f'**Unable to load extension**:\n```{error}```\nCheck if the extension is unloaded or if the extension loads via **s.em load**')
+                    embed=discord.Embed(title = 'ExtensionsManager', description = f'**Unable to load extension**:\n```{error}```\nCheck if the extension is unloaded or if the extension loads via **s.em load**', color = bot.color)
+                    await ctx.send(embed=embed)
 
         elif mode == 'removestartup':
             with open(f'startup_extensions.cfg', 'r') as f:
@@ -87,9 +114,14 @@ async def em(ctx, mode = None, *, args = 'manager'):
                 w = ' '.join([str(item) for item in startup_list])
                 with open(f'startup_extensions.cfg', 'w') as f:
                     f.write(w)
-                await ctx.send(f'**{args}** successfully removed from startup')
+                
+                #Dysplay msg
+                embed=discord.Embed(title = 'ExtensionsManager', description = f'**{args}** successfully removed from startup', color = bot.color)
+                await ctx.send(embed=embed)
             else:
-                await ctx.send(f'**{args}** Is not in the startup list')
+                embed=discord.Embed(title = 'ExtensionsManager', description = f'**{args}** Is not in the startup list', color = bot.color)
+                await ctx.send(embed=embed)
 
         else:
-            await ctx.send(f'Wrong Syntax\n```{help}```')
+            embed=discord.Embed(title = 'ExtensionsManager', description = f'Wrong Syntax\n```{help}```', color = bot.color)
+            await ctx.send(embed=embed)

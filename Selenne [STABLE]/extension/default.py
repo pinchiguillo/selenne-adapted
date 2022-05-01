@@ -33,3 +33,16 @@ async def on_message(message):
 @commands.command()
 async def ping(ctx):
     ctx.send('Pong')
+
+@commands.command()
+async def ex(ctx):
+    if ctx.author.id in bot.developers:
+        prt = None
+        try:
+            #
+
+            await ctx.send('**Done**')
+            if prt:
+                await ctx.send(f'```{prt}```')
+        except Exception as error:
+            await ctx.send(f'```{error}```')

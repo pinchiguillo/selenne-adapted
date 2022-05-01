@@ -8,3 +8,4 @@ owner = 000000000000000000
 color = 0xfe2a9b
 colours = {"green":0x00ff11,"yellow":0xfaff00,"red":0xff0000,"blue":0x00b3ff,"purple":0x8c00ff}
 developers = [owner, 55, 56, 85]
+sql = {'host': 'localhost','port': 3306,'user': 'Selenne','password': 'REDACTED_DB_PASSWORD','db': 'Selenne'}

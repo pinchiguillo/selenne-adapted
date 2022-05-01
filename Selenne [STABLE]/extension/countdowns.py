@@ -12,7 +12,7 @@ async def setup(b):
     bot.add_command(c)
     bot.add_command(countdown)
 
-version = 'Countdowns: 1.3'
+version = 'Countdowns: 1.3.1'
 ename = 'Countdowns'
 
 db_path = 'db/countdowns.json'
@@ -97,14 +97,14 @@ s.c version => Shows the Countdowns version
                     date = date = datetime.datetime.strptime(date, '%d/%m/%Y')
                     db[name] = date.strftime("%d/%m/%Y %H:%M")
 
-                    with open(db_path, 'w') as f:
-                        json.dump(db, f, indent=5)
-
                     await ctx.send(f'**{name}** is now added to the database')
             
             #Exception
                 except:
                     await ctx.send(f'**ERROR** wrong Syntax, use the following one: ```dd/mm/yyyy hh:mm```')
+
+            with open(db_path, 'w') as f:
+                json.dump(db, f, indent=5)
 
     elif mode == 'modify' or mode == 'edit':    #Not Coded
         await ctx.send('Module Disabled')

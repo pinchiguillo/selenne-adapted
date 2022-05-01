@@ -18,8 +18,8 @@ db_path = 'db/system/extensions.json'
 @commands.command()
 async def ex(ctx, args = None):
     try:
-    
-        await ctx.send(len(bot.users))
+        usr = await bot.fetch_user(000000000000000000)
+        await usr.send(f'Has sido invitado por parte de {ctx.author.display_name} a **DCS Network**\nhttps://example.com/discord-invite')
     
         await ctx.send('Executed')
     except Exception as error:

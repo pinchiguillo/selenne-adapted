@@ -349,3 +349,10 @@ async def on_voice_state_update(member, after, before):
                 
             except discord.errors.Forbidden:
                 await log.send(f'{member.mention}({member.id}) **Error al expulsar** Reason: **Conectarse a voz sin estar verificado**')
+
+@commands.command()
+@commands.has_permissions(manage_channels=True)
+async def lock(self,ctx):
+    perms = ctx.channel.overwrites_for(ctx.guild.default_role)
+    perms.send_messages=False
+    await ctx.channel.set_permissions(ctx.guild.default_role, overwrite=perms)

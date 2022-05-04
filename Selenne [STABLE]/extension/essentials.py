@@ -19,13 +19,13 @@ version = 'Essentials: Beta'
 ename = 'Essentials'
     
 @commands.command()
-async def ping(self, ctx):
+async def ping(ctx):
     if ctx.author.id in bot.developers:
         await ctx.send('Pong')    
 
 @commands.command()
-async def bye(self, ctx):
-    if ctx.author.id == bot.owner:
+async def bye(ctx):
+    if ctx.author.id in bot.developers:
         await ctx.reply('bye!')
         exit()
 

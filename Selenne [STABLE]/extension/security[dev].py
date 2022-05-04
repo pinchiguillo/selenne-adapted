@@ -27,4 +27,3 @@ async def login(self, ctx):
     embed=discord.Embed(title = 'Seguriad de DCS', description = 'Actualmente en Discord hay muchos bots que grifean servidores, por eso DCS trae proteccion a tu servidor!', color = 0xee00ff)
     embed.add_field(name = 'Log-In', value = f'Utiliza {prefix}login para entrar al servidor', inline=False)
     await ctx.send(embed=embed)
- 

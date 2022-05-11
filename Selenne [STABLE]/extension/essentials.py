@@ -37,7 +37,7 @@ async def reboot(ctx):
         exit()
 
 @commands.command()
-@commands.has_permissions(administrator=True)
+#@commands.has_permissions(administrator=True)
 async def echo(ctx, *, args):
     await ctx.send(args)
 

@@ -42,6 +42,7 @@ async def report(ctx, *, body):
         ch = await bot.fetch_channel(reportch)
         embed=discord.Embed(title = 'Nuevo Reporte', color = 0xfa0000)
         embed.add_field(name = 'Usuario:', value = f'{ctx.author.mention}({ctx.author.id})', inline=False)
+        embed.add_field(name = 'Contenido:', value = f'{body}', inline=False)
         await ch.send(embed=embed)
         await ctx.message.delete()
         await ctx.author.send('Tu reporte ha sido enviado con exito')

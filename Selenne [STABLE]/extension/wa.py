@@ -13,12 +13,13 @@ version = 'WA: PRE-ALFA'
 
 db_path = 'db/WA/'
 
-with open(db_path + 'classes.json', 'r') as f:
+with open(db_path + 'classes.json', 'r', encoding='utf-8') as f:
     classes = json.load(f)
 
 @commands.command()
 async def wa(ctx, cmd = 'help', *, args = None):
     #Check if the user has an account
+    await ctx.message.delete()
     try:
         with open(f'{db_path}/WA/users/{ctx.author.id}.usr', 'r') as f:
             file = f.read()

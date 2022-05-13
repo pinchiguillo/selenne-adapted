@@ -265,7 +265,7 @@ async def on_message(message):
 
             #Exception:
             else:
-                await ch.send('Error al generar una respuesta. El mensaje ha sido guardado en la base de datos.')
+                #await ch.send('Error al generar una respuesta. El mensaje ha sido guardado en la base de datos.')
                 with open('db/AIexceptions.log', 'a', encoding='utf-8') as f:
                     date = datetime.datetime.now()
                     try:

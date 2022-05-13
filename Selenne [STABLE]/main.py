@@ -1,7 +1,6 @@
 #Selenne Stable Version
 #By DCS Network
 
-from cog.addons import music_upd
 import discord
 from discord.ext import commands
 import json
@@ -47,8 +46,8 @@ async def setup_hook():
     #NEW GEN
     await bot.load_extension('extension.manager')
 
-    import cog.addons
-    await bot.add_cog(cog.addons.music_upd(bot)) #Update to extension needed
+    #import cog.addons
+    #await bot.add_cog(cog.addons.music_upd(bot)) #Update to extension needed
     
     with open('startup_extensions.cfg', 'r') as f:
         startup_extensions = f.readlines()

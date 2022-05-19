@@ -8,7 +8,7 @@ async def setup(b):
 
     bot.add_command(embed)
 
-version = 'EmbedGenerator: Beta'
+version = 'EmbedGenerator: 0.4'
 
 @commands.command()
 async def embed(ctx, args = None):
@@ -58,10 +58,10 @@ class EditorSelector(discord.ui.Select):
         options.append(discord.SelectOption(label = 'Body/Description'))
         
         options.append(discord.SelectOption(label = 'Add Field', description= 'Not in this Extension Version'))
-        options.append(discord.SelectOption(label = 'Url', description= 'Not in this Extension Version'))
-        options.append(discord.SelectOption(label = 'Icon', description= 'Not in this Extension Version'))
+        options.append(discord.SelectOption(label = 'Url'))
+        options.append(discord.SelectOption(label = 'Icon'))
         options.append(discord.SelectOption(label = 'Author', description= 'Not in this Extension Version'))
-        options.append(discord.SelectOption(label = 'Footer', description= 'Not in this Extension Version'))
+        options.append(discord.SelectOption(label = 'Footer'))
 
         super().__init__(placeholder='Edit', min_values=1, max_values=1, options=options)
 
@@ -73,10 +73,8 @@ class EditorSelector(discord.ui.Select):
                 return m.channel == interaction.channel
             
             try:
-                print('AWAIT MESSAGE')
                 reply = await bot.wait_for('message', timeout=60.0, check=check)
                 await reply.delete()
-                print(reply)
                 bot.embed.title = reply.content
                 await bot.embed_m.edit(embed=bot.embed)
                 
@@ -92,11 +90,55 @@ class EditorSelector(discord.ui.Select):
                 return m.channel == interaction.channel
             
             try:
-                print('AWAIT MESSAGE')
                 reply = await bot.wait_for('message', timeout=60.0, check=check)
                 await reply.delete()
-                print(reply)
                 bot.embed.description = reply.content
+                await bot.embed_m.edit(embed=bot.embed)
+                
+            except asyncio.TimeoutError:
+                await interaction.response.send_message('Has tardado demasiado en mandar el mensaje')
+        
+        if self.values[0] == 'Url':
+            await interaction.response.send_message('Type a message with the URL', ephemeral=True)
+            def check(m):
+                return m.channel == interaction.channel
+            
+            try:
+                reply = await bot.wait_for('message', timeout=60.0, check=check)
+                await reply.delete()
+                if not 'http' in reply.content:
+                    await interaction.response.send_message('That is not an URL', ephemeral=True)
+                bot.embed.url = reply.content
+                await bot.embed_m.edit(embed=bot.embed)
+                
+            except asyncio.TimeoutError:
+                await interaction.response.send_message('Has tardado demasiado en mandar el mensaje')
+
+        if self.values[0] == 'Icon':
+            await interaction.response.send_message('Type a message with the icon URL', ephemeral=True)
+            def check(m):
+                return m.channel == interaction.channel
+            
+            try:
+                reply = await bot.wait_for('message', timeout=60.0, check=check)
+                await reply.delete()
+                if not 'http' in reply.content:
+                    await interaction.response.send_message('That is not an URL', ephemeral=True)
+                bot.embed.set_thumbnail(url = reply.content)
+                await bot.embed_m.edit(embed=bot.embed)
+                
+            except asyncio.TimeoutError:
+                await interaction.response.send_message('Has tardado demasiado en mandar el mensaje')
+
+        if self.values[0] == 'Footer':
+            await interaction.response.send_message('Type a message with Author', ephemeral=True)
+            def check(m):
+                return m.channel == interaction.channel
+            
+            try:
+                reply = await bot.wait_for('message', timeout=60.0, check=check)
+                await reply.delete()
+                bot.embed.set_footer(text = reply.content)
                 await bot.embed_m.edit(embed=bot.embed)
                 
             except asyncio.TimeoutError:

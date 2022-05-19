@@ -1,7 +1,7 @@
 import discord
 TOCKEN = 'REDACTED_DISCORD_TOKEN'
 PREFIX = 's.'
-version = 'Selenne 4.8'
+version = 'Selenne 4.8.4'
 activity = 'DCS'
 status = discord.Status.do_not_disturb
 owner = 000000000000000000

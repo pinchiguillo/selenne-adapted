@@ -8,7 +8,7 @@ async def setup(b):
 
     bot.add_command(embed)
 
-version = 'EmbedGenerator: 0.4'
+version = 'EmbedGenerator: 1.0'
 
 @commands.command()
 async def embed(ctx, args = None):
@@ -144,6 +144,9 @@ class EditorSelector(discord.ui.Select):
             except asyncio.TimeoutError:
                 await interaction.response.send_message('Has tardado demasiado en mandar el mensaje')
 
+        if self.values[0] == 'Add Field':
+            await interaction.response.send_message(view=FieldView(), ephemeral=True)
+
         else:
             await interaction.response.send_message('Not in this Extension Version', ephemeral=True)
 
@@ -181,3 +184,46 @@ class ColourView(discord.ui.View):
 
         # Adds the dropdown to our view object.
         self.add_item(ColourSelector())
+
+#Field
+class FieldCreator(discord.ui.Select):
+    def __init__(self):
+        
+        options = []
+
+        options.append(discord.SelectOption(label = 'Title', description = 'Must be filled'))
+        options.append(discord.SelectOption(label = 'Body', description = 'Must be filled'))
+
+        super().__init__(placeholder='Colours', min_values=1, max_values=1, options=options)
+        bot.embed_field = {'Title': None, 'Body': None}
+    
+    async def callback(self, interaction: discord.Interaction):
+        await interaction.response.send_message(f'Type the {self.values[0]}', ephemeral=True)
+        def check(m):
+            return m.channel == interaction.channel
+            
+        try:
+            reply = await bot.wait_for('message', timeout=60.0, check=check)
+            await reply.delete()
+        except asyncio.TimeoutError:
+                await interaction.response.send_message('Has tardado demasiado en mandar el mensaje')
+
+        bot.embed_field[self.values[0]] = reply.content
+        
+class FieldView(discord.ui.View):
+    def __init__(self):
+        super().__init__()
+
+        # Adds the dropdown to our view object.
+        self.add_item(ColourSelector())
+
+        #Save Button
+        save_btn = discord.ui.Button(label = 'Add Field', style=discord.ButtonStyle.blurple)
+        
+        async def save_f(interaction):
+            embed.add_field(name = bot.embed_field['Title'], value = bot.embed_field['Body'], inline=False)
+            await bot.embed_m.edit(embed=bot.embed)
+
+        save_btn.callback = save_f
+        
+        self.add_item(save_btn)

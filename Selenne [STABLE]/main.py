@@ -7,8 +7,12 @@ import json
 import asyncio
 
 #Internal
-import dcs.bot
 import config
+
+#Logging System
+import logging
+logging.basicConfig(filename='bot.log', filemode='w', encoding = 'utf8', format='[%(asctime)s] %(levelname)s: %(message)s', datefmt='%d-%m-%Y %H:%M:%S', level=logging.DEBUG)
+
 
 class Selenne(commands.Bot):
     def __init__(self):
@@ -22,29 +26,45 @@ class Selenne(commands.Bot):
             )
 
     async def on_ready(self):
+        logging.info(f'Logged in as {self.user} (ID: {self.user.id})')
         print(f'Logged in as {self.user} (ID: {self.user.id})')
         print('------')
-        self.pid = await self.fetch_user(000000000000000000)
-        m = await self.pid.send('Ya vuelvo a estar conectada')
-        await asyncio.sleep(5)
-        await m.delete()
+        try:
+            self.pid = await self.fetch_user(000000000000000000)
+        except: logging.warning('Error while fetching owner')
+        try:
+            m = await self.pid.send('Ya vuelvo a estar conectada')
+            await asyncio.sleep(5)
+            await m.delete()
+        except: logging.warning('Error while sending message to owner')
 
 bot = Selenne()
 bot.remove_command('help')
 
 #Universal Vars
+bot.version = config.version
 bot.nullchar = '\u200b'
 bot.owner = config.owner
 bot.color = config.color
 bot.colours = config.colours
 bot.developers = config.developers
 
+#Check if works
+bot.log = logging
+
 #SetUp
 @bot.event
 async def setup_hook():
     
-    #NEW GEN
-    await bot.load_extension('extension.manager')
+    #Save Old Log
+    with open('bot.log', 'r') as f: oldlog = f.read()
+    with open('db/old_logs.log', 'a') as f: f.write(oldlog)
+    
+    #Load Extensions Manager
+    try:
+        await bot.load_extension('extension.manager')
+        logging.info('Extensions Manager Loaded')
+    except: logging.critical('Error while loading Extensions Manager')
 
     #import cog.addons
     #await bot.add_cog(cog.addons.music_upd(bot)) #Update to extension needed
@@ -53,11 +73,18 @@ async def setup_hook():
         startup_extensions = f.readlines()
         for extension in startup_extensions:
             l = extension.removesuffix('\n')
-            await bot.load_extension(f'{l}')
+            try:
+                await bot.load_extension(f'{l}')
+                logging.info(f'{extension} loaded')
+            except Exception as error:
+                logging.error(f'{extension} failed to load: {error}')
+
+        logging.log()
     
 
     #Reload Buttons
     pass
 
 #Run
+logging.info('Bot start')
 bot.run(config.TOCKEN)

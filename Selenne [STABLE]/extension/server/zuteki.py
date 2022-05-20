@@ -8,6 +8,7 @@ from discord.permissions import permission_alias
 async def setup(b):
     global bot
     bot = b
+    bot.log.info(f'{__name__} loaded')
 
     bot.add_command(anounce)
     bot.add_command(report)
@@ -16,6 +17,9 @@ async def setup(b):
 
     bot.add_listener(on_message)
     bot.add_listener(on_voice_state_update)
+    
+def teardown(bot):
+    bot.log.info(f'{__name__} unloaded')
 
 server_id = 959659781960917002
 

@@ -6,13 +6,16 @@ import asyncio
 async def setup(b):
     global bot
     bot = b
-    
+    bot.log.info(f'extension.{version.lower()} loaded')
 
     bot.add_command(dcs)
     bot.add_command(picklib)
 
     bot.add_listener(on_message)
     bot.add_listener(on_member_join)
+
+def teardown(bot):
+    bot.log.info(f'extension.{version.lower()} unloaded')
 
 version = 'DCS: Alfa'
 ename = 'DCS API'

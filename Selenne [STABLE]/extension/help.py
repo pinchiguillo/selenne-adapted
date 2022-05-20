@@ -4,6 +4,7 @@ from discord.ext import commands
 async def setup(b):
     global bot
     bot = b
+    bot.log.info(f'extension.{version.lower()} loaded')
 
     bot.add_command(help)
     bot.add_command(adminhelp)
@@ -11,6 +12,9 @@ async def setup(b):
 
     global helpembed
     helpembed = discord.Embed(title = 'Help - Selenne', color = bot.color)
+
+def teardown(bot):
+    bot.log.info(f'extension.{version.lower()} unloaded')
 
 version = 'Help: Alfa'
 ename = 'Help'

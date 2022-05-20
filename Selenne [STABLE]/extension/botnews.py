@@ -6,10 +6,14 @@ import json
 async def setup(b):
     global bot
     bot = b
+    bot.log.info(f'extension.{version.lower()} loaded')
     
     bot.add_command(bn)
 
-version = 'Default: 1.1'
+def teardown(bot):
+    bot.log.info(f'extension.{version.lower()} unloaded')
+
+version = 'BotNews: 1.1'
 ename = 'Default'
 
 db_path = 'db/afkmanager.json'

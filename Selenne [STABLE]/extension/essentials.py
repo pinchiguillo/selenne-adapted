@@ -7,7 +7,8 @@ import json
 async def setup(b):
     global bot
     bot = b
-    
+    bot.log.info(f'extension.{version.lower()} loaded')
+
     bot.add_command(ping)
     bot.add_command(bye)
     bot.add_command(reboot)
@@ -15,8 +16,10 @@ async def setup(b):
     bot.add_command(invite)
     bot.add_command(clear)
 
+def teardown(bot):
+    bot.log.info(f'extension.{version.lower()} unloaded')
 
-version = 'Essentials: Beta'
+version = 'Essentials: 1.2'
 ename = 'Essentials'
     
 @commands.command()
@@ -28,14 +31,16 @@ async def ping(ctx):
 async def bye(ctx):
     if ctx.author.id in bot.developers:
         await ctx.reply('bye!')
-        exit()
+        bot.log.critical(f'{ctx.author.display_name}({ctx.author.id}) Stoped the bot the bot')
+        await bot.close()
 
 @commands.command()
 async def reboot(ctx):
     if ctx.author.id in bot.developers:
         await ctx.reply('Rebooting bot...')
         os.system('start /min bot.bat')
-        exit()
+        bot.log.critical(f'{ctx.author.display_name}({ctx.author.id}) Rebooted the bot the bot')
+        await bot.close()
 
 @commands.command()
 #@commands.has_permissions(administrator=True)

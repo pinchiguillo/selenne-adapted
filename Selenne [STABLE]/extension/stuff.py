@@ -4,9 +4,13 @@ from discord.ext import commands
 async def setup(b):
     global bot
     bot = b
+    bot.log.warning(f'{__name__} outdated')
 
 
     bot.add_command(countdown_date_to_be_reached_in_days_hours_minutes_and_seconds_Made_by_Pinchiguillo)
+
+def teardown(bot):
+    bot.log.info(f'{__name__} unloaded')
 
 @commands.command()
 async def sao(ctx):

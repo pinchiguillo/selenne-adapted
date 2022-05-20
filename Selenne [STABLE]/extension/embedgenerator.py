@@ -5,8 +5,11 @@ import asyncio
 async def setup(b):
     global bot
     bot = b
-
+    bot.log.info(f'extension.{version.lower()} loaded')
     bot.add_command(embed)
+
+def teardown(bot):
+    bot.log.info(f'extension.{version.lower()} unloaded')
 
 version = 'EmbedGenerator: 1.0'
 
@@ -41,7 +44,7 @@ async def embed(ctx, args = None):
     save_btn.callback = save_f
     del_btn.callback = del_f
 
-    bot.view = discord.ui.View()
+    bot.view = discord.ui.View(timeout = 600)
     bot.view.add_item(edit_btn)
     bot.view.add_item(save_btn)
     bot.view.add_item(del_btn)
@@ -154,6 +157,7 @@ class EditorView(discord.ui.View):
     def __init__(self):
         super().__init__()
 
+        self.timeout = 600
         # Adds the dropdown to our view object.
         self.add_item(EditorSelector())
 
@@ -194,7 +198,7 @@ class FieldCreator(discord.ui.Select):
         options.append(discord.SelectOption(label = 'Title', description = 'Must be filled'))
         options.append(discord.SelectOption(label = 'Body', description = 'Must be filled'))
 
-        super().__init__(placeholder='Colours', min_values=1, max_values=1, options=options)
+        super().__init__(placeholder='Options', min_values=1, max_values=1, options=options)
         bot.embed_field = {'Title': None, 'Body': None}
     
     async def callback(self, interaction: discord.Interaction):
@@ -215,13 +219,13 @@ class FieldView(discord.ui.View):
         super().__init__()
 
         # Adds the dropdown to our view object.
-        self.add_item(ColourSelector())
+        self.add_item(FieldCreator())
 
         #Save Button
         save_btn = discord.ui.Button(label = 'Add Field', style=discord.ButtonStyle.blurple)
         
         async def save_f(interaction):
-            embed.add_field(name = bot.embed_field['Title'], value = bot.embed_field['Body'], inline=False)
+            bot.embed.add_field(name = bot.embed_field['Title'], value = bot.embed_field['Body'], inline=False)
             await bot.embed_m.edit(embed=bot.embed)
 
         save_btn.callback = save_f

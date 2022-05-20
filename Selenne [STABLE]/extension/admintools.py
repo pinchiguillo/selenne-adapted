@@ -5,6 +5,7 @@ import re
 async def setup(b):
     global bot
     bot = b
+    bot.log.info(f'extension.{version.lower()} loaded')
 
     bot.add_command(at)
 
@@ -14,6 +15,8 @@ async def setup(b):
 
     bot.add_command(mute_)
 
+def teardown(bot):
+    bot.log.info(f'extension.{version.lower()} unloaded')
 
 version = 'AdminTools: Alfa'
 ename = 'AdminTools'

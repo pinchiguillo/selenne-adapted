@@ -8,9 +8,13 @@ import  asyncio
 async def setup(b):
     global bot
     bot = b
+    bot.log.info(f'extension.{version.lower()} loaded')
 
     bot.add_command(c)
     bot.add_command(countdown)
+
+def teardown(bot):
+    bot.log.info(f'extension.{version.lower()} unloaded')
 
 version = 'Countdowns: 1.3.1'
 ename = 'Countdowns'

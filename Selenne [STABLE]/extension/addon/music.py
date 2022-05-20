@@ -6,7 +6,11 @@ from youtube_dl import YoutubeDL
 
 async def setup(bot):
     
+    bot.log.info(f'extension.{version.lower()} loaded')
     bot.add_cog(music_upd(bot))
+
+def teardown(bot):
+    bot.log.info(f'extension.{version.lower()} unloaded')
 
 version = 'Music: 2.7'
 ename = 'Music'

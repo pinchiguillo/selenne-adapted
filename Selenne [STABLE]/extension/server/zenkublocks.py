@@ -6,12 +6,16 @@ import asyncio
 async def setup(b):
     global bot
     bot = b
+    bot.log.info(f'{__name__} loaded')
 
     bot.add_command(online)
     bot.add_command(news_embed)
     bot.add_command(news_text)
     bot.add_command(survey)
     bot.add_command(news)
+
+def teardown(bot):
+    bot.log.info(f'{__name__} unloaded')
 
 server_id = 839310820755243018
 

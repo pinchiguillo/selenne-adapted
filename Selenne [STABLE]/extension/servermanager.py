@@ -6,8 +6,12 @@ import json
 async def setup(b):
     global bot
     bot = b
-
+    bot.log.info(f'extension.{version.lower()} loaded')
+    
     bot.add_command(config)
+
+def teardown(bot):
+    bot.log.info(f'extension.{version.lower()} unloaded')
 
 version = 'ServerManager:Afla'
 db_path = 'db/system/servers.json'

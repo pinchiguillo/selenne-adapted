@@ -10,8 +10,10 @@ import asyncio
 import config
 
 #Logging System
+with open('bot.log', 'r') as f: oldlog = f.read()
+with open('db/old_logs.log', 'a') as f: f.write(oldlog)
 import logging
-logging.basicConfig(filename='bot.log', filemode='w', encoding = 'utf8', format='[%(asctime)s] %(levelname)s: %(message)s', datefmt='%d-%m-%Y %H:%M:%S', level=logging.INFO)
+logging.basicConfig(filename='bot.log', filemode='w', encoding = 'utf8', format='[%(asctime)s] %(levelname)s: %(message)s', datefmt='%d-%m-%Y %H:%M:%S', level=config.log)
 
 
 class Selenne(commands.Bot):
@@ -56,18 +58,18 @@ bot.log = logging
 @bot.event
 async def setup_hook():
     
-    #Save Old Log
-    with open('bot.log', 'r') as f: oldlog = f.read()
-    with open('db/old_logs.log', 'a') as f: f.write(oldlog)
-    
     #Load Extensions Manager
     try:
         await bot.load_extension('extension.manager')
-        logging.info('Extensions Manager Loaded')
-    except: logging.critical('Error while loading Extensions Manager')
+    except: 
+        logging.critical('Error while loading Extensions Manager')
+        await bot.stop()
 
-    #import cog.addons
-    #await bot.add_cog(cog.addons.music_upd(bot)) #Update to extension needed
+    try:
+        import cog.addons
+        await bot.add_cog(cog.addons.music_upd(bot)) #Update to extension needed
+        logging.info('cog.addons.music_upd loaded')
+    except Exception as error: logging.warning(f'cog.addons failed while loading Error: {error}')
     
     with open('startup_extensions.cfg', 'r') as f:
         startup_extensions = f.readlines()
@@ -75,11 +77,8 @@ async def setup_hook():
             l = extension.removesuffix('\n')
             try:
                 await bot.load_extension(f'{l}')
-                logging.info(f'{extension} loaded')
             except Exception as error:
-                logging.error(f'{extension} failed to load: {error}')
-
-        logging.log()
+                logging.error(f'{l} failed to load: {error}')
     
 
     #Reload Buttons

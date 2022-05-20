@@ -7,8 +7,12 @@ import datetime
 async def setup(b):
     global bot
     bot = b
+    bot.log.info(f'extension.{version.lower()} loaded')
     
     bot.add_listener(on_message)
+
+def teardown(bot):
+    bot.log.info(f'extension.{version.lower()} unloaded')
 
 version = 'DoNotDisturb: 1.0'
 ename = 'Do Not Disturb'

@@ -7,9 +7,12 @@ import asyncio
 async def setup(b):
     global bot
     bot = b
-
+    bot.log.info(f'extension.{version.lower()} loaded')
 
     bot.add_command(tl)
+
+def teardown(bot):
+    bot.log.info(f'extension.{version.lower()} unloaded')
 
 version = 'MyTierList: 1.0'
 ename = 'MyTierList'

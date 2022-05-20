@@ -5,10 +5,14 @@ from discord.ext import commands
 async def setup(b):
     global bot
     bot = b
-    
+    bot.log.info(f'{version.lower()} loaded')
+
     bot.add_command(em)
 
-version = 'ExtensionsManager: 2.2.2'
+def teardown(bot):
+    bot.log.info(f'{version.lower()} unloaded')
+
+version = 'Extensions.Manager: 2.2.2'
 ename = 'Extensions Manager'
 
 @commands.command()

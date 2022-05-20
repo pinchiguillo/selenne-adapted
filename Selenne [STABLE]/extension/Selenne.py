@@ -9,10 +9,14 @@ from dcs.functions import f_lib
 async def setup(b):
     global bot
     bot = b
+    bot.log.info(f'selenne.AI loaded: Version: {ai_version}')
 
     bot.add_listener(on_message)
 
     bot.add_command(ai)
+
+def teardown(bot):
+    bot.log.info(f'selenne.AI unloaded')
 
 ai_version = 'Alfa:1'
 

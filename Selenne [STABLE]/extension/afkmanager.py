@@ -7,11 +7,14 @@ import datetime
 async def setup(b):
     global bot
     bot = b
+    bot.log.info(f'extension.{version.lower()} loaded')
     
     bot.add_listener(on_message)
     bot.add_command(afkm)
     bot.add_listener(on_member_join)
 
+def teardown(bot):
+    bot.log.info(f'extension.{version.lower()} unloaded')
 
 version = 'AFKManager: Beta'
 ename = 'Default'

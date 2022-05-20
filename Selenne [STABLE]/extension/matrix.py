@@ -4,9 +4,12 @@ from discord.ext import commands
 async def setup(b):
     global bot
     bot = b
-    
+    bot.log.info(f'extension.{version.lower()} loaded')
 
     bot.add_command(matrix)
+
+def teardown(bot):
+    bot.log.info(f'extension.{version.lower()} unloaded')
 
 version = 'Matrix: Pre-Alfa'
 ename = 'Matrix'

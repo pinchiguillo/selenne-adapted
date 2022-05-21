@@ -110,9 +110,11 @@ async def em(ctx, mode = None, *, args = 'manager'):
                     #Dysplay msg
                     embed.description = f'**{args}** successfully added to startup'
                     await ctx.send(embed=embed)
+                    bot.log.info(f'extension.{args} added to startup')
                 except Exception as error:
                     embed.description = f'**Unable to load extension**:\n```{error}```\nCheck if the extension is unloaded or if the extension loads via **s.em load**'
                     await ctx.send(embed=embed)
+                    bot.log.error(f'while adding extension.{args} to startup ERROR: {error}')
 
         elif mode == 'removestartup':
             with open(f'startup_extensions.cfg', 'r') as f:
@@ -127,6 +129,7 @@ async def em(ctx, mode = None, *, args = 'manager'):
                 #Dysplay msg
                 embed.description = f'**{args}** successfully removed from startup'
                 await ctx.send(embed=embed)
+                bot.log.info(f'extension.{args} removed from startup')
             else:
                 embed.description = f'**{args}** Is not in the startup list'
                 await ctx.send(embed=embed)

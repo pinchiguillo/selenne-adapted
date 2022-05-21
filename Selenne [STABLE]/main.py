@@ -64,12 +64,6 @@ async def setup_hook():
     except: 
         logging.critical('Error while loading Extensions Manager')
         await bot.stop()
-
-    try:
-        import cog.addons
-        await bot.add_cog(cog.addons.music_upd(bot)) #Update to extension needed
-        logging.info('cog.addons.music_upd loaded')
-    except Exception as error: logging.warning(f'cog.addons failed while loading Error: {error}')
     
     with open('startup_extensions.cfg', 'r') as f:
         startup_extensions = f.readlines()

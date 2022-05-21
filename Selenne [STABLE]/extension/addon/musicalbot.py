@@ -9,18 +9,18 @@ async def setup(b):
     bot = b
     bot.log.info(f'extension.{version.lower()} loaded')
 
-    bot.add_cog(music_upd(bot))
+    await bot.add_cog(music_upd(bot))
 
 def teardown(bot):
     bot.log.info(f'extension.{version.lower()} unloaded')
 
-version = 'MusicalBot: 2.1'
+version = 'MusicalBot: 3.1.2'
 ename = 'MusicalBot'
 
 class music_upd(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    
+        
         #all the music related stuff
         self.is_playing = False
 
@@ -75,32 +75,33 @@ class music_upd(commands.Cog):
 
             self.vc.play(discord.FFmpegPCMAudio(m_url, **self.FFMPEG_OPTIONS), after=lambda e: self.play_next())
         else:
-            self.is_playing = False
-            await asyncio.sleep(15)
-            await self.vc.disconnect()
+            await self.check_leave()
     
     async def check_leave(self):
+        await asyncio.sleep(5)
         while self.is_playing:
-            await asyncio.sleep(10)
-            if self.is_playing == False:
+            await asyncio.sleep(5)
+            if not self.is_playing:
                 await self.vc.disconnect()
+            await asyncio.sleep(5)
 
     #NEW CMD
     @commands.command()
     async def m(self, ctx, mode = None, *args):
+        await ctx.message.delete()
         if mode == 'p':
             query = " ".join(args)
             
             voice_channel = ctx.author.voice.channel
             if voice_channel is None:
                 #you need to be connected so that the bot knows where to go
-                await ctx.send("Selenne se ha conectado al canal de voz")
+                await ctx.send("Tienes que estar conectado a un canal de voz", delete_after = 5)
             else:
                 song = self.search_yt(query)
                 if type(song) == type(True):
-                    await ctx.send("No se pudo descargar la canción. Formato incorrecto pruebe con otra palabra clave. Esto podría deberse a una lista de reproducción o un formato de transmisión en vivo.")
+                    await ctx.send("No se pudo descargar la canción. Formato incorrecto pruebe con otra palabra clave. Esto podría deberse a una lista de reproducción o un formato de transmisión en vivo.", delete_after = 5)
                 else:
-                    await ctx.send("Canción añadida a la cola")
+                    await ctx.send("Canción añadida a la cola", delete_after = 5)
                     self.music_queue.append([song, voice_channel])
                     
                     if self.is_playing == False:
@@ -119,10 +120,11 @@ class music_upd(commands.Cog):
         elif mode == 's':
             if self.vc != "" and self.vc:
                 self.vc.stop()
+                await asyncio.sleep(1)
                 #try to play next in the queue if it exists
                 await self.play_music()
         elif mode == 'l':
-            if self.is_playing == False:
+            if not self.is_playing or ctx.user.id in bot.developers:
                 await self.vc.disconnect()
         else:
             h = '''```s.m p [youtube link]``` Pone musica desde youtube, tambien pueden ser playlists publicas\n```s.m q```Muestra la cola de canciones\n```s.m s```Salta la cancion que esta sonando\n```s.m l```Selenne abandona el canal de voz de manera forzada'''

@@ -34,3 +34,8 @@ async def developerhelp(ctx, args = None):
     helpembed.add_field(name = '```s.reboot```', value = 'Reboots the whole bot')
 
     await ctx.send(embed=helpembed)
+
+
+
+#Developers help: 
+'https://gist.github.com/Painezor/eb2519022cd2c907b56624105f94b190'

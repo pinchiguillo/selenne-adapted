@@ -9,6 +9,23 @@ async def setup(b):
     bot = b
     bot.log.info(f'extension.{version.lower()} loaded')
 
+    global extension_help
+    
+    extension_help = {
+        'general_display': 'use **s.help Essentials** for more info',
+        'specific_display': {
+            's.ping': 'Makes Selenne send a message back (Only Developers)',
+            's.bye': 'Shutdowns Selenne (Only Onwer)',
+            's.reboot': 'Reboots Selenne (Only Developers)',
+            's.echo [message]': 'Makes Selenne send the message back (Only Administrators)',
+            's.invite [link]': 'Sends a saved invitation, if a link is given saves that link as the server invitation (Saving only for Administrators)',
+            's.clear [amount]': 'Deletes an especific amount of messages, by default 10000 (Only Administrators)'
+            }
+        }
+
+    add_help()
+
+    #ADD CMD
     bot.add_command(ping)
     bot.add_command(bye)
     bot.add_command(reboot)
@@ -16,12 +33,28 @@ async def setup(b):
     bot.add_command(invite)
     bot.add_command(clear)
 
+
 def teardown(bot):
     bot.log.info(f'extension.{version.lower()} unloaded')
+    remove_help()
 
 version = 'Essentials: 1.2'
 ename = 'Essentials'
-    
+
+#HELP
+def add_help():
+    with open('db/system/help.json', 'r') as f:
+        help_list = json.load(f)
+    help_list[ename] = extension_help
+    with open('db/system/help.json', 'w', encoding='utf-8') as f:
+        json.dump(help_list, f, indent=5)
+def remove_help():
+    with open('db/system/help.json', 'r') as f:
+        help_list = json.load(f)
+    del help_list[ename]
+    with open('db/system/help.json', 'w', encoding='utf-8') as f:
+        json.dump(help_list, f, indent=5)
+
 @commands.command()
 async def ping(ctx):
     if ctx.author.id in bot.developers:
@@ -43,7 +76,7 @@ async def reboot(ctx):
         await bot.close()
 
 @commands.command()
-#@commands.has_permissions(administrator=True)
+@commands.has_permissions(administrator=True)
 async def echo(ctx, *, args):
     await ctx.send(args)
 

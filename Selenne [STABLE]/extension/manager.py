@@ -8,16 +8,18 @@ async def setup(b):
     bot.log.info(f'{version.lower()} loaded')
 
     bot.add_command(em)
+    bot.last_load = None
 
 def teardown(bot):
     bot.log.info(f'{version.lower()} unloaded')
 
-version = 'Extensions.Manager: 2.2.2'
+version = 'Extensions.Manager: 2.3.2'
 ename = 'Extensions Manager'
 
 @commands.command()
 async def em(ctx, mode = None, *, args = 'manager'):
     if ctx.author.id in bot.developers:
+        if mode in ['reload', 'load', 'unload', 'startup', 'removestartup']: bot.log.info(f'{ctx.author.display_name}({ctx.author.id}) used s.em {mode} {args}')
         embed = embed=discord.Embed(title = 'Extensions Manager', color=bot.color)
         help = '''- reload [extension] => Reloads the whole extension(if no args reloads Extension manager)
 - display => Displays all the active extensions
@@ -31,6 +33,12 @@ async def em(ctx, mode = None, *, args = 'manager'):
             name = args
             if args == 'manager':
                 name = 'Extension Manager'
+            elif args == 'last' or args == '-l' or args == 'l':
+                if bot.last_load:
+                    args = bot.last_load
+                    name = bot.last_load
+                else:
+                    embed.description = 'No last load saved'
             try:
                 #Reload the Extension
                 await bot.reload_extension(f'extension.{args}')
@@ -38,6 +46,7 @@ async def em(ctx, mode = None, *, args = 'manager'):
                 #Display Msg
                 embed.description = f'**{name}** reloaded'
                 await ctx.send(embed=embed)
+                bot.last_load = args
 
             except Exception as error:
                 embed.description = f'Error while reloading **{name}**\n```{error}```'
@@ -61,6 +70,7 @@ async def em(ctx, mode = None, *, args = 'manager'):
                 #Dysplay Msg
                 embed.description = f'**{args}** loaded'
                 await ctx.send(embed=embed)
+                bot.last_load = args
             except Exception as error:
                 embed.description = f'Error while loading **{args}**\n```{error}```'
                 await ctx.send(embed=embed)

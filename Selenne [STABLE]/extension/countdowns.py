@@ -10,16 +10,49 @@ async def setup(b):
     bot = b
     bot.log.info(f'extension.{version.lower()} loaded')
 
+    global extension_help
+    
+    extension_help = {
+        'general_display': '*s.countdown* or *s.c*',
+        'specific_display': {
+            's.c': 'Displays the Countdowns Table',
+            's.c display': 'Displays the Countdowns Table',
+            's.c add': 'Adds a new Countdown (**ALFA**)',
+            's.c modify': 'Modifyes a Countdown (**ALFA**)',
+            's.c delete': 'Deletes a Countdown (**ALFA**)',
+            's.c version': 'Displays Countdown Version'
+            }
+        }
+
+    add_help()
+
+    #ADD CMD
     bot.add_command(c)
     bot.add_command(countdown)
 
 def teardown(bot):
     bot.log.info(f'extension.{version.lower()} unloaded')
+    remove_help()
 
 version = 'Countdowns: 1.3.1'
 ename = 'Countdowns'
 
 db_path = 'db/countdowns.json'
+
+#HELP
+def add_help():
+    with open('db/system/help.json', 'r') as f:
+        help_list = json.load(f)
+    help_list[ename] = extension_help
+    with open('db/system/help.json', 'w', encoding='utf-8') as f:
+        json.dump(help_list, f, indent=5)
+def remove_help():
+    with open('db/system/help.json', 'r') as f:
+        help_list = json.load(f)
+    del help_list[ename]
+    with open('db/system/help.json', 'w', encoding='utf-8') as f:
+        json.dump(help_list, f, indent=5)
+
 
 @commands.command()
 async def c(ctx, mode = 'display', name = None, *, date = None):

@@ -19,7 +19,6 @@ async def setup(b):
     add_help()
 
     #ADD CMD
-    bot.add_listener(on_message)
 
     bot.add_command(extension)
 
@@ -27,10 +26,10 @@ def teardown(bot):
     bot.log.info(f'extension.{version.lower()} unloaded')
     remove_help()
 
-version = 'Default: 1.1'
-ename = 'Default'
+version = 'AntiRaid: Alfa'
+ename = 'Anti Raid'
 
-db_path = 'db/'
+db_path = 'db/antiraid.json'
 
 #HELP
 def add_help():
@@ -68,22 +67,30 @@ async def extension(ctx, args = None):
         await ctx.send('**YOU DONT HAVE PERMISSIONS TO DO THIS**')
 
 @commands.Cog.listener()
-async def on_message(message):
-    print(message.content)
+async def on_guild_update(before, after):
+    db = load_db()
+@commands.Cog.listener()
+async def on_guild_role_create(role):pass
+@commands.Cog.listener()
+async def on_guild_role_delete(role):pass
+@commands.Cog.listener()
+async def on_guild_role_update(before, after):pass
+@commands.Cog.listener()
+async def on_guild_channel_delete(channel):pass
+@commands.Cog.listener()
+async def on_guild_channel_create(channel):pass
+@commands.Cog.listener()
+async def on_guild_channel_update(before, after):pass
 
-@commands.command()
-async def ping(ctx):
-    ctx.send('Pong')
 
-@commands.command()
-async def ex(ctx):
-    if ctx.author.id in bot.developers:
-        prt = None
-        try:
-            #
+async def antiraid_core():
+    pass
 
-            await ctx.send('**Done**')
-            if prt:
-                await ctx.send(f'```{prt}```')
-        except Exception as error:
-            await ctx.send(f'```{error}```')
+h = {
+    "Extension":{
+        "general_display": "cmd",
+        "specific_display": {
+            "cmd": "use"
+        }
+    }
+}

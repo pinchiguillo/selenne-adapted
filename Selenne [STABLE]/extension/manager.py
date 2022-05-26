@@ -1,4 +1,5 @@
 from re import A
+from tracemalloc import Traceback
 import discord
 from discord.ext import commands
 
@@ -13,7 +14,7 @@ async def setup(b):
 def teardown(bot):
     bot.log.info(f'{version.lower()} unloaded')
 
-version = 'Extensions.Manager: 2.3.2'
+version = 'Extensions.Manager: 2.3.3'
 ename = 'Extensions Manager'
 
 @commands.command()
@@ -45,12 +46,12 @@ async def em(ctx, mode = None, *, args = 'manager'):
                 
                 #Display Msg
                 embed.description = f'**{name}** reloaded'
-                await ctx.send(embed=embed)
+                
                 bot.last_load = args
 
             except Exception as error:
                 embed.description = f'Error while reloading **{name}**\n```{error}```'
-                await ctx.send(embed=embed)
+                
 
         elif mode == 'display':
             ex = list(bot.extensions)
@@ -60,7 +61,7 @@ async def em(ctx, mode = None, *, args = 'manager'):
                 extensions_list += f'\n- {tmp}'
             
             embed.description = extensions_list
-            await ctx.send(embed=embed)
+            
 
         elif mode == 'load':
             try:
@@ -69,16 +70,16 @@ async def em(ctx, mode = None, *, args = 'manager'):
                 
                 #Dysplay Msg
                 embed.description = f'**{args}** loaded'
-                await ctx.send(embed=embed)
+                
                 bot.last_load = args
             except Exception as error:
                 embed.description = f'Error while loading **{args}**\n```{error}```'
-                await ctx.send(embed=embed)
+                
 
         elif mode == 'unload':
             if args == 'manager':
                 embed.description = f'***{ename}*** **cant be unloaded**'
-                await ctx.send(embed=embed)
+                
                 return
             try:
                 #Unload Extension
@@ -86,18 +87,18 @@ async def em(ctx, mode = None, *, args = 'manager'):
 
                 #Dysplay msg
                 embed.description = f'**{args}** unloaded'
-                await ctx.send(embed=embed)
+                
             except Exception as error:
                 embed.description = f'Error while unloading **{args}**\n```{error}```'
-                await ctx.send(embed=embed)
+                
 
         elif mode == 'help':
             embed.description = help, color = bot.color
-            await ctx.send(embed=embed)
+            
 
         elif mode == 'v' or mode == 'version':
             embed.description = f'Running **{version}**'
-            await ctx.send(embed=embed)
+            
 
         elif mode == 'startup':
             #Comprobar si exsite la extension
@@ -110,7 +111,7 @@ async def em(ctx, mode = None, *, args = 'manager'):
                 
                 #Dysplay msg
                 embed.description = msg
-                await ctx.send(embed=embed)
+                
             else:
                 try:
                     await bot.load_extension(f'extension.{args}')
@@ -119,11 +120,11 @@ async def em(ctx, mode = None, *, args = 'manager'):
                     
                     #Dysplay msg
                     embed.description = f'**{args}** successfully added to startup'
-                    await ctx.send(embed=embed)
+                    
                     bot.log.info(f'extension.{args} added to startup')
                 except Exception as error:
                     embed.description = f'**Unable to load extension**:\n```{error}```\nCheck if the extension is unloaded or if the extension loads via **s.em load**'
-                    await ctx.send(embed=embed)
+                    
                     bot.log.error(f'while adding extension.{args} to startup ERROR: {error}')
 
         elif mode == 'removestartup':
@@ -138,12 +139,20 @@ async def em(ctx, mode = None, *, args = 'manager'):
                 
                 #Dysplay msg
                 embed.description = f'**{args}** successfully removed from startup'
-                await ctx.send(embed=embed)
+                
                 bot.log.info(f'extension.{args} removed from startup')
             else:
                 embed.description = f'**{args}** Is not in the startup list'
-                await ctx.send(embed=embed)
+                
 
         else:
             embed.description = f'Wrong Syntax\n```{help}```'
+            
+
+        try:
             await ctx.send(embed=embed)
+        except:
+            bot.log.critical(f'WHILE GENERATING EMBED:{embed.description}')
+            embed.description = 'Error while sending embed, content saved to log'
+            await ctx.send(embed=embed)
+            

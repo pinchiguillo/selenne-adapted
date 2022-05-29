@@ -8,7 +8,6 @@ async def setup(b):
     bot = b
     bot.log.info(f'extension.{version.lower()} loaded')
 
-    bot.add_command(dcs)
     bot.add_command(picklib)
 
     bot.add_listener(on_message)
@@ -41,15 +40,6 @@ alist = {
         'seen': f'{alist_db}/amime/seen.dat'
     }
 }
-
-@commands.command()
-async def dcs(ctx, *, args = None):
-    if ctx.author.id == bot.owner:
-        if args.startswith('reload'):
-            args = args.removeprefix('reload')
-
-    else:
-        await ctx.send('**YOU DONT HAVE PERMISSIONS TO DO THIS**')
 
 @commands.command()
 async def ping(ctx):

@@ -5,7 +5,6 @@ import json
 async def setup(b):
     global bot
     bot = b
-    bot.log.info(f'extension.{version.lower()} loaded')
 
     global extension_help
     
@@ -16,12 +15,15 @@ async def setup(b):
             }
         }
 
-    add_help()
+    #add_help()
 
     #ADD CMD
     bot.add_listener(on_message)
 
     bot.add_command(extension)
+
+    #END
+    bot.log.info(f'extension.{version.lower()} loaded')
 
 def teardown(bot):
     bot.log.info(f'extension.{version.lower()} unloaded')

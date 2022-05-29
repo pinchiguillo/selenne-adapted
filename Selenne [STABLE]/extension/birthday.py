@@ -57,11 +57,13 @@ def save_db(db:dict):
 
 @commands.command()
 async def check(ctx, args = None):
-    if not ctx.user.id == bot.owner:
-        return
-    await ctx.message.re
-    bd = datetime.datetime(2022,1,1,0,0)
-    for i in range(60*2):
+    if not ctx.author.id == bot.owner: return
+
+    await ctx.message.reply('Checking Started')
+    bd = datetime.datetime(2022,1,1,0, 0)
+    while True:
         await asyncio.sleep(1)
         if (bd - datetime.datetime.now()) <= datetime.timedelta(seconds = 0):
-            pass #Not Coded
+            break
+    usr = await bot.fetch_user(bot.owner)
+    await usr.send('Feliz Cumpleaños!')

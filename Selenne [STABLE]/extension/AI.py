@@ -1,28 +1,25 @@
 import discord
 from discord.ext import commands
+import json
 
-from dcs.functions import f_lib
+import sys
+
+if 'tflearn' in sys.modules:
+    del sys.modules["tflearn"]
+if 'tensorflow' in sys.modules:
+    del sys.modules["tensorflow"]
+
+
 
 import nltk
 from nltk.stem.lancaster import LancasterStemmer
 stemmer = LancasterStemmer()
-
 import numpy
 import tflearn
 import tensorflow
-tensorflow.compat.v1.disable_resource_variables()
-
 import random
-import json
 import pickle
-
 from deep_translator import GoogleTranslator
-
-import logging
-logging.basicConfig(filename='db/ai/log.log', filemode='a', encoding = 'utf8', format='[%(asctime)s] %(levelname)s: %(message)s', datefmt='%d-%m-%Y %H:%M:%S', level=logging.INFO)
-
-path = 'db/AI/models/Selenne/'
-AI_version = 'CHS:0.1'
 
 async def setup(b):
     global bot
@@ -31,29 +28,52 @@ async def setup(b):
     global extension_help
     
     extension_help = {
-        'general_display': 'cmd',
+        'general_display': 's.ai',
         'specific_display': {
-            'cmd': 'use'
+            's.ai version': 'Displays the AI version',
+            's.ai reload': 'Reloads the AI',
             }
         }
 
+    #add_help()
+
+    #ADD CMD
     bot.add_listener(on_message)
 
-    bot.add_command(ai)
+    bot.add_command(AI)
 
-    #load_model()
+    load_model()
     global translator_input, translator_output
-    lan = 'es'
-    translator_input = GoogleTranslator(source=lan, target='en')
-    translator_output = GoogleTranslator(source='en', target=lan)
+    translator_input = GoogleTranslator(source='es', target='en')
+    translator_output = GoogleTranslator(source='en', target='es')
 
-    bot.log.info(f'selenne.AI loaded: Extension Version: {version}')
+    #END
+    bot.log.info(f'extension.{version.lower()} loaded')
 
 def teardown(bot):
-    bot.log.info(f'selenne.AI unloaded')
+    bot.log.info(f'extension.{version.lower()} unloaded')
+    remove_help()
+    bot.remove_command('ai')
+    del bot.ai
 
-version = 'AI Implementation: ALFA'
-ename = 'AI'
+    del nltk
+    del LancasterStemmer
+    del numpy
+    del tflearn
+    del tensorflow
+    del random
+    del json
+    del pickle
+    del GoogleTranslator
+
+
+version = 'AI_Manager: BETA'
+ename = 'AI Manager'
+
+#ModelName_Version_BiggerLayer.Number_Of_Layers
+ai_version = 'CH_0.1_128.4'
+
+path = f'db/AI/models/{ai_version}/'
 
 #HELP
 def add_help():
@@ -70,24 +90,26 @@ def remove_help():
         json.dump(help_list, f, indent=5)
 
 def load_model():
-    global data, words, labels, training, output, net, model
+    global data, words, labels, training, output
     with open(f'{path}intents.json', 'r', encoding='utf8') as file:
         data = json.load(file)
     with open(f'{path}data.pickle', 'rb') as f:
         words, labels, training, output = pickle.load(f)
 
     net = tflearn.input_data(shape=[None, len(training[0])])
-    #Layers: Same as the trainer
-    net = tflearn.fully_connected(net, 16) 
-    net = tflearn.fully_connected(net, 16) 
-    net = tflearn.fully_connected(net, 16)
-    #OTP
+    #   MODEL DISPLAY (SAME AS TRAINER) V
+    net = tflearn.fully_connected(net, 8)
+    net = tflearn.fully_connected(net, 128)
+    net = tflearn.fully_connected(net, 128)
+    net = tflearn.fully_connected(net, 32)
+    #   MODEL DISPLAY (SAME AS TRAINER) A
     net = tflearn.fully_connected(net, len(output[0]), activation='softmax') #Last Layer
     net = tflearn.regression(net)
 
-    #LOAD MODEL
     model = tflearn.DNN(net)
     model.load(f'{path}model.tflearn')
+
+    bot.ai = model
 
 def bag_of_words(s, words):
     bag = [0 for _ in range(len(words))]
@@ -103,65 +125,50 @@ def bag_of_words(s, words):
     return numpy.array(bag)
 
 @commands.command()
-async def ai(ctx, *, args = None):
-    if ctx.author.id == bot.owner:
-        
-        if args == 'reload':
-            await ctx.send('Actually AI models cant be reloaded, in orther to do that **REBOOT THE WHOLE BOT**')
-            #Cant be reloaded
-            '''msg = await ctx.send('Reloading AI model...')
-            try:
-                await bot.reload_extension('extension.Selenne')
-                await msg.edit('AI model reloaded')
-            except:
-                await msg.edit('Error While Reloading AI model')'''
-        elif args in ['version', 'v']:
-            await ctx.send(f'Current AI model: **Selenne:{AI_version}**')
-        else:
-            await ctx.send('Wrong Syntax')
-    else: 
-        await ctx.send('You dont have permissions to use this command')
+async def AI(ctx, args = None):
+    if not ctx.author.id in bot.developers:return
 
-#Global Var
-bot_name = ['selenne', 'selene', 'sele']
+    match args:
+        case 'reload':
+            try:
+                load_model()
+                await ctx.send('Model Reloaded')
+            except Exception as error:
+                bot.log.error(error)
+                await ctx.send('Model reload Failed')
+        case 'version':
+            await ctx.send(f'AI Version: {ai_version}')
+
 
 @commands.Cog.listener()
 async def on_message(message):
-    
-    #Exceptions in the call
-    if 's.' in message.content: return
-    
-    msg = str(message.content.lower())
+    #DEV SERVER
+    if not message.guild.id == 913949547514974249:return
+    #DEV SERVER
+    if message.author.bot: return
 
-    if msg.startswith('selenne') or msg.startswith('selene') or msg.startswith('sele'):
-        #Translator
-        msg = msg.removeprefix('selenne')
-        msg = msg.removeprefix('selene')
-        msg = msg.removeprefix('sele')
+    if 'selenne' in message.content.lower() or 'selene' in message.content.lower() or 'sele' in message.content.lower():
+        #Remove Selenne from name
+        msg = message.content.lower().replace('selenne', '')
+        msg = msg.replace('selene', '')
+        msg = msg.replace('sele', '')
+
+        #AI Conexion
         inp = translator_input.translate(msg)
-        logging.info(f'Translation: {inp}')
-
-        #Gets the most probable answere    
-        results = model.predict([bag_of_words(inp, words)])
+        results = bot.ai.predict([bag_of_words(inp, words)])
         result_index = numpy.argmax(results)
         tag = labels[result_index]
-
-        logging.info(f'prob: {results[0][result_index]}')
-        #if True:
-        if results[0][result_index] > 0.70:
-            #Finds the answere
+        
+        if results[0][result_index] > 0.85:
             for tg in data['intents']:
                 if tg['tag'] == tag:
                     responses = tg['responses']
                     
                     p_tg = tg['tag']
-                    logging.info(f'tag: {p_tg}')
-
-            #Sends the answere
-            print(translator_output.translate(random.choice(responses)))
+                    print(f'tag: {p_tg}')
         
-        #AI dont get the right answere
+            await message.channel.send(translator_output.translate(random.choice(responses)))
+            bot.log.info(f'AI:{ai_version}: Inp: \'{inp}\', Tag: \'{p_tg}\', Match: {results[0][result_index]}')
         else:
-            print(translator_output.translate('Sorry, I didn\'t get that'))
-            p_tg = tg['tag']
-            logging.error(f'AI CANT GENERATE ANSWERE: Input:{msg} ({inp}), Prob: {results[0][result_index]}, Suggested Model: {p_tg}')
+            await message.channel.send(translator_output.translate('Sorry, I didn\'t get that'))
+            bot.log.warning(f'AI:{ai_version}: Inp: \'{inp}\'')

@@ -54,18 +54,6 @@ def teardown(bot):
     bot.log.info(f'extension.{version.lower()} unloaded')
     remove_help()
     bot.remove_command('ai')
-    del bot.ai
-
-    del nltk
-    del LancasterStemmer
-    del numpy
-    del tflearn
-    del tensorflow
-    del random
-    del json
-    del pickle
-    del GoogleTranslator
-
 
 version = 'AI_Manager: BETA'
 ename = 'AI Manager'
@@ -143,7 +131,9 @@ async def AI(ctx, args = None):
 @commands.Cog.listener()
 async def on_message(message):
     #DEV SERVER
-    if not message.guild.id == 913949547514974249:return
+    try:
+        if not message.guild.id == 913949547514974249: return
+    except AttributeError: return
     #DEV SERVER
     if message.author.bot: return
 

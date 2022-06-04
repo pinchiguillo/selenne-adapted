@@ -131,7 +131,7 @@ async def picklib(ctx, mode = 'help', *, args = None):
         
         with open(picklib_db + 'brute.dat', 'w', encoding='utf-8') as f:
             f.write('')
-        with open(picklib_db + 'log.dat', 'w', encoding='utf-8') as f:
+        with open(picklib_db + 'log.dat', 'a', encoding='utf-8') as f:
             f.write(''.join([str(item) for item in full_list]))
 
 

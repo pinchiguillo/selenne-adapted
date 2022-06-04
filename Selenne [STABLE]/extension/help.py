@@ -62,6 +62,7 @@ async def dhelp(ctx, args = None):
 - This only works in the embed description and field value
 If you want to hyperlink a title or set_author, you can use the url kwarg''', inline=False)
             helpembed.add_field(name = 'Text Formats', value = '[CLick on me!](https://wikitechnews.net/una-guia-completa-sobre-el-formato-de-texto-de-discord-tachado-negrita-y-mas/)', inline=False)
+            helpembed.add_field(name = 'Custom Emogi', value = '```\[custom emogi]```', inline=False)
             helpembed.add_field(name = 'Extra', value = '```exec(\'print Hello World\')\neval(\'1 + 1\')```', inline=False)
     else:
         helpembed.description = 'Only Verifyed Selenne Developers Commands'

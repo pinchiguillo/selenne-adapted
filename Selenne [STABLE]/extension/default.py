@@ -46,7 +46,7 @@ def remove_help():
         help_list = json.load(f)
     del help_list[ename]
     with open('db/system/help.json', 'w', encoding='utf-8') as f:
-        json.dump(help_list, f, indent=5)
+        json.dump(help_list, f, indent=5, ensure_ascii= False)
 
 def load_db():
     with open(db_path, 'r', encoding='utf-8') as f:

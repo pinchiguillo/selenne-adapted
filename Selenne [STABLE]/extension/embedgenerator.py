@@ -7,6 +7,7 @@ import asyncio
 async def setup(b):
     global bot
     bot = b
+    if bot_version != bot.version: bot.log.warning(f'extension.{version.lower()} outdated')
     bot.log.info(f'extension.{version.lower()} loaded')
 
     global extension_help
@@ -39,7 +40,7 @@ def remove_help():
     with open('db/system/help.json', 'w', encoding='utf-8') as f:
         json.dump(help_list, f, indent=5)
 
-
+bot_version = 'Selenne 4.8.6'
 version = 'EmbedGenerator: 1.0.1'
 ename = 'Embed Generator'
 

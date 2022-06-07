@@ -5,6 +5,7 @@ import json
 async def setup(b):
     global bot
     bot = b
+    f bot_version != bot.version: bot.log.warning(f'extension.{version.lower()} outdated')
     bot.log.info(f'extension.{version.lower()} loaded')
 
     global extension_help

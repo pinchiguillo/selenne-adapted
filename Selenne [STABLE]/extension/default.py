@@ -18,21 +18,24 @@ async def setup(b):
     #add_help()
 
     #ADD CMD
-    bot.add_listener(on_message)
+    #bot.add_listener(on_message)
 
-    bot.add_command(extension)
+    #bot.add_command(extension)
 
     #END
+    if bot_version != bot.version: bot.log.warning(f'extension.{version.lower()} outdated')
     bot.log.info(f'extension.{version.lower()} loaded')
 
 def teardown(bot):
     bot.log.info(f'extension.{version.lower()} unloaded')
     remove_help()
 
-version = 'Default: 1.1'
-ename = 'Default'
+version = 'servertools: Alfa'
+ename = 'Server Tools'
 
-db_path = 'db/'
+bot_version = 'Selenne 4.8.5'
+system_path = 'db/system/servers.json'
+db_path = system_path
 
 #HELP
 def add_help():
@@ -50,42 +53,24 @@ def remove_help():
 
 def load_db():
     with open(db_path, 'r', encoding='utf-8') as f:
-        return json.load(f)
-def save_db(db:dict):
+        global db
+        db =  json.load(f)
+def save_db():
     with open(db_path, 'w', encoding='utf-8') as f:
-        json.dump(db, f, indent=5)
+        json.dump(db, f, indent=5, ensure_ascii = False)
 
 @commands.command()
 async def extension(ctx, args = None):
-    if ctx.author.id == bot.owner:
-        if args == 'reload':
-            try:
-                await bot.reload_extension('')
-                await ctx.send(f'**{ename}** reloaded')
-            except:
-                await ctx.send(f'Error while reloading {ename}. Try rebooting the whole bot')
-        else:
-            await ctx.send(f'Current Version: **{version}**')
-    else:
-        await ctx.send('**YOU DONT HAVE PERMISSIONS TO DO THIS**')
+    #DEV SERVER
+    try:
+        if not ctx.guild.id in bot.dev_servers: return
+    except AttributeError: return
+    #DEV SERVER
 
 @commands.Cog.listener()
 async def on_message(message):
-    print(message.content)
-
-@commands.command()
-async def ping(ctx):
-    ctx.send('Pong')
-
-@commands.command()
-async def ex(ctx):
-    if ctx.author.id in bot.developers:
-        prt = None
-        try:
-            #
-
-            await ctx.send('**Done**')
-            if prt:
-                await ctx.send(f'```{prt}```')
-        except Exception as error:
-            await ctx.send(f'```{error}```')
+    #DEV SERVER
+    try:
+        if not message.guild.id in bot.dev_servers: return
+    except AttributeError: return
+    #DEV SERVER

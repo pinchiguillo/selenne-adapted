@@ -2,7 +2,7 @@ import discord
 import logging
 TOCKEN = 'REDACTED_DISCORD_TOKEN'
 PREFIX = 's.'
-version = 'Selenne 4.8.4'
+version = 'Selenne 4.8.6'
 activity = 'DCS'
 status = discord.Status.do_not_disturb
 owner = 000000000000000000
@@ -11,3 +11,5 @@ colours = {"green":0x00ff11,"yellow":0xfaff00,"red":0xff0000,"blue":0x00b3ff,"pu
 developers = [owner, 55, 56, 85, 000000000000000000]
 sql = {'host': 'localhost','port': 3306,'user': 'Selenne','password': 'REDACTED_DB_PASSWORD','db': 'Selenne'}
 log = logging.INFO
+dev_servers = [913949547514974249, 981601237562716180]
+bot_servers = [981601237562716180]

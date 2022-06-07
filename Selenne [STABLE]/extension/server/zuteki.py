@@ -10,7 +10,7 @@ async def setup(b):
     bot = b
     bot.log.info(f'{__name__} loaded')
 
-    bot.add_command(anounce)
+    #bot.add_command(anounce)
     bot.add_command(report)
     bot.add_command(suggest)
     bot.add_command(display)

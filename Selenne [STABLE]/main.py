@@ -50,6 +50,8 @@ bot.owner = config.owner
 bot.color = config.color
 bot.colours = config.colours
 bot.developers = config.developers
+bot.dev_servers = config.dev_servers
+bot.bot_servers = config.bot_servers
 
 #Check if works
 bot.log = logging

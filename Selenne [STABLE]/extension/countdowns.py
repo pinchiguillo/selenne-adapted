@@ -8,6 +8,7 @@ import  asyncio
 async def setup(b):
     global bot
     bot = b
+    if bot_version != bot.version: bot.log.warning(f'extension.{version.lower()} outdated')
     bot.log.info(f'extension.{version.lower()} loaded')
 
     global extension_help
@@ -34,6 +35,7 @@ def teardown(bot):
     bot.log.info(f'extension.{version.lower()} unloaded')
     remove_help()
 
+bot_version = 'Selenne 4.8.6'
 version = 'Countdowns: 1.3.1'
 ename = 'Countdowns'
 

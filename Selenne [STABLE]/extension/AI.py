@@ -48,6 +48,7 @@ async def setup(b):
     translator_output = GoogleTranslator(source='en', target='es')
 
     #END
+    if bot_version != bot.version: bot.log.warning(f'extension.{version.lower()} outdated')
     bot.log.info(f'extension.{version.lower()} loaded')
 
 def teardown(bot):
@@ -55,6 +56,7 @@ def teardown(bot):
     remove_help()
     bot.remove_command('ai')
 
+bot_version = 'Selenne 4.8.5'
 version = 'AI_Manager: BETA'
 ename = 'AI Manager'
 

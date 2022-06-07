@@ -7,6 +7,7 @@ from youtube_dl import YoutubeDL
 async def setup(b):
     global bot
     bot = b
+    if bot_version != bot.version: bot.log.warning(f'extension.{version.lower()} outdated')
     bot.log.info(f'extension.{version.lower()} loaded')
 
     await bot.add_cog(music_upd(bot))
@@ -14,6 +15,7 @@ async def setup(b):
 def teardown(bot):
     bot.log.info(f'extension.{version.lower()} unloaded')
 
+bot_version = 'Selenne 4.8.6'
 version = 'MusicalBot: 3.1.2'
 ename = 'MusicalBot'
 

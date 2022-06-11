@@ -1,5 +1,5 @@
 @echo off
-title Selenne [Stable Build]
+title Selenne 5  [Experimental Build]
 python main.py
 
 exit

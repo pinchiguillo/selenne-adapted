@@ -8,7 +8,7 @@ async def setup(b):
     bot = b
 
     #! Load Help
-    #add_help()
+    add_help()
 
     #! Add CMD
     #bot.add_command(extension)

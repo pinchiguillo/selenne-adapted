@@ -1,9 +1,9 @@
 # Selenne-Project
 #Developed By DCS NETWORK
-Selenne es un bot de discord escrito en Python 3.9 y utiliza la libreria discord.py  y discord.py 2.0
-Se necesita instalar discord.py 1.x para utilizar las versiones mas antiguas. Las mas recientes tienen la libreria descargada en su codigo
 
-El bot consta de multiples versiones.
-Las [Stable] son las versiones de las cuales se ha confirmado la operatividad completa.
-Las [OUTDATED] corresponden a las mas antiguas y no se asegura su funcionamiento.
-Las [Experimental Build] son bots sin terminar y que contienen trozos de codigo de multiples fuentes, no tienen una funcion real mas que la experimetnacion con el codigo.
+Selenne 5.x has not only been designed to create a more pleasant user experience than its predecessor, but also now includes a more pleasant environment for the programmer.
+
+As significant changes since the previous version, it is worth highlighting the update of the core to a faster one and that already has both essential commands for the correct development of the bot and to improve its response speed.
+Also noteworthy is the implementation of the dcs-database functionality, which allows data to be stored in the DCS Network database (in contrast to the unique json storage system).
+
+With this new version we want to get closer to what would be the final product and stop making updates to the bot core which require individual updating of all plugins.

@@ -29,7 +29,7 @@ def teardown(bot):
     remove_help()
 
 bot_version = 'Selenne 4.8.5'
-version = 'ServerTools: 1.0'
+version = 'ServerTools: 1.0.1'
 ename = 'Server Tools'
 
 system_path = 'db/system/servers.json'
@@ -58,7 +58,7 @@ def save_db():
         json.dump(db, f, indent=5, ensure_ascii = False)
 
 @commands.command()
-async def announce(ctx, args = None):
+async def announce(ctx, *, args = None):
     load_db()
     try: server_conifg = db[str(ctx.guild.id)]
     except KeyError: await ctx.send('You havent configured Selenne, please use |s.conifg| in order to configure everything.')

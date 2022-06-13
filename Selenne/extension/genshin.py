@@ -2,8 +2,6 @@ import discord
 from discord.ext import commands
 import json
 
-from regex import D
-
 async def setup(b):
     global bot
     bot = b
@@ -32,7 +30,7 @@ def teardown(bot):
     remove_help()
 
 bot_version = 'Selenne 4.8.6'
-version = 'GenshinTools: 1.2'
+version = 'GenshinTools: 1.3'
 ename = 'Genshin Tools'
 
 db_path = 'db/genshin.json'
@@ -99,6 +97,15 @@ async def builds(ctx, args):
         await ctx.send(embed=embed)
         return
     
+    if args == '-all':
+        if ctx.author.id in bot.developers:
+            for key in db['build'].keys():
+                await ctx.send(embed=embedgenerator(key))
+            return
+        else:
+            await ctx.send('You are not allowed to run this command')
+            return
+
     #Check if character in db
     in_db = False
     for key in db['build'].keys():
@@ -160,8 +167,8 @@ def embedgenerator(key):
             stat = db['build'][key]['artifacts']['stats'][part]
             p = part.capitalize()
             stats += f'**{p}**: {stat}\n'
-        builds = builds.removesuffix('\n')
-    except: stats = 'Cant Load'
+        stats = stats.removesuffix('\n')
+    except Exception as error: stats = 'Cant Load'
     embed.add_field(name = f'{element} Stats Artefactos', value=stats, inline=False)
     
     #Artifact stats priority statment

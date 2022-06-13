@@ -34,7 +34,7 @@ async def em(ctx, mode = None, *, args = 'manager'):
             name = args
             if args == 'manager':
                 name = 'Extension Manager'
-            elif args == 'last' or args == '-l' or args == 'l':
+            elif args == 'last' or args == '-l' or args == 'l' or args == '-last':
                 if bot.last_load:
                     args = bot.last_load
                     name = bot.last_load
@@ -155,4 +155,3 @@ async def em(ctx, mode = None, *, args = 'manager'):
             bot.log.critical(f'WHILE GENERATING EMBED:{embed.description}')
             embed.description = 'Error while sending embed, content saved to log'
             await ctx.send(embed=embed)
-            

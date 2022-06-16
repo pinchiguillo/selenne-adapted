@@ -19,7 +19,7 @@ logging.basicConfig(filename='bot.log', filemode='w', encoding = 'utf8', format=
 async def get_prefix(bot, message):
   return 's.'  # or a list, ["pre1","pre2"]
 
-#! Selene Core 2.0 By pinchiguillo
+#! Selene Core 2.1 By pinchiguillo
 class Selenne(commands.Bot):
     def __init__(self):
         intents = discord.Intents.all()
@@ -36,14 +36,15 @@ class Selenne(commands.Bot):
         logging.info(f'Logged in as {self.user} (ID: {self.user.id})')
         print(f'Logged in as {self.user} (ID: {self.user.id})')
         print('------')
-        try:
-            self.pid = await self.fetch_user(000000000000000000)
-        except: logging.warning('Error while fetching owner')
-        try:
-            m = await self.pid.send('Ya vuelvo a estar conectada')
-            await asyncio.sleep(5)
-            await m.delete()
-        except: logging.warning('Error while sending message to owner')
+        if config.warn_onready:
+            try:
+                self.pid = await self.fetch_user(000000000000000000)
+            except: logging.warning('Error while fetching owner')
+            try:
+                m = await self.pid.send('Ya vuelvo a estar conectada')
+                await asyncio.sleep(5)
+                await m.delete()
+            except: logging.warning('Error while sending message to owner')
 
     async def on_command_error(self, ctx, exception):
         if isinstance(exception, commands.CommandNotFound): await ctx.send('Command Not Found, try using `s.help`', delete_after=10)
@@ -52,7 +53,7 @@ bot = Selenne()
 bot.remove_command('help')
 
 #! VERSION
-bot.version = 'Selenne 5.0-PRE'
+bot.version = 'Selenne 5.1-PRE'
 #Universal Vars
 bot.nullchar = '\u200b'
 bot.owner = config.owner
@@ -63,6 +64,7 @@ bot.dev_servers = config.dev_servers
 bot.bot_servers = config.bot_servers
 
 bot.log = logging
+bot.database = None
 
 #SetUp
 @bot.event

@@ -6,6 +6,8 @@ async def setup(b):
     global bot
     bot = b
 
+    #! StartUp
+    
     # Load Help
     add_help()
 
@@ -33,7 +35,7 @@ _version = name.replace(' ', '.')
 _version = f'{name.lower()}: {version}'
 
 # Databases
-db_type = '$json'
+db_type = '$sql'
 system_path = 'db/system/servers.json'
 db_path = system_path
 def load_db():
@@ -78,24 +80,15 @@ def remove_help():
 @commands.has_permissions(administrator=True)
 async def config(ctx, *, args = 'display'):
     await ctx.message.delete()
-    #Check if server in db
-    with open(db_path, 'r') as f:
-        full_db = json.load(f)
-        try:
-            db = full_db[str(ctx.guild.id)]
-        except:
-            db = {
-                "channels": {
-                    "news": False,
-                    "reports": False,
-                    "suggestions": False,
-                    "logs": False
-                },
-                "settings": {
-                    "color": False
-          }
-     }
-        full_db[str(ctx.guild.id)] = db
+    
+    #Get data from DB
+    print('PRE DATA')
+    print(bot.database)
+    bot.database.insert({'id': 913949547514974249, 'channels': {}, 'settings': {}}, otp=True)
+    print(config)
+
+    if not config:
+        bot.database.insert({'id': ctx.guild.id, "channels": {"news": False,"reports": False,"suggestions": False,"logs": False}, "settings": {"color": False}}, otp=True)
 
     match args.split(' ')[0]:
         case 'display':

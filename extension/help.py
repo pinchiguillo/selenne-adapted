@@ -6,6 +6,8 @@ async def setup(b):
     global bot
     bot = b
 
+    #! StartUp
+
     # Load Help
     add_help()
 
@@ -26,7 +28,7 @@ def teardown(bot):
     remove_help()
 
 # Extension Data
-bot_version = 'Selenne 5.0'
+bot_version = 'Selenne 5.1'
 version = '1.1'
 name = 'Help'
 

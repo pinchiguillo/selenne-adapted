@@ -6,9 +6,11 @@ import json
 async def setup(b):
     global bot
     bot = b
+    
+    #! StartUp
 
     #! Load Help
-    add_help()
+    #add_help()
 
     #! Add CMD
     #bot.add_command(extension)
@@ -36,7 +38,7 @@ _version = f'{name.lower()}: {version}'
 #! Databases
 db_type = '$json'
 system_path = 'db/system/servers.json'
-db_path = system_path
+db_path = system_path #!PATH
 def load_db():
     with open(db_path, 'r', encoding='utf-8') as f:
         global db

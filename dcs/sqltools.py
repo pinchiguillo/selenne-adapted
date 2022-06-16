@@ -8,7 +8,7 @@ class DataBase():
         if not config and not file: raise ValueError('config dict or config file required')
         elif config: self.config = config
         elif file: 
-            with open('config.json', 'r', encoding='utf-8') as f:
+            with open(file, 'r', encoding='utf-8') as f:
                 self.config = json.load(f)
         self.shape = shape
 

@@ -6,6 +6,8 @@ async def setup(b):
     global bot
     bot = b
 
+    #! StartUp
+    
     # Load Help
     add_help()
 
@@ -25,8 +27,8 @@ def teardown(bot):
     remove_help()
 
 # Extension Data
-bot_version = 'Selenne 5.0-PRE'
-version = '2.4'
+bot_version = 'Selenne 5.1-PRE'
+version = '2.4.1'
 name = 'Extensions Manager'
 
 _version = name.replace(' ', '.')
@@ -151,7 +153,6 @@ async def em(ctx, mode = None, *, args = 'manager'):
         case 'version' | 'v': embed.description = f'Current version: **{name}: {version}**'
         case 'startup':
             args = list(args.split(' '))
-            print(args)
             match args[0].removeprefix('-'):
                 case 'add':
                     #Comprobar si exsite la extension

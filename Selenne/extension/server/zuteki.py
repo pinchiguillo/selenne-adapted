@@ -335,6 +335,7 @@ async def on_message(message):
             except discord.errors.Forbidden:
                 await log.send(f'{message.author.mention}({message.author.id}) **Error al expulsar** Reason: **escribir sin estar verificado**')
 
+
 @commands.Cog.listener()
 async def on_voice_state_update(member, after, before):
     if member.guild.id == server_id and not member.bot:

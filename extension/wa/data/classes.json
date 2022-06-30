@@ -1,0 +1,59 @@
+{
+    "Sword Master":{
+        "simple": "Mele Sin Atributos",
+        "description": "Not Written",
+        "emoji": ""
+    },
+    "Wizzard":{
+        "simple": "Rango Con Atributos",
+        "description": "Not Written"
+    ,
+        "emoji": ""
+    },
+    "BowMan":{
+        "simple": "Rango Sin Atributos (Critic+)",
+        "description": "Not Written"
+    ,
+        "emoji": ""
+    },
+    "Berserker":{
+        "simple": "Mele Con/Sin Atributos (Basado en vida)",
+        "description": "A costa de convivir diariamente con la locura Berserker se vuelve mas fuerte cuanto mas daño recive. Usando esta locura junto con sus dos espadas Berserker es capaz de inflingir grandes cantidades de daño con gran facilidad"
+    ,
+        "emoji": ""
+    },
+    "Assasin":{
+        "simple": "Sombra Mortal",
+        "description": "Una sombra que aparece en el momento justo para asestar una estocada mortal y asi volver a desaparecer en las sombras. Assasin gracias a su gran velocidad y daño se especialista en eliminar objetivos individuales, a costa de este poder letal si Assasin es descubierto se convierte en un blanco facil debido a su poca defensa"
+    ,
+        "emoji": ""
+    },
+    "FortressMan":{
+        "simple": "Montaña Inmovible",
+        "description": "\"El secreto para ganar cualquier batalla no matar mas enemigos, el secreto es resistir mas que ellos, porque los vivos son los que ganan\" Con estas palabras se levanta todos los dias FortressMan, reafirmando su creencia que en la defensa esta el poder"
+    ,
+        "emoji": ""
+    },
+    "Equinox":{
+        "simple": "Equilibrio Eterno",
+        "description": "Siguiendo la filosofia de \"Intercambio Equivalente\", Equinox manipula el equilibrio del combate para ganar un gran control sobre la batalla. El mismo se considera invatible en el convate individual pero la cosa cambia en cuanto aparece un segundo enemigo"
+    ,
+        "emoji": ""
+    },
+    "Lancer":{
+        "simple": "Mele/Distancia Sin atributos",
+        "description": "Not Written"
+    ,
+        "emoji": ""
+    },
+    "Summoner":{
+        "simple": "Invocaccion de criaturas para lucha",
+        "description": "Not Written"
+    ,
+        "emoji": ""
+    },
+    "Witcher":{
+        "simple": "Mele/Distancia Sin atributos",
+        "description": "Not Written"
+    }
+}

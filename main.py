@@ -1,122 +1,173 @@
-#Selenne Stable Version
-#By DCS Network
+#
+#TODO: Selenne Stable Version
+#TODO: By DCS Network
 
+#?
 import discord
 from discord.ext import commands
 import json
 import asyncio
 import os
 
-#Internal
+#?Internal
 import config
 
-#Logging System
-with open('bot.log', 'r') as f: oldlog = f.read()
-with open('db/old_logs.log', 'a') as f: f.write(oldlog)
-import logging
-logging.basicConfig(filename='bot.log', filemode='w', encoding = 'utf8', format='[%(asctime)s] %(levelname)s: %(message)s', datefmt='%d-%m-%Y %H:%M:%S', level=config.log)
-
-async def get_prefix(bot, message):
-  return 's.'  # or a list, ["pre1","pre2"]
-
-#! Selene Core 2.1 By pinchiguillo
+#? Selene Core 2.1.3 By pinchiguillo
 class Selenne(commands.Bot):
+    
+    #!DO NOT TOUCH ANYTHING, config in config.py file
+
+    version = 'Selenne 5.2-PRE'
+    core_version = '2.1.3_BETA'
+    building = True
+    #_TOCKEN_LOCK = False
+    async def set_prefix(self, bot, message): return config.PREFIX
     def __init__(self):
-        intents = discord.Intents.all()
-        #!DO NOT TOUCH ANYTHING, config in config.py file
+
         super().__init__(
-            command_prefix=commands.when_mentioned_or(config.PREFIX),
+            command_prefix=self.set_prefix,
             description = config.description,
             activity = discord.Game(name = config.activity),
             status = config.status,
-            intents=intents
+            intents=discord.Intents.all()
             )
+        #? Universal Vars
+
+        #self.TOCKEN = config.TOCKEN
+        self._staff_file = open(config.staff_file, 'r+', encoding='utf-8')
+        self.staff = json.load(self._staff_file)
+        self.nullchar = '\u200b'
+        self.owner = self.staff['owner']
+        self.color = config.color
+        self.colours = config.colours
+        
+        self.developers = self.staff['developers'].append(self.owner)
+        self.dev_servers = self.staff['dev_servers']
+        self.bot_servers = self.staff['bot_servers']
+
+        #? Logging Engine
+        import logging
+        self.save_log()
+        logging.basicConfig(filename='bot.log', filemode='w', encoding = 'utf8', format='[%(asctime)s] %(levelname)s: %(message)s', datefmt='%d-%m-%Y %H:%M:%S', level=config.log)
+        self.log = logging
+
+        #? Databases Engine - SQLtools 1.2
+        from dcs.sqltools import DataBase
+        self.database = DataBase(config.SQL)
+
+        #? Extra config
+        self.remove_command('help') #* extension.help
+
+        #! Lock building vars (False is True)
+        self.building = False
+        self._TOCKEN_LOCK = True
+
+    #? Essential Bot Commands
+    
+    #? Internal Functions
+    def save_log(self):
+        with open('bot.log', 'r') as f: oldlog = f.read()
+        with open('db/old_logs.log', 'a') as f: f.write(oldlog)
+
+    #?Setup
+    async def setup_hook(self):
+        with open('db/system/startup.json', 'r', encoding='utf-8') as f:
+            startup_data = json.load(f)
+        
+        #? Core Commands Load
+        class cmd_core(commands.Cog):
+            def __init__(self, bot):
+                self.bot = bot
+
+            @commands.command()
+            async def bye(self, ctx):
+                if ctx.author.id == self.bot.owner:
+                    await ctx.reply('bye!')
+                    self.bot.log.critical(f'{ctx.author.display_name}({ctx.author.id}) Stoped the bot the bot')
+                    await self.bot.close()
+            
+            @commands.command()
+            async def off(self, ctx):
+                if ctx.author.id == self.bot.owner:
+                    await ctx.reply('bye!')
+                    self.bot.log.critical(f'{ctx.author.display_name}({ctx.author.id}) Stoped the bot the bot')
+                    await self.bot.close()
+
+            @commands.command()
+            async def reboot(self, ctx):
+                if ctx.author.id in self.bot.developers:
+                    await ctx.reply('Rebooting bot...')
+                    os.system('start /min bot.bat')
+                    self.bot.log.critical(f'{ctx.author.display_name}({ctx.author.id}) Rebooted the bot the bot')
+                    await self.bot.close()
+        try:
+            await self.add_cog(cmd_core(self))
+            self.log.info(f'cmd_core loaded')
+        except Exception as error:
+            self.log.critical(f'While loading cmd_core: {error}')
+
+        #? Startup extensions loader
+
+
+        #* Systematic
+        for extension in startup_data['extensions']['systematic']:
+            try:
+                await self.load_extension(extension)
+            except Exception as error:
+                self.log.critical(f'Error while loading {extension}: {error}')
+                await self.stop()
+
+        #* Normal
+        for extension in startup_data['extensions']['normal']:
+            try:
+                await self.load_extension(f'{extension}')
+            except Exception as error:
+                self.log.error(f'{extension} failed to load: {error}')
 
     async def on_ready(self):
-        logging.info(f'Logged in as {self.user} (ID: {self.user.id})')
+        self.log.info(f'Logged in as {self.user} (ID: {self.user.id})')
         print(f'Logged in as {self.user} (ID: {self.user.id})')
         print('------')
         if config.warn_onready:
             try:
                 self.pid = await self.fetch_user(000000000000000000)
-            except: logging.warning('Error while fetching owner')
+            except: self.log.warning('Error while fetching owner')
             try:
                 m = await self.pid.send('Ya vuelvo a estar conectada')
                 await asyncio.sleep(5)
                 await m.delete()
-            except: logging.warning('Error while sending message to owner')
+            except: self.log.warning('Error while sending message to owner')
 
     async def on_command_error(self, ctx, exception):
         if isinstance(exception, commands.CommandNotFound): await ctx.send('Command Not Found, try using `s.help`', delete_after=10)
-
-bot = Selenne()
-bot.remove_command('help')
-
-#! VERSION
-bot.version = 'Selenne 5.1-PRE'
-#Universal Vars
-bot.nullchar = '\u200b'
-bot.owner = config.owner
-bot.color = config.color
-bot.colours = config.colours
-bot.developers = config.developers
-bot.dev_servers = config.dev_servers
-bot.bot_servers = config.bot_servers
-
-bot.log = logging
-bot.database = None
-
-#SetUp
-@bot.event
-async def setup_hook():
-    with open('db/system/startup.json', 'r', encoding='utf-8') as f:
-        startup_data = json.load(f)
-
-    #! Extensions
-    #Systematic
-    for extension in startup_data['extensions']['systematic']:
-        try:
-            await bot.load_extension(extension)
-        except Exception as error:
-            logging.critical(f'Error while loading {extension}: {error}')
-            await bot.stop()
-
-    #Normal
-    for extension in startup_data['extensions']['normal']:
-        try:
-            await bot.load_extension(f'{extension}')
-        except Exception as error:
-            logging.error(f'{extension} failed to load: {error}')
     
+    #? Var protection
+    @property
+    def owner(self): return self._owner
+    @owner.setter
+    def owner(self, value):
+        if self.building: self._owner = value
+        else: self._owner = self._owner
 
-    #Reload Buttons
-    pass
+    @property
+    def color(self): return self._color
+    @color.setter
+    def color(self, value):
+        if self.building: self._color = value
+        else: self._color = self._color
 
-#Essentials Commands
-@bot.command()
-async def bye(ctx):
-    if ctx.author.id == bot.owner:
-        await ctx.reply('bye!')
-        bot.log.critical(f'{ctx.author.display_name}({ctx.author.id}) Stoped the bot the bot')
-        await bot.close()
-
-@bot.command()
-async def off(ctx):
-    if ctx.author.id == bot.owner:
-        await ctx.reply('bye!')
-        bot.log.critical(f'{ctx.author.display_name}({ctx.author.id}) Stoped the bot the bot')
-        await bot.close()
-
-@bot.command()
-async def reboot(ctx):
-    if ctx.author.id in bot.developers:
-        await ctx.reply('Rebooting bot...')
-        os.system('start /min bot.bat')
-        bot.log.critical(f'{ctx.author.display_name}({ctx.author.id}) Rebooted the bot the bot')
-        await bot.close()
-
-#Run
-logging.info('Bot start')
-bot.run(config.TOCKEN)
+    @property
+    def staff(self): return self._staff
+    @staff.setter
+    def staff(self, value):
+        if not isinstance(value, dict): raise ValueError('the \'Selenne.staff\' must be \'dict\'')
+        if not self.building:
+            self._staff = value
+            json.dump(self._staff, self._staff_file, indent=4)
+        else:
+            self._staff = value
+ 
+#! Run
+Selenne().run(config.TOCKEN)
 
 exit()

@@ -9,19 +9,19 @@ async def setup(b):
     global bot
     bot = b
 
-    #! StartUp
+    #? StartUp Functions
     connect()
 
-    #! Load Help
+    #? Load Help
     #add_help()
 
-    #! Add CMD
+    #? Add CMD
     #bot.add_command(extension)
     
-    #! Add Listener
+    #? Add Listener
     #bot.add_listener(on_message)
     
-    #Check Bot Version and Log
+    #? Check Bot Version and Log
     bv = list(bot.version)
     b_v = list(bot_version)
     if b_v[8:11] != bv[8:11]: bot.log.warning(f'extension.{_version.lower()} outdated')

@@ -2,23 +2,23 @@ import discord
 from discord.ext import commands
 import json
 
-#!
+#?
 async def setup(b):
     global bot
     bot = b
     
-    #! StartUp
+    #? StartUp Functions
 
-    #! Load Help
+    #? Load Help
     #add_help()
 
-    #! Add CMD
+    #? Add CMD
     #bot.add_command(extension)
     
-    #! Add Listener
+    #? Add Listener
     #bot.add_listener(on_message)
 
-    #Check Bot Version and Log
+    #? Check Bot Version and Log
     bv = list(bot.version)
     b_v = list(bot_version)
     if b_v[8:11] != bv[8:11]: bot.log.warning(f'extension.{_version.lower()} outdated')
@@ -35,8 +35,7 @@ name = 'Extension Teemplate'
 _version = name.replace(' ', '.')
 _version = f'{name.lower()}: {version}'
 
-#! Databases
-db_type = '$json'
+#! Databases - JSON
 system_path = 'db/system/servers.json'
 db_path = system_path #!PATH
 def load_db():
@@ -54,6 +53,10 @@ def server_db(ctx, mode = 'load', database = None):
     elif mode == 'unload':
         with open(system_path, 'w', encoding='utf-8') as f:
             json.dump(database, f, indent=5, ensure_ascii = False)
+
+#! Databases - SQL
+#db = bot.database
+#db.database = ''
 
 #! HELP
 extension_help = {
@@ -94,3 +97,8 @@ async def on_message(message):
     except AttributeError: return
     #DEV SERVER
     #
+
+#! Defautl Cog
+class Default_cog(commands.cog):
+    def __init__(self, bot):
+        self.bot = bot

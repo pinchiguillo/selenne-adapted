@@ -7,18 +7,18 @@ async def setup(b):
     global bot
     bot = b
 
-    #! StartUp
+    #? StartUp Functions
     
-    #! Load Help
+    #? Load Help
     #add_help()
 
-    #! Add CMD
+    #? Add CMD
     #bot.add_command(extension)
     
-    #! Add Listener
+    #? Add Listener
     #bot.add_listener(on_message)
 
-    #Check Bot Version and Log
+    #? Check Bot Version and Log
     bv = list(bot.version)
     b_v = list(bot_version)
     if b_v[8:11] != bv[8:11]: bot.log.warning(f'extension.{_version.lower()} outdated')
@@ -28,7 +28,7 @@ def teardown(bot):
     remove_help()
 
 #! Extension Data
-bot_version = 'Selenne 5.0'
+bot_version = 'Selenne 5.2'
 version = 'Alfa'
 name = 'Extension Teemplate'
 
@@ -54,6 +54,10 @@ def server_db(ctx, mode = 'load', database = None):
     elif mode == 'unload':
         with open(system_path, 'w', encoding='utf-8') as f:
             json.dump(database, f, indent=5, ensure_ascii = False)
+
+#! Databases - SQL
+#db = bot.database
+#db.database = ''
 
 #! HELP
 extension_help = {

@@ -1,4 +1,4 @@
-import core
+import extension.wa.core
 import discord
 import json
 
@@ -49,7 +49,8 @@ async def register(bot, ctx, args):
     #Display everything
     await ctx.send('Te damos la bienvenida a WA:Project *Discord Version*, un mundo donde podras vivir una aventura epica!\nPara empezar pulsa al boton **Register** que esta debajo', view=view)
 
-async def delete_profile(ctx, args):pass
-async def profile(ctx, args):pass
-async def inventory(ctx, args):pass
-async def config(ctx, args):pass
+async def delete_profile(bot, ctx, args):pass
+async def profile(bot, ctx, args):pass
+async def inventory(bot, ctx, args):pass
+async def config(bot, ctx, args):
+    await ctx.send(f'Welcome {ctx.author.mention} to the account configuration page')

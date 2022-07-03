@@ -2,7 +2,8 @@ import discord
 from discord.ext import commands
 import json
 
-import character
+import mysql.connector
+import extension.wa.character as character
 
 #?
 async def setup(b):
@@ -15,10 +16,19 @@ async def setup(b):
     #add_help()
 
     #? Add CMD
-    #bot.add_command(extension)
+    bot.add_command(wa)
     
     #? Add Listener
     #bot.add_listener(on_message)
+
+    #! LOAD DATABASE
+    bot.db = DataBase(config={
+        'host': 'localhost',
+        'user': 'selenne_wa',
+        'password': 'REDACTED_DB_PASSWORD',
+        'database': 'selenne_wa'
+    })
+    bot.db.connect()
 
     #Check Bot Version and Log
     bv = list(bot.version)
@@ -28,7 +38,9 @@ async def setup(b):
 def teardown(bot):
     bot.log.info(f'extension.{_version.lower()} unloaded')
     remove_help()
-
+    
+    del character
+    
 #? Extension Data
 bot_version = 'Selenne 5.0'
 version = 'Alfa'
@@ -38,24 +50,48 @@ _version = name.replace(' ', '.')
 _version = f'{name.lower()}: {version}'
 
 #? Databases
-db_type = '$json'
-system_path = 'db/system/servers.json'
-db_path = system_path #!PATH
-def load_db():
-    with open(db_path, 'r', encoding='utf-8') as f:
-        global db
-        db =  json.load(f)
-def save_db():
-    with open(db_path, 'w', encoding='utf-8') as f:
-        json.dump(db, f, indent=5, ensure_ascii = False)
-def server_db(ctx, mode = 'load', database = None):
-    if mode == 'load':
-        with open(system_path, 'r', encoding='utf-8') as f:
-            _db=  json.load(f)
-            return _db[str(ctx.guid.id)]
-    elif mode == 'unload':
-        with open(system_path, 'w', encoding='utf-8') as f:
-            json.dump(database, f, indent=5, ensure_ascii = False)
+class DataBase():
+    def __init__(self, config:dict = None, file:str = None):
+        if not config and not file: raise ValueError('config dict or config file required')
+        elif config: self.config = config
+        elif file: 
+            with open(file, 'r', encoding='utf-8') as f:
+                self.config = json.load(f)
+
+
+    def connect(self, otp = False):
+        try:
+            self.conexion = mysql.connector.connect(**self.config)
+            self.cursor = self.conexion.cursor()
+            self.cursor_alt = self.conexion.cursor(buffered=True)
+        except Exception as error:
+            print(error)
+        else:
+            if otp: print('Connected to database')
+        
+    def disconnect(self, otp = False):
+        self.conexion.close()
+        if otp: print('Disconnected from database')
+
+    def commit(self, sql):
+        self.cursor.execute(sql)
+        self.conexion.commit()
+
+    def get(self, sql):
+
+        self.cursor_alt.execute(sql)
+        return self.cursor_alt.fetchall()
+
+    #? PRIVATE FUNCTIONS
+    def add_user(self, id):
+        self.commit(fr"INSERT INTO `discord` (`index`, `id`, `character_id`, `delete_message`, `color`) VALUES (NULL, '{id}', NULL, '0', '$bot.color');")
+
+    def check_user(self, id):
+        if len(self.get(fr"SELECT * FROM `discord` WHERE `id` LIKE '{id}'")) > 0:
+            return True
+        else: return False
+    
+    def get_user(self, id): return self.get(fr"SELECT * FROM `discord` WHERE `id` LIKE '{id}'")
 
 #? HELP
 extension_help = {
@@ -87,22 +123,28 @@ def emoji(message):
     
     return message
 
-# Commands
+#? Commands
 @commands.command()
 async def wa(ctx, command = 'help', *, args = None):
 
+    #?Check if discord user on database, if not add the user
+    if not bot.db.check_user(ctx.author.id):
+        bot.db.add_user(ctx.author.id)
+    else: print('User in DB')
     #?Check if player wants to delete message
-    #await ctx.message.delete()
+    if bot.db.get_user(ctx.author.id)[0][3] == 1: await ctx.message.delete()
 
-    #! Check if player registered
+
+    # SELECT * FROM `discord` WHERE `id` LIKE '000000000000000000'
+    # INSERT INTO `discord` (`index`, `id`, `character_id`, `delete_message`, `color`) VALUES (NULL, '000000000000000000', NULL, '0', '$bot.color');
 
     match command.lower():
         #* Interacciones personaje
-        case 'register': await character.register(bot,ctx,args)
-        case 'delete_profile': await character.delete_profile(bot,ctx,args)
-        case 'profile': await character.profile(bot, ctx,args)
-        case 'inventory': await character.inventory(bot,ctx,args)
-        case 'config': await character.config(bot,ctx,args)
+        case 'register': pass #await character.register(bot,ctx,args)
+        case 'delete_profile': pass #await character.delete_profile(bot,ctx,args)
+        case 'profile': pass #await character.profile(bot, ctx,args)
+        case 'inventory': pass #await character.inventory(bot,ctx,args)
+        case 'config': await character.config(bot, ctx, args)
 
         #* Interacciones mundo abierto
         case 'travel':pass
@@ -140,3 +182,4 @@ async def wa(ctx, command = 'help', *, args = None):
 
         #* Default
         case _:pass
+        

@@ -106,7 +106,7 @@ s.c version => Shows the Countdowns version
                 embed.set_footer(text = 'Refresh Time: ' + str(60 - time) + 's')
             return embed
 
-        #Dispolay
+        #Display
         msg = await ctx.send(embed=dp())
         for i in range(60):
             await msg.edit(embed=dp(i))

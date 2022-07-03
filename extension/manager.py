@@ -14,7 +14,7 @@ async def setup(b):
 def teardown(bot):
     bot.log.info(f'{version.lower()} unloaded')
 
-version = 'Extensions.Manager: 2.3.3'
+version = 'Extensions.Manager: 2.3.4'
 ename = 'Extensions Manager'
 
 @commands.command()
@@ -74,7 +74,10 @@ async def em(ctx, mode = None, *, args = 'manager'):
                 bot.last_load = args
             except Exception as error:
                 embed.description = f'Error while loading **{args}**\n```{error}```'
-                
+
+        elif mode == 'debug-load':
+            
+            await bot.load_extension(f'extension.{args}')
 
         elif mode == 'unload':
             if args == 'manager':

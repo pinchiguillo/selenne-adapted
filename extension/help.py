@@ -56,6 +56,7 @@ async def dhelp(ctx, args = None):
             helpembed.add_field(name = 'Required Extensions', value = 'discord.py 2.0, youtube_dl, PyNaCl', inline=False)
             helpembed.add_field(name = 'Commands Build-In Checks', value = '[CLick on me!](https://discordpy.readthedocs.io/en/stable/)', inline=False)
             helpembed.add_field(name = 'Mentions', value = 'nickname: `<@​​!{id}>`\nrole: `<@​&{id}>`\nchannel: `<#{id}}`\n`@​everyone`\n`@​here`', inline=False)
+            helpembed.add_field(name = 'SQL reset AUTO_INCREMENT', value = '`alter table nombre_de_la_tabla AUTO_INCREMENT=1;`', inline=False)
             helpembed.add_field(name = 'HyperLiks', value = '''"`[Text To Click](https://www.youtube.com/ \"Hovertext\")`"
 - Needs to be a full url (http/https)
 - Hovertext is optional

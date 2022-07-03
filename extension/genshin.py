@@ -21,6 +21,9 @@ async def setup(b):
     bot.add_command(g)
     bot.add_command(genshin)
 
+    #Listeners
+    bot.add_listener(on_message)
+
     #END
     if bot_version != bot.version: bot.log.warning(f'extension.{version.lower()} outdated')
     bot.log.info(f'extension.{version.lower()} loaded')
@@ -30,7 +33,7 @@ def teardown(bot):
     remove_help()
 
 bot_version = 'Selenne 4.8.6'
-version = 'GenshinTools: 1.3'
+version = 'GenshinTools: 1.4.1'
 ename = 'Genshin Tools'
 
 db_path = 'db/genshin.json'
@@ -75,6 +78,11 @@ async def genshin_core(ctx,mode,args):
         case 'build': await builds(ctx,args)
         case 'news': pass
         case 'code':pass
+        case 'leaks': 
+            leaks_role = discord.utils.get(ctx.guild.roles, name=db['leaks'][str(ctx.guild.id)]['role'])
+            await ctx.author.add_roles(leaks_role, reason='used s.g leaks')
+            ch_id = db['leaks'][str(ctx.guild.id)]['channel']
+            await ctx.reply(f'Ya puedes ver los leaks en <#{ch_id}>')
         
         case None: await ctx.send('Wrong Syntax', delete_after=10)
         case _: await ctx.send('Wrong Syntax', delete_after=10)
@@ -222,3 +230,26 @@ def set_emogi(build):
     build = build.replace('Final del Gladiador', 'Final del Gladiador <:Set_Final_del_Gladiador:982038569113767957>')
 
     return build
+
+
+#! LEAKS
+
+@commands.Cog.listener()
+async def on_message(message):
+    
+    #? Obtener Leaks y publicar
+    if message.guild.id == 981601237562716180 and message.channel.id == 992042941537329163:
+        leak = message.content.replace('@Leaks Ping', '')
+
+        imgs = list()
+        for element in message.attachments:
+            imgs.append(await element.to_file())
+
+
+        #Load guilds
+        load_db()
+        for guild in db['leaks'].keys():
+            g = await bot.fetch_guild(int(guild))
+            ch = await g.fetch_channel(db['leaks'][guild]['channel'])
+            id = db['leaks'][guild]['role']
+            await ch.send(f'**Nuevo Leak** ||<@​&{id}>||\n\n{leak}', files=imgs)

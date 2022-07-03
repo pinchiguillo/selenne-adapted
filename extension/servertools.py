@@ -2,6 +2,8 @@ import discord
 from discord.ext import commands
 import json
 
+import datetime
+
 async def setup(b):
     global bot
     bot = b
@@ -22,6 +24,7 @@ async def setup(b):
     bot.add_command(announce)
     bot.add_command(forbid_exclamations)
     bot.add_command(serverinfo)
+    bot.add_command(whois)
 
     #END
     if bot_version != bot.version: bot.log.warning(f'extension.{version.lower()} outdated')
@@ -32,7 +35,7 @@ def teardown(bot):
     remove_help()
 
 bot_version = 'Selenne 4.8.5'
-version = 'ServerTools: 1.0.3'
+version = 'ServerTools: 1.0.4'
 ename = 'Server Tools'
 
 system_path = 'db/system/servers.json'
@@ -167,5 +170,43 @@ async def serverinfo(ctx):
     embed.add_field(name = 'Emogis', value = len(guild.emojis))
     embed.add_field(name = 'Max Members', value = type(guild.max_members))
     embed.add_field(name = 'Nitro Boosters', value = len(guild.premium_subscribers))
+
+    await ctx.send(embed=embed)
+
+@commands.command()
+async def whois(ctx, user:discord.Member = None):
+
+    if user == None:
+        user = ctx.author
+
+    rolesl = list()
+    for role in user.roles:
+      if role.name != '@everyone':
+        rolesl.append(role.mention)
+
+
+    roles = ", ".join(reversed(rolesl))
+
+
+    embed = discord.Embed(title= f'Who is {user}?', colour = bot.color)
+
+    embed.set_thumbnail(url = user.avatar)
+    embed.set_footer(text = f'Requested by - {ctx.author}', icon_url = ctx.author.avatar)
+
+    embed.add_field(name = 'ID:', value = user.id, inline=False)
+    embed.add_field(name = 'Name:', value = user.display_name, inline=False)
+    diff = str(datetime.datetime.now() - user.created_at.replace(tzinfo=None)).split(',')[0]
+    embed.add_field(name = 'Created at:', value = f'{user.created_at.strftime("%d/%m/%Y %H:%M")} ({diff} ago)', inline=False)    #!embed.add_field(name = 'Created at:', value = user.created_at, inline=False)
+    diff = str(datetime.datetime.now() - user.joined_at.replace(tzinfo=None)).split(',')[0]
+    embed.add_field(name = 'Joined at:', value = f'{user.joined_at.strftime("%d/%m/%Y %H:%M")} ({diff} ago)', inline = False)    #!embed.add_field(name = 'Joined at:', value = user.joined_at, inline = False)
+
+    if len(rolesl) > 1:
+        embed.add_field(name = f'Roles: {len(rolesl)} ',value = ''.join([roles]), inline=False)
+    else:
+        embed.add_field(name = f'Roles: 0',value = bot.nullchar, inline=False)
+    
+    embed.add_field(name = 'Top Role:', value = user.top_role.mention, inline=False)
+
+    embed.add_field(name = bot.nullchar, value = bot.nullchar, inline=False)
 
     await ctx.send(embed=embed)

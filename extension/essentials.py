@@ -31,6 +31,7 @@ async def setup(b):
     bot.add_command(bye)
     bot.add_command(reboot)
     bot.add_command(echo)
+    bot.add_command(echos)
     bot.add_command(invite)
     bot.add_command(clear)
 
@@ -80,6 +81,12 @@ async def reboot(ctx):
 @commands.command()
 @commands.has_permissions(administrator=True)
 async def echo(ctx, *, args):
+    await ctx.send(args)
+
+@commands.command()
+@commands.has_permissions(administrator=True)
+async def echos(ctx, *, args):
+    await ctx.message.delete()
     await ctx.send(args)
 
 @commands.command() # OUTDATED

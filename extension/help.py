@@ -79,3 +79,4 @@ If you want to hyperlink a title or set_author, you can use the url kwarg''', in
 'https://www.upgrad.com/blog/how-to-make-chatbot-in-python/'
 'https://www.youtube.com/watch?v=c_gXrw1RoKo'
 
+#! FILTER https://discordpy.readthedocs.io/en/stable/ext/commands/api.html#discord.ext.commands.Greedy

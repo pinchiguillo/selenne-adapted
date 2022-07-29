@@ -1,2 +1,0 @@
-Durante esta semana desde el equipo de desarrollo de Selenne nos hemos dedicado a solucionar algunos bugs dentro del bot.
-Tambien se ha creado ya una base de datos del ultimo mensaje mandado por un usuario para asi en un futuro proximo implementar una funcion de expulsion por AFK. Esta caracteristica podra ser desactivada en un futuro pero por ahora esa opccion no esta disponible, sentimos las molestias.

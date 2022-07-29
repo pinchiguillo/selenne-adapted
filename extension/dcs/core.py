@@ -2,15 +2,12 @@ import discord
 from discord.ext import commands
 import json
 
-import dcs.sqltools
-
-#!
+#?
 async def setup(b):
     global bot
     bot = b
-
+    
     #? StartUp Functions
-    connect()
 
     #? Load Help
     #add_help()
@@ -20,7 +17,7 @@ async def setup(b):
     
     #? Add Listener
     #bot.add_listener(on_message)
-    
+
     #? Check Bot Version and Log
     bv = list(bot.version)
     b_v = list(bot_version)
@@ -30,20 +27,17 @@ def teardown(bot):
     bot.log.info(f'extension.{_version.lower()} unloaded')
     remove_help()
 
-    disconnect()
-
 #! Extension Data
-bot_version = 'Selenne 5.1'
+bot_version = 'Selenne 5.0'
 version = 'Alfa'
-name = 'SQL Core'
+name = 'Extension Teemplate'
 
-_version = name.replace(' ', '.')
-_version = f'{name.lower()}: {version}'
+_version = name.replace(' ', '')
+_version = f'{_version.lower()}: {version}'
 
-#! Databases
-db_type = '$json'
+#! Databases - JSON
 system_path = 'db/system/servers.json'
-db_path = 'db/system/sql.json'
+db_path = system_path #!PATH
 def load_db():
     with open(db_path, 'r', encoding='utf-8') as f:
         global db
@@ -59,6 +53,10 @@ def server_db(ctx, mode = 'load', database = None):
     elif mode == 'unload':
         with open(system_path, 'w', encoding='utf-8') as f:
             json.dump(database, f, indent=5, ensure_ascii = False)
+
+#! Databases - SQL
+#db = bot.database
+#db.database = ''
 
 #! HELP
 extension_help = {
@@ -80,12 +78,27 @@ def remove_help():
     with open('db/system/help.json', 'w', encoding='utf-8') as f:
         json.dump(help_list, f, indent=5, ensure_ascii= False)
 
-def connect():
-    bot.database = dcs.sqltools.DataBase(file=db_path)
+#! Commands
+@commands.command()
+async def extension(ctx, args = None):
+    #DEV SERVER
     try:
-        bot.database.connect()
-        bot.log.info('SQLCORE: Database connected')
-    except Exception as error: bot.log.error(f'SQLCORE: {error}')
-def disconnect():
-    bot.database.disconnect()
-    bot.log.info('SQLCORE: Database disconected')
+        if not ctx.guild.id in bot.dev_servers: return
+    except AttributeError: return
+    #DEV SERVER
+    #
+
+#! Listeners
+@commands.Cog.listener()
+async def on_message(message):
+    #DEV SERVER
+    try:
+        if not message.guild.id in bot.dev_servers: return
+    except AttributeError: return
+    #DEV SERVER
+    #
+
+#! Defautl Cog
+class Default_cog(commands.cog):
+    def __init__(self, bot):
+        self.bot = bot

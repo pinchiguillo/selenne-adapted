@@ -2,13 +2,13 @@ import discord
 from discord.ext import commands
 import json
 
-#!
+#?
 async def setup(b):
     global bot
     bot = b
-
-    #? StartUp Functions
     
+    #? StartUp Functions
+
     #? Load Help
     #add_help()
 
@@ -28,17 +28,16 @@ def teardown(bot):
     remove_help()
 
 #! Extension Data
-bot_version = 'Selenne 5.2'
+bot_version = 'Selenne 5.0'
 version = 'Alfa'
 name = 'Extension Teemplate'
 
-_version = name.replace(' ', '.')
-_version = f'{name.lower()}: {version}'
+_version = name.replace(' ', '')
+_version = f'{_version.lower()}: {version}'
 
-#! Databases
-db_type = '$json'
+#! Databases - JSON
 system_path = 'db/system/servers.json'
-db_path = system_path
+db_path = system_path #!PATH
 def load_db():
     with open(db_path, 'r', encoding='utf-8') as f:
         global db
@@ -98,3 +97,8 @@ async def on_message(message):
     except AttributeError: return
     #DEV SERVER
     #
+
+#! Defautl Cog
+class Default_cog(commands.cog):
+    def __init__(self, bot):
+        self.bot = bot

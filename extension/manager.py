@@ -2,6 +2,8 @@ import discord
 from discord.ext import commands
 import json
 
+from extension.help import help_module
+
 async def setup(b):
     global bot
     bot = b
@@ -27,12 +29,12 @@ def teardown(bot):
     remove_help()
 
 # Extension Data
-bot_version = 'Selenne 5.1-PRE'
-version = '2.4.1'
+bot_version = 'Selenne 5.2'
+version = '2.4.4.e'
 name = 'Extensions Manager'
 
-_version = name.replace(' ', '.')
-_version = f'{name.lower()}: {version}'
+_version = name.replace(' ', '')
+_version = f'{_version.lower()}: {version}'
 
 # Databases
 db_type = '$json'
@@ -81,10 +83,9 @@ def server_db(ctx, mode = 'load', database = None):
         with open(system_path, 'w', encoding='utf-8') as f:
             json.dump(database, f, indent=5, ensure_ascii = False)
 
-
 # Commands
 @commands.command()
-async def em(ctx, mode = None, *, args = 'manager'):
+async def em(ctx, mode = 'help', *, args = 'manager'):
     #Check if autoriced
     if not ctx.author.id in bot.developers:
         await ctx.send('You are not autoriced')
@@ -96,7 +97,7 @@ async def em(ctx, mode = None, *, args = 'manager'):
     #Pre preate embed
     embed = embed=discord.Embed(title = 'Extensions Manager', color=bot.color)
 
-    #! Mode Selector
+    #? Mode Selector
     match mode.lower():
         case 'reload':
             #Find last extension loaded
@@ -114,27 +115,31 @@ async def em(ctx, mode = None, *, args = 'manager'):
                 embed.description = f'**{args}** reloaded'
             except Exception as error:
                 embed.description = f'Error while reloading **{name}**\n```{error}```'
-
         case 'display':
             extensions = ''            
             for extension in list(bot.extensions):
                 tmp = extension.removeprefix('extension.').capitalize()
                 extensions += f'\n- {tmp}'
             
-            embed.description = extensions
-        
+            embed.description = extensions   
         case 'load':
-            try:
-                #Load Extension
+            if '-debug' in args:
+                bot.log.info(f'{_version}: \'-debug\' tag located') #!
+                args = args.replace('-debug', '').removesuffix(' ')
+                bot.log.info(f'{_version}: \'-debug\' tag replaced') #!
                 await bot.load_extension(f'extension.{args}')
-                
-                #Dysplay Msg
-                embed.description = f'**{args}** loaded'
-                
-                bot.last_load = args
-            except Exception as error:
-                embed.description = f'Error while loading **{args}**\n```{error}```'
-
+            else:
+                try:
+                    #Load Extension
+                    await bot.load_extension(f'extension.{args}')
+                    
+                    #Dysplay Msg
+                    embed.description = f'**{args}** loaded'
+                    
+                    bot.last_load = args
+                except Exception as error:
+                    embed.description = f'Error while loading **{args}**\n```{error}```'
+                    bot.log.error(f'Error while loading {args}: {error}')
         case 'unload':
             if f'extension.{args}' in db['extensions']['systematic']:
                 embed.description = f'***{args}*** **cant be unloaded**'
@@ -148,8 +153,8 @@ async def em(ctx, mode = None, *, args = 'manager'):
                     
                 except Exception as error:
                     embed.description = f'Error while unloading **{args}**\n```{error}```'
-
-        case 'help': await ctx.send('ERROR While sending help, use `s.help Extensions Manager`') #! Requires extension.help update
+        case 'help':
+                embed = help_module.add_help(embed, name)
         case 'version' | 'v': embed.description = f'Current version: **{name}: {version}**'
         case 'startup':
             args = list(args.split(' '))
@@ -171,8 +176,7 @@ async def em(ctx, mode = None, *, args = 'manager'):
                             
                             bot.log.error(f'while adding extension.{args[1]} to startup ERROR: {error}')
                     else: 
-                        embed.description = f'{args[1]} alrready in startup'
-                    
+                        embed.description = f'{args[1]} alrready in startup'                  
                 case 'remove':
                     #Comprobar si exsite la extension
                     if f'extension.{args[1]}' in db['extensions']['normal']:
@@ -199,10 +203,11 @@ async def em(ctx, mode = None, *, args = 'manager'):
         case _: 
             embed.description = 'Wrong Syntax, try using `s.help Extensions Manager`'
 
+
     #Send embed to discord
     try:
         await ctx.send(embed=embed)
     except:
-        bot.log.critical(f'WHILE GENERATING EMBED:{embed.description}')
+        bot.log.error(f'WHILE GENERATING EMBED:{embed.description}')
         embed.description = 'Error while sending embed, content saved to log'
         await ctx.send(embed=embed)

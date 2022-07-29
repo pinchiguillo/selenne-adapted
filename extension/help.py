@@ -13,12 +13,12 @@ async def setup(b):
 
     # Add CMD
     #bot.add_command(extension)
-
-    #
-    await bot.add_cog(help_module(bot))
     
     #? Add Listener
     #bot.add_listener(on_message)
+
+    #? Add Cog
+    await bot.add_cog(help_module(bot))
 
     #? Check Bot Version and Log
     bv = list(bot.version)
@@ -30,12 +30,12 @@ def teardown(bot):
     remove_help()
 
 # Extension Data
-bot_version = 'Selenne 5.1'
-version = '1.1'
+bot_version = 'Selenne 5.2'
+version = '2.0.E'
 name = 'Help'
 
-_version = name.replace(' ', '.')
-_version = f'{name.lower()}: {version}'
+_version = name.replace(' ', '')
+_version = f'{_version.lower()}: {version}'
 
 # Databases
 db_type = '$json'
@@ -51,23 +51,30 @@ def save_db():
 
 # HELP
 extension_help = {
-    'general_display': 's.help',
-    'specific_display': {
-        's.help [extension]': 'Displays specific help'
+    'help': {
+        'alias': ['help'],
+        'main': {'s.help': 'to display all Selenne Help'},
+        'full': {
+            's.help': 'Displays all the Selenne Help',
+            's.help [module]': 'Displays a detailed view of the Help of a module'
         }
+
     }
+}
+
 def add_help():
     with open('db/system/help.json', 'r') as f:
         help_list = json.load(f)
-    help_list[name] = extension_help
+    help_list[list(extension_help.keys())[0]] = extension_help[list(extension_help.keys())[0]]
     with open('db/system/help.json', 'w', encoding='utf-8') as f:
         json.dump(help_list, f, indent=5)
 def remove_help():
     with open('db/system/help.json', 'r') as f:
         help_list = json.load(f)
-    del help_list[name]
+    del help_list[list(extension_help.keys())[0]]
     with open('db/system/help.json', 'w', encoding='utf-8') as f:
         json.dump(help_list, f, indent=5, ensure_ascii= False)
+
 def server_db(ctx, mode = 'load', database = None):
     if mode == 'load':
         with open(system_path, 'r', encoding='utf-8') as f:
@@ -82,35 +89,28 @@ class help_module(commands.Cog):
         self.bot = bot
         self.env()
 
-    # Embed generator Function
+    #? Embed generator Function
     def env(self): self.embed = discord.Embed(title = 'Help - Selenne', color = bot.color)
 
-    def get_help(self, extension):
+    #? Global help generator
+    def add_help(embed, extension):
+        load_db()
         if db[extension]['specific_display']:
             try:
                 for key in db[extension]['specific_display'].keys():
-                    self.embed.add_field(name=key, value = db[extension]['specific_display'][key], inline=False)
-                
+                    embed.add_field(name=key, value = db[extension]['specific_display'][key], inline=False)
+                    
             except:
                 return 'Cant found that extension'
         else: return f'{extension} Doesnt have specific help'
+        return embed
 
-    @commands.command
+    #? Commands
+    @commands.command()
     async def help(self, ctx, *, args = None):
-        
-        #Load Help File
-        with open(db_path, 'r', encoding='utf-8') as f:
-            db = json.load(f)
-        
-        if not args:
-            
-            for key in db.keys():
-                self.embed.add_field(name=key, value = db[key]['general_display'], inline=False)
-        
-        else: self.embed.description = self.get_help(args)
-        await ctx.send(embed=self.embed)
+        pass
 
-    @commands.command
+    @commands.command()
     async def dhelp(self, ctx, args = None):
         # Check if the author is authorithed
         if ctx.author.id in bot.developers:

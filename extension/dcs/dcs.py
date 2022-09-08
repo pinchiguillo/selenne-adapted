@@ -3,6 +3,8 @@ from discord.ext import commands
 
 import asyncio
 
+from io import BytesIO
+
 async def setup(b):
     global bot
     bot = b
@@ -166,3 +168,16 @@ async def alist(ctx, typ = None, *, args):
 
     else:
         await ctx.author('**YOU DONT HAVE PERMISSIONS**')
+
+def create_embed(data:dict):
+    embed=discord.Embed(title="Title", description="Description")
+    for key in data.keys():
+        if isinstance(data[key], str):
+            embed.add_field(name=key, value=data[key], inline=False)
+        elif isinstance(data[key], list):
+            val = str()
+            for _val in data[key]:
+                val += f'{_val}\n'
+            embed.add_field(name=key, value=val, inline=False)
+
+    return embed

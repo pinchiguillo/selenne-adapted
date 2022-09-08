@@ -18,6 +18,8 @@ async def setup(b):
     bot.add_command(fechas)
     bot.add_command(encuesta)
     bot.add_command(bitcheck)
+    bot.add_command(pisa83)
+    bot.add_listener(on_member_join)
 
 
 def teardown(bot):
@@ -242,3 +244,18 @@ async def encuesta(ctx):
         
 
     await ctx.send(embed=_embed, view=VoteView())
+
+@commands.command()
+async def pisa83(ctx):
+    embed=discord.Embed(title="Bon Dia", description="Ha entrado usted en nuestro servidore pase bona tarde", color=0xdf942a)
+    embed.set_image(url='https://c.tenor.com/bcsxIQ9v_AIAAAAC/darkness-konosuba.gif')
+    await ctx.send(embed=embed)
+
+@commands.Cog.listener()
+async def on_member_join(member):
+    if not member.guild.id == 890329598565429299: return
+
+    embed=discord.Embed(title = 'Bon Dia', description = f'{member.mention} ha entrado usted en nuestro servidore pase bona tarde', color=0xdf942a)
+    embed.set_image(url='https://c.tenor.com/bcsxIQ9v_AIAAAAC/darkness-konosuba.gif')
+    await member.guild.get_channel(1012502968593023006).send(embed=embed)
+    await member.add_roles(discord.utils.get(member.guild.roles, name="Campesino"), reason='Default Role')

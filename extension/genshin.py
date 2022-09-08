@@ -38,8 +38,8 @@ ename = 'Genshin Tools'
 
 db_path = 'db/genshin.json'
 
-colours = {'electro':0xb328c1, "cryo":0x1dbacb, "hydro":0x0074e8, "geo":0xd09917, "anemo":0x0bddb3, "pyro":0xe26f05}
-elements = {'electro':'<:elemento_electro:982576510890311720> ', "cryo":'<:elemento_cryo:982576511360045086>', "hydro":'<:elemento_hydro:982576510760267816>', "geo":'<:elemento_geo:982576510965792778>', "anemo":'<:elemento_anemo:982576511297138748>', "pyro":'<:elemento_pyro:982576510160502804>'}
+colours = {'electro':0xb328c1, "cryo":0x1dbacb, "hydro":0x0074e8, "geo":0xd09917, "anemo":0x0bddb3, "pyro":0xe26f05, "dendro":0x1cb041}
+elements = {'electro':'<:elemento_electro:982576510890311720> ', "cryo":'<:elemento_cryo:982576511360045086>', "hydro":'<:elemento_hydro:982576510760267816>', "geo":'<:elemento_geo:982576510965792778>', "anemo":'<:elemento_anemo:982576511297138748>', "pyro":'<:elemento_pyro:982576510160502804>', "dendro": "<:elemento_dendro:982576511435538483>"}
 
 #HELP
 def add_help():

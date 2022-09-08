@@ -89,7 +89,7 @@ async def announce(ctx, *, args = None):
     send_btn.callback = send_callback
     del_btn.callback = del_callback
 
-    view = discord.ui.View()
+    view = discord.ui.View(timeout = 600)
     view.add_item(send_btn)
     view.add_item(del_btn)
     
@@ -128,7 +128,7 @@ async def announce(ctx, *, args = None):
         server_conifg['settings']['announce_config'] = {'format':{'type':'text', 'form':'%msg%'}}
         save_db()
         #Recall the method
-        await announce(ctx, args)
+        await announce(ctx, args=args)
         return
 
 @commands.command()
@@ -181,8 +181,8 @@ async def whois(ctx, user:discord.Member = None):
 
     rolesl = list()
     for role in user.roles:
-      if role.name != '@everyone':
-        rolesl.append(role.mention)
+        if role.name != '@everyone':
+            rolesl.append(role.mention)
 
 
     roles = ", ".join(reversed(rolesl))

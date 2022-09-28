@@ -79,7 +79,7 @@ s.c version => Shows the Countdowns version
     
     if mode == 'display':
         #Load DB
-        with open(db_path, 'r') as f:
+        with open(db_path, 'r', encoding='UTF-8') as f:
             db = json.load(f)
         db_keys = list(db.keys())
         

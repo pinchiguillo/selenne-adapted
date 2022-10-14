@@ -79,6 +79,14 @@ async def on_message(message):
             await msg.delete()
             return
         
+        with open(picklib_db + 'log.dat', 'r', encoding='utf-8') as f:
+            if f'{message.content}\n' in f.readlines():
+                msg = await message.reply('Link Alrready in db')
+                await asyncio.sleep(5)
+                await message.delete()
+                await msg.delete()
+                return
+
         with open(picklib_db + 'brute.dat', 'r', encoding='utf-8') as f:
             if f'{message.content}\n' in f.readlines():
                 msg = await message.reply('Link Alrready in db')

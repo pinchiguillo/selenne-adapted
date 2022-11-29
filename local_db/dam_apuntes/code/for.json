@@ -1,0 +1,15 @@
+{
+    "footer": {
+        "text": "Apuntes creados por pinchiguillo"
+    },
+    "fields": [
+        {
+            "inline": false,
+            "name": "Condicion",
+            "value": "Dentro de los parentesis del for se crea la variable, se define la condicion y opcionalmente se realiza una accion.\nEjemplo:```for (int i; i < 10; i++) {}```Este ejemplo ejecutaria el codigo 10 veces."
+        }
+    ],
+    "type": "rich",
+    "description": "Los bucles son una herramienta inprescindible a la hora de programar ya que nos permite repetir tareas una cantidad indeterminada de veces sin repetir codigo. El for es un bucle que no requiere de inicializar las variables antes, a costa de esto solo puede haber una condicion. Este tipo de blucles se suele utilizar para itinerar. ```for (crear variable; condicion; contador) {}```",
+    "title": "Java - Bucles: For"
+}

@@ -1,0 +1,28 @@
+{
+    "footer": {
+        "text": "Apuntes creados por pinchiguillo"
+    },
+    "author": {
+        "name": "pinchiguillo"
+    },
+    "fields": [
+        {
+            "inline": false,
+            "name": "<!DOCTYPE html>",
+            "value": "Esto especifica que es un documento HTML, aunque aparentemente es inutil, es de vital importancia cuando se utiliza en conjunto con otros lenguajes como PHP"
+        },
+        {
+            "inline": false,
+            "name": "<head>",
+            "value": "Contiene toda la informacion invisible para el usuario\n<meta> aporta principalmente informacion\n<link> se utiliza para hacer referencias a fuentes extermnas asi como hojas de estilos"
+        },
+        {
+            "inline": false,
+            "name": "<body>",
+            "value": "Dentro del body se introducen todos los elementos que van a ser visibles (o deberian serlo). El body normalmente es dividido por tags <div>"
+        }
+    ],
+    "type": "rich",
+    "description": "En HTML se sigue una estructura de cabeza (elementos para informar al navegador de la estructura, y por lo tanto invisibles) y un cuerpo que contiene todo lo que aparecera en pantalla```<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n\t<meta charset=\"UTF-8\">\n\t<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n\t<title>Document</title>\n</head>\n<body>\n\t<h1>Hola Mundo</h1> \n</body>\n</html>```",
+    "title": "HTML - Estructura"
+}

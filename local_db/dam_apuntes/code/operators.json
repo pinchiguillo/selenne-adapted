@@ -1,0 +1,35 @@
+{
+    "footer": {
+        "text": "Apuntes creados por pinchiguillo"
+    },
+    "fields": [
+        {
+            "inline": false,
+            "name": "Operadores de asignación",
+            "value": "Es el más sencillo de utilizar, su símbolo es el “**=**” y le asigna un valor a una variable\n**NO CONFUNDIR CON '=='**"
+        },
+        {
+            "inline": false,
+            "name": "Operadores aritméticos",
+            "value": "Son los operadores con los cuales realizamos operaciones aritméticas como la suma (+), resta (-), multiplicación (*), división (/), y resto (%)."
+        },
+        {
+            "inline": false,
+            "name": "Operadores unarios",
+            "value": "Estos operadores se utilizan para incrementar (++), decrementar(--) un valor.\n\nComúnmente empleados en los bucles iterativos o sentencias repetitivas donde una variable tiene que incrementar o disminuir un valor, ++ aumentará el valor en 1, -- disminuirá el valor en 1.\n\nEspecial atención al utilizar los operadores unarios de decremento(++) e incremento(--), ya que cambian la operación si son ubicados como prefijo o como sufijo.\n\nComo prefijo el valor se incrementa/decrementa primero y luego se calcula el resultado\n\nComo sufijo el valor se usa primero para calcular el resultado, luego se incrementa/decrementa\n**Usar dentro de los bucles en vez de n += 1**"
+        },
+        {
+            "inline": false,
+            "name": "Operadores de igualdad y relacionales",
+            "value": "Los operadores de igualdad y relacionales son aquellos con los que realizamos comparaciones entre datos compatibles, que pueden ser numéricos, carácter o booleanos.\nu resultado siempre va a ser booleano, verdadero o falso.\n\n```== igual que\t5 == 3\tresultado\tfalse\n!= distinto que\t5 != 3\tresultadotrue\n< menor que\t5 < 3\tresultado\tfalse\n> mayor que\t5 > 3\tresultado\ttrue\n<= menor igual\t5 <=  5\tresultado\ttrue\n>= mayor igual\t5 >=  6\tresultado\tfalse```"
+        },
+        {
+            "inline": false,
+            "name": "Operadores de lógica",
+            "value": "La lógica es fundamental en la programación, por lo tanto Java también tiene para ofrecernos operadores lógicos o booleanos.\n\nEstos operadores se utilizan sobre datos tipo bool y devuelven como resultado True o False.\n\n```&&  AND -> si todas las expresiones que se analizan son verdaderas,\nel resultado será verdadero.\n \n|| OR  ->  el resultado será verdadero si al menos una de las expresiones lo es.\n\n! NOT -> dará como resultado la negación o inversión de la expresión lógica```"
+        }
+    ],
+    "type": "rich",
+    "description": "Los tipos de datos en la mayoria de los lenguajes de programación se dividen en primitivos y complejos.",
+    "title": "Java - Operadores"
+}

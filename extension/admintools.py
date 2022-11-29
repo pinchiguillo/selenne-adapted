@@ -1,136 +1,58 @@
+import sys
+sys.dont_write_bytecode = True
+
+import Selenne
+
 import discord
 from discord.ext import commands
-import re
+from discord import app_commands
+from typing import Optional
 
-async def setup(b):
-    global bot
-    bot = b
-    if bot_version != bot.version: bot.log.warning(f'extension.{version.lower()} outdated')
-    bot.log.info(f'extension.{version.lower()} loaded')
+import datetime
 
-    bot.add_command(at)
+__EXTENSION_NAME__ = 'Admin Tools'
 
-    bot.add_command(mute)
-    bot.add_command(unmute)
-    bot.add_command(private)
-
-    bot.add_command(mute_)
-
-def teardown(bot):
-    bot.log.info(f'extension.{version.lower()} unloaded')
-
-bot_version = 'Selenne 4.8.5'
-version = 'AdminTools: Alfa'
-ename = 'AdminTools'
-
-@commands.command()
-async def at(ctx, args = None):
-    if 'help' in args:
-        await ctx.send('Not Setup')
-    else:
-        await ctx.send(f'Current Version: **{version}**')
-
+#? Configuration
+async def setup(bot:Selenne.Core):
+    bot.logger.info('{} loaded'.format(__EXTENSION_NAME__))
     
-@commands.command()
-@commands.has_permissions(manage_messages=True)
-async def mute(ctx, member: discord.Member, *, reason=None):
-    guild = ctx.guild
-    mutedRole = discord.utils.get(guild.roles, name="Muted")
+    await bot.add_cog(AdminTools_cog(bot))
 
-    if not mutedRole:
-        mutedRole = await guild.create_role(name="Muted")
+    #await bot.tree.sync()
 
-        for channel in guild.channels:
-            await channel.set_permissions(mutedRole, speak=False, send_messages=False, read_message_history=True, read_messages=False)
+async def teardown(bot:Selenne.Core): bot.logger.info('{} unloaded'.format(__EXTENSION_NAME__))
 
-    embed = discord.Embed(title = 'Mutted Member', description=f"{member.mention} was muted by {ctx.author.mention}", colour=bot.color)
-    embed.add_field(name="reason:", value=reason, inline=False)
+#! Extension Code
 
-    await ctx.send(embed=embed)
-    await member.add_roles(mutedRole, reason=reason)
-    #await member.send(f" you have been muted from: {guild.name} reason: {reason}")
+#? Sample
+class AdminTools_cog(commands.Cog):
+    def __init__(self, bot:Selenne.Core):
+        self.bot = bot
 
-@commands.command(description="Unmutes a specified user.")
-@commands.has_permissions(manage_messages=True)
-async def unmute(ctx, member: discord.Member):
-    mutedRole = discord.utils.get(ctx.guild.roles, name="Muted")
+    @discord.app_commands.command(name = 'timeout')
+    @discord.app_commands.checks.has_permissions(manage_messages = True)
+    @app_commands.choices(time=[
+        discord.app_commands.Choice(name = '60 segundos', value = 1),
+        discord.app_commands.Choice(name = '5 minutos', value = 2),
+        discord.app_commands.Choice(name = '1 hora', value = 3),
+        discord.app_commands.Choice(name = '1 dia', value = 4),
+        discord.app_commands.Choice(name = '1 semana', value = 5),
+    ])
+    @discord.app_commands.default_permissions(moderate_members=True)
+    @discord.app_commands.describe(
+        user = 'The user that will have a timeout',
+        reason = 'Reason of the timeout'
+    )
+    async def admintools_timeout(self, interaction: discord.Interaction, user: discord.Member, reason:str, time: discord.app_commands.Choice[int]):
+        """Puts an user a timeout and sends a message"""
 
-    await member.remove_roles(mutedRole)
-    #await member.send(f" you have unmutedd from: - {ctx.guild.name}")
-    embed = discord.Embed(title="Unmuted Member", description=f" {member.mention} is unmuted",colour=bot.color)
-    await ctx.send(embed=embed)
+        match time.value:
+            case 1: i_time = datetime.timedelta(minutes=1)
+            case 2: i_time = datetime.timedelta(minutes=5)
+            case 3: i_time = datetime.timedelta(hours=1)
+            case 4: i_time = datetime.timedelta(days=1)
+            case 5: i_time = datetime.timedelta(days=7)
 
- 
-@commands.command() #OUTDATED
-##@commands.has_role(root_role)
-async def private(ctx, auth : discord.Member, *, body):
-    #l_ch = bot.get_channel(log_ch)
-    await auth.send(body)
-    embed=discord.Embed(title = 'Mensaje Privado Enviado', description = f'{ctx.author.mention} envio un mensaje privado', color=0xff0088)
-    embed.add_field(name = 'User', value = str(auth), inline=False)
-    embed.add_field(name = 'Message', value = str(body), inline=False)
-
-
-####################################################################################################################################################################################
-@commands.command()
-@commands.has_permissions(manage_messages=True)
-async def _mute(ctx, member: discord.Member):
-    pass
-
-#This should be at your other imports at the top of your code
-import asyncio
-
-@commands.command()
-@commands.has_permissions(manage_messages=True)
-async def mute_(ctx, user : discord.Member, duration = 0,*, unit = None):
-
-    mutedRole = discord.utils.get(ctx.guild.roles, name="Muted")
-
-    if not mutedRole:
-        mutedRole = await ctx.guild.create_role(name="Muted")
-
-        for channel in ctx.guild.channels:
-            await channel.set_permissions(mutedRole, speak=False, send_messages=False, read_message_history=True, read_messages=False)
-
-    await ctx.send(f":white_check_mark: Muted {user} for {duration}{unit}")
-    await user.add_roles(mutedRole)
-    if unit == "s":
-        wait = 1 * duration
-        await asyncio.sleep(wait)
-    elif unit == "m":
-        wait = 60 * duration
-        await asyncio.sleep(wait)
-    await user.remove_roles(mutedRole)
-    await ctx.send(f":white_check_mark: {user} was unmuted")
-
-
-#
-time_regex = re.compile("(?:(\d{1,5})(h|s|m|d))+?")
-time_dict = {"h":3600, "s":1, "m":60, "d":86400}
-
-class TimeConverter(commands.Converter):
-    async def convert(self, ctx, argument):
-        args = argument.lower()
-        matches = re.findall(time_regex, args)
-        time = 0
-        for v, k in matches:
-            try:
-                time += time_dict[k]*float(v)
-            except KeyError:
-                raise commands.BadArgument("{} is an invalid time-key! h/m/s/d are valid!".format(k))
-            except ValueError:
-                raise commands.BadArgument("{} is not a number!".format(v))
-        return time
-
-
-@commands.command()
-@commands.has_permissions(manage_roles=True)
-async def _mute_(self, ctx, member:discord.Member, *, time:TimeConverter = None):
-    """Mutes a member for the specified time- time in 2d 10h 3m 2s format ex:
-    &mute @Someone 1d"""
-    role = discord.utils.get(ctx.guild.roles, name="Muted")
-    await member.add_roles(role)
-    await ctx.send(("Muted {} for {}s" if time else "Muted {}").format(member, time))
-    if time:
-        await asyncio.sleep(time)
-        await member.remove_roles(role)
+        await user.timeout(i_time, reason=reason)
+        await interaction.response.send_message('{} has been muted'.format(user.mention), ephemeral=True)
+        await interaction.channel.send('*{} ha sido aislado durante {} por {}*'.format(user.mention, time.name, reason))

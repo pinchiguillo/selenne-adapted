@@ -1,0 +1,17 @@
+{
+    "releases": {
+        "Selenium 5.4b.268i": "Added to *expansions* and *releases* dynamic updates",
+        "Selenium 5.4b.267i": "Added the ***Releases*** button to `/stats`",
+        "Selenium 5.4b.266i": "Updated the `/stats` command with info about the Bot Releases\nAdded to `/stats` the message count"
+    },
+    "expansions": {
+        "XPRoles":"80% (Xp can be gained, but roles cant be added)",
+        "Economy": "10%",
+        "Anti AFK": "25%",
+        "APIS2": "90% (Needs adaptation to newest version)",
+        "Minigames": "90% (Needs adaptation to newest version)",
+        "RPG-Game": "Not Started",
+        "Essentials": "66%",
+        "Media Downloaders": "21%"
+    }
+}

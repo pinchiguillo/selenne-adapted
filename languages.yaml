@@ -1,0 +1,10 @@
+version: Alfa
+
+es-ES:
+  online: Ya vuelvo a estar conectada
+  stats-description: '**Version**: ***{0}*** - Bot Desarrollado por DCS'
+  stats-users: Usuarios
+  stats-servers: Servidores
+  stats: Stadisticas
+  stats-bot: "**Cumpleaños**: *{}*\n**Version***: *{}*\n**Owner**: ***{}***"
+  stats-stats: "**Nodo**: ***{}***\n**Servidores**: `{}`\n**Usuarios**: `{}`\n**Mensajes leidos**: *No disponible*"

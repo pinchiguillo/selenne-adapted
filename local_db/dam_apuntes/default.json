@@ -1,0 +1,18 @@
+{
+    "footer": {
+        "text": "Apuntes creados por pinchiguillo"
+    },
+    "author": {
+        "name": "pinchiguillo"
+    },
+    "fields": [
+        {
+            "inline": false,
+            "name": "a",
+            "value": "a"
+        }
+    ],
+    "type": "rich",
+    "description": "texto",
+    "title": "Java - "
+}

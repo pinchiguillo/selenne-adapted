@@ -1,0 +1,33 @@
+{
+    "footer": {
+        "text": "Apuntes creados por pinchiguillo"
+    },
+    "author": {
+        "name": "pinchiguillo"
+    },
+    "fields": [
+        {
+            "inline": false,
+            "name": "Lenguaje de marcas",
+            "value": "En HTML se utilizan numerosas marcas para aplicar estilos o propedades a lo que aparecera en pantalla ```<nombre atributo1 atributo2=\"\">Texto</nombre>```o```<nombre atributo1 atributo2=\"\"/>```"
+        },
+        {
+            "inline": false,
+            "name": "Syntaxis",
+            "value": "Toda marca de html debe ser cerrada, y por conevenio utilizamos un indent para las etiquetas que se encuentran dentro de otras"
+        },
+        {
+            "inline": false,
+            "name": "Cualquier cosa puede estar dentro de una etiqueta",
+            "value": "Dentro de las etiquetas puede haber mas etiquetas, y no hay limite para ello. Es decir puedes poner una tabla dentro de una tabla y esa tabla tiene una imagen dentro, o un link..."
+        },
+        {
+            "inline": false,
+            "name": "a",
+            "value": "a"
+        }
+    ],
+    "type": "rich",
+    "description": "HTML o *Hypertext Markup Language* es un lenguaje orientado al diseño de paginas web, aunque hoy en dia numerosos Frameworks se han adaptado par autilizarlo tambien con aplicaciones.",
+    "title": "HTML - Introduccion"
+}

@@ -1,0 +1,6 @@
+Database:
+  Credentials:
+    Username: Selenium
+    Password: REDACTED_DB_PASSWORD
+    Host: localhost
+    Database: selenium

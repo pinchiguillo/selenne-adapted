@@ -1,0 +1,48 @@
+#! Bot data
+name: Selenne
+version: Selenium 5 (Block Version)
+prefix: s.
+TOCKEN: REDACTED_DISCORD_TOKEN
+
+owner: pinchiguillo
+owner_id: 000000000000000000
+warn_on_ready: False
+
+#! Visible Config
+description: Selenne
+activity: DCS
+status: OwO
+
+color: 0xfe2a9b
+colours:
+  red: blue
+
+#! Bases de datos
+databases:
+  host: localhost
+  username: root
+  password: 
+  database: selenium
+    
+#! Extensions
+extensions:
+  - extension.sync_tools
+  - extension.stats
+  - extension.essentials
+  - extension.promocode
+  - extension.dam_tools
+  - extension.dcs
+  - extension.db_sync
+  - extension.leveling_roles
+  - extension.economy
+  - extension.configuration
+  #- extension.guild_manager
+  - extension.admintools
+  #- extension.leveling_roles
+  #- extension.help
+  #- extension.config
+  #- extension.embedgenerator
+  #- extension.epic_welcomes
+  #- extension.role_leveling
+  #- extension.musicplayer
+  #- extension.admintools

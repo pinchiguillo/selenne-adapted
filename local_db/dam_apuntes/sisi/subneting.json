@@ -1,0 +1,38 @@
+{
+    "footer": {
+        "text": "Apuntes creados por pinchiguillo"
+    },
+    "author": {
+        "name": "pinchiguillo"
+    },
+    "fields": [
+        {
+            "inline": false,
+            "name": "2 Subredes Clase C",
+            "value": "**MASCARA**: 255.255.255.128\n**RED**:\n\t192.168.1.0\n\t192.168.1.128\n**BROADCAST**:\n\t192.168.1.127\n\t192.168.1.255"
+        },
+        {
+            "inline": false,
+            "name": "4 Subredes Clase C",
+            "value": "**MASCARA**: 255.255.255.192\n**RED**:\n\t192.168.1.0\n\t192.168.1.128\n**BROADCAST**:\n\t192.168.1.127\n\t192.168.1.255"
+        },
+        {
+            "inline": false,
+            "name": "2 Subredes Clase B",
+            "value": "**MASCARA**: 255.255.128.0\n**RED**:\n\t192.168.0.0\n\t192.168.128.0\n**BROADCAST**:\n\t192.168.127.255\n\t192.168.255.255"
+        },
+        {
+            "inline": false,
+            "name": "Truco",
+            "value": "Si son 2 subredes 255/2, si son 4 255/4 y el resultado es el brodcast *192.168.1.resultado* (192.168.1.0). Para la red se pone *192.168.1.resultado* (192.168.1.0)y dos veces este (192.168.128.0).\nEl broadcast *192.168.1.el doble (triple, cuatruple...) del resultado -1* (192.168.1.127)"
+        },
+        {
+            "inline": false,
+            "name": "IMPORTANTE",
+            "value": "Solo pueden ser 2, 4, 8, 16... subredes. Si por ejemplo quieres 5, tendrias que coger el proximo, es decir 8."
+        }
+    ],
+    "type": "rich",
+    "description": "El subneting es dividir las direcciones ip de una red en grupos destinando bits a la identificacion de esta.",
+    "title": "Sistemas Informaticos - Subneting"
+}

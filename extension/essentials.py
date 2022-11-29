@@ -1,112 +1,149 @@
+import sys
+sys.dont_write_bytecode = True
+
+import Selenne
+
 import discord
 from discord.ext import commands
+from discord import app_commands
+from typing import Optional
 
-import os
-import json
+import datetime
 
-async def setup(b):
-    global bot
-    bot = b
-    if bot_version != bot.version: bot.log.warning(f'extension.{version.lower()} outdated')
-    bot.log.info(f'extension.{version.lower()} loaded')
+__EXTENSION_NAME__ = 'Essentials'
 
-    global extension_help
+#? Configuration
+async def setup(bot:Selenne.Core):
+    bot.logger.info('{} loaded'.format(__EXTENSION_NAME__))
+    global color
     
-    extension_help = {
-        'general_display': 'use **s.help Essentials** for more info',
-        'specific_display': {
-            's.ping': 'Makes Selenne send a message back (Only Developers)',
-            's.bye': 'Shutdowns Selenne (Only Onwer)',
-            's.reboot': 'Reboots Selenne (Only Developers)',
-            's.echo [message]': 'Makes Selenne send the message back (Only Administrators)',
-            's.invite [link]': 'Sends a saved invitation, if a link is given saves that link as the server invitation (Saving only for Administrators)',
-            's.clear [amount]': 'Deletes an especific amount of messages, by default 10000 (Only Administrators)'
-            }
-        }
-
-    add_help()
-
-    #ADD CMD
-    bot.add_command(ping)
-    bot.add_command(bye)
-    bot.add_command(reboot)
-    bot.add_command(echo)
-    bot.add_command(echos)
-    bot.add_command(invite)
-    bot.add_command(clear)
-
-
-def teardown(bot):
-    bot.log.info(f'extension.{version.lower()} unloaded')
-    remove_help()
-
-bot_version = 'Selenne 4.8.6'
-version = 'Essentials: 1.2'
-ename = 'Essentials'
-
-#HELP
-def add_help():
-    with open('db/system/help.json', 'r') as f:
-        help_list = json.load(f)
-    help_list[ename] = extension_help
-    with open('db/system/help.json', 'w', encoding='utf-8') as f:
-        json.dump(help_list, f, indent=5)
-def remove_help():
-    with open('db/system/help.json', 'r') as f:
-        help_list = json.load(f)
-    del help_list[ename]
-    with open('db/system/help.json', 'w', encoding='utf-8') as f:
-        json.dump(help_list, f, indent=5)
-
-@commands.command()
-async def ping(ctx):
-    if ctx.author.id in bot.developers:
-        await ctx.send('Pong')    
-
-@commands.command()
-async def bye(ctx):
-    if ctx.author.id in bot.developers:
-        await ctx.reply('bye!')
-        bot.log.critical(f'{ctx.author.display_name}({ctx.author.id}) Stoped the bot the bot')
-        await bot.close()
-
-@commands.command()
-async def reboot(ctx):
-    if ctx.author.id in bot.developers:
-        await ctx.reply('Rebooting bot...')
-        os.system('start /min bot.bat')
-        bot.log.critical(f'{ctx.author.display_name}({ctx.author.id}) Rebooted the bot the bot')
-        await bot.close()
-
-@commands.command()
-@commands.has_permissions(administrator=True)
-async def echo(ctx, *, args):
-    await ctx.send(args)
-
-@commands.command()
-@commands.has_permissions(administrator=True)
-async def echos(ctx, *, args):
-    await ctx.message.delete()
-    await ctx.send(args)
-
-@commands.command() # OUTDATED
-async def invite(ctx, args = None):
-    with open('db/invitations.json', 'r', encoding='utf-8') as f:
-        db = json.load(f)
+    color = bot.color
     
-    if args and ctx.author.id in bot.developers:
-        db[str(ctx.guild.id)] = args
-        with open('db/invitations.json', 'w', encoding='utf-8') as f:
-            json.dump(db, f, indent=5)
-        await ctx.send('Invitation Saved')
+    await bot.add_cog(Essentials_cog(bot))
+
+    #await bot.tree.sync()
+
+async def teardown(bot:Selenne.Core): bot.logger.info('{} unloaded'.format(__EXTENSION_NAME__))
+
+#! Extension Code
+
+class AdminStatsView(discord.ui.View):
+    def __init__(self):
+        super().__init__()
         
-    else:
-        try:
-            if db[str(ctx.guild.id)]: pass
-            await ctx.send(str(db[str(ctx.guild.id)]))
-        except:
-            await ctx.send('Your Guild does not have an invitation use s.invite [invitation]')
+    
+    @discord.ui.button(label = 'AdminStats', style=discord.ButtonStyle.danger)
+    async def apuntes(self, interaction: discord.Interaction, button: discord.ui.Button):
+        if interaction.user.resolved_permissions.administrator:
+            
+            embed=discord.Embed(title = 'Advanced Server Stats', description = '''**Stats of the last 7 days**
+**Messages**: `Not Avilable`
+**New Members**: `Not Avilable`
+**Different Comunicators**: `Not Avilable`
+''', color=color)
 
-@commands.command()
-async def clear(ctx, ammount = 10000):
-	await ctx.channel.purge(limit = ammount)
+            await interaction.response.send_message(embed=embed, view = None, ephemeral=True)
+        else: await interaction.response.send_message('You cant see this :(', ephemeral=True)
+
+#? Sample
+class Essentials_cog(commands.Cog):
+    def __init__(self, bot:Selenne.Core):
+        self.bot = bot
+
+    @discord.app_commands.command(name = 'serverinfo')
+    @discord.app_commands.describe()
+    async def serverinfo(self, interaction: discord.Interaction):
+        """Shows the server info"""
+
+        guild = interaction.guild
+
+        bots = 0
+        for member in guild.members:
+            if member.bot: bots += 1
+
+        embed = discord.Embed(title = 'ServerInfo', color= self.bot.color)
+        embed.add_field(name = 'Owner', value = guild.owner.mention)
+        embed.add_field(name = 'Creation Date', value = guild.created_at.strftime("%d/%m/%Y"))
+        embed.add_field(name = 'Members', value = len(guild.members))
+        embed.add_field(name = 'Channels', value = len(guild.channels))
+        embed.add_field(name = 'Bots', value = bots)
+        embed.add_field(name = 'Emojis', value = len(guild.emojis))
+        embed.add_field(name = 'Nitro Boosters', value = len(guild.premium_subscribers))
+        
+        embed.set_thumbnail(url = guild.icon.url)
+
+        await interaction.response.send_message(embed=embed, view = AdminStatsView())
+
+    @discord.app_commands.command(name = 'whois')
+    @discord.app_commands.describe(
+        user = 'The user you to get info'
+    )
+    async def whois(self, interaction: discord.Interaction, user:discord.Member):
+        """Tells some interesting information about an user"""
+
+        rolesl = list()
+        for role in user.roles:
+            if role.name != '@everyone':
+                rolesl.append(role.mention)
+
+
+        roles = ", ".join(reversed(rolesl))
+
+
+        embed = discord.Embed(title= f'Who is {user}?', colour = self.bot.color)
+
+        embed.set_thumbnail(url = user.avatar)
+        embed.set_footer(text = f'Requested by - {interaction.user}', icon_url = interaction.user.avatar)
+
+        embed.add_field(name = 'ID:', value = user.id, inline=False)
+        embed.add_field(name = 'Name:', value = user.display_name, inline=False)
+        diff = str(datetime.datetime.now() - user.created_at.replace(tzinfo=None)).split(',')[0]
+        embed.add_field(name = 'Created at:', value = f'{user.created_at.strftime("%d/%m/%Y %H:%M")} ({diff} ago)', inline=False)    #!embed.add_field(name = 'Created at:', value = user.created_at, inline=False)
+        diff = str(datetime.datetime.now() - user.joined_at.replace(tzinfo=None)).split(',')[0]
+        embed.add_field(name = 'Joined at:', value = f'{user.joined_at.strftime("%d/%m/%Y %H:%M")} ({diff} ago)', inline = False)    #!embed.add_field(name = 'Joined at:', value = user.joined_at, inline = False)
+
+        if len(rolesl) >= 1:
+            embed.add_field(name = f'Roles: {len(rolesl)} ',value = ''.join([roles]), inline=False)
+            embed.add_field(name = 'Top Role:', value = user.top_role.mention, inline=False)
+        else:
+            embed.add_field(name = f'Roles: 0',value = self.bot.nullchar, inline=False)
+        
+
+
+        await interaction.response.send_message(embed=embed)
+
+    #!
+    @discord.app_commands.command(name = 'ban')
+    @discord.app_commands.describe(
+        user = 'The user you want to ban',
+        reason = 'The reason of the ban'
+    )
+    async def ban_user(self, interaction: discord.Interaction, user:discord.User, reason: Optional[str] = None):
+        """Ban an user with Selenne logging"""
+        await interaction.response.send_message('Feature not avilable')
+
+    #!
+    @discord.app_commands.command(name = 'kick')
+    @discord.app_commands.describe(
+        user = 'The user you want to kick',
+        reason = 'The reason of the kick'
+    )
+    async def kick_user(self, interaction: discord.Interaction, user:discord.User, reason: Optional[str] = None):
+        """Kick an user with Selenne logging"""
+        await interaction.response.send_message('Feature not avilable')
+
+    @discord.app_commands.command(name = 'echo')
+    @discord.app_commands.default_permissions(manage_messages=True)
+    @discord.app_commands.describe(
+        message = 'The message you want Selenne to say',
+        times = 'The number of times the message will repeat'
+    )
+    async def echo(self, interaction: discord.Interaction, message: str, times: discord.app_commands.Range[int, 1, 10] = 1):
+        """Makes Selenne to repeat a message"""
+        
+        await interaction.response.send_message(f'Okey {interaction.user.mention}', ephemeral=True)
+
+        for _ in range(times):
+            await interaction.channel.send(message)
+
+#! cooldowns, default_permissions

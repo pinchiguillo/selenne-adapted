@@ -1,0 +1,4 @@
+First on "run" type "shell:startup"
+On the folder that will open paste a direct access of Selenne.vbs (will be Selenne.lnk)
+
+NOTE: If you want to see the terminal that Selenne is using paste the Selenne.bat file insteard of Selenne.vbs

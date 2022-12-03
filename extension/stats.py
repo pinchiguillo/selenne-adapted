@@ -11,6 +11,8 @@ from typing import Optional
 __EXTENSION_NAME__ = 'stats'
 
 import json
+import os
+import datetime
 
 #? Configuration
 async def setup(bot:Selenne.Core):
@@ -57,18 +59,8 @@ class ReleasesView(discord.ui.View):
 
         for expansion in data['expansions']:
             embed.add_field(name = expansion, value = data['expansions'][expansion], inline=False)
-        
-       #embed.add_field(name = 'XPRoles', value = '80% (Xp can be gained, but roles cant be added)', inline=False)
-       #embed.add_field(name = 'Economy', value = '10%', inline=False)
-       #embed.add_field(name = 'Anti AFK', value = '25%', inline=False)
-       #embed.add_field(name = 'APIS', value = '90% (Needs adaptation to newest version)', inline=False)
-       #embed.add_field(name = 'Minigames', value = '90% (Needs adaptation to newest version)', inline=False)
-       #embed.add_field(name = 'RPG-Game', value = 'Not Started', inline=False)
-       #embed.add_field(name = 'Essentials', value = '66%', inline=False)
-       #embed.add_field(name = 'Media Downloaders', value = '21%', inline=False)
-       #embed.add_field(name = 'Media Downloaders', value = '21%', inline=False)
 
-        embed.set_footer(text = 'Last update: 29/11/2022')
+        embed.set_footer(text = 'Last update: {}'.format(datetime.datetime.fromtimestamp(os.path.getmtime('releases.json')).strftime('%d/%m/%Y')))
 
         await interaction.response.send_message(embed=embed, ephemeral=True)
 

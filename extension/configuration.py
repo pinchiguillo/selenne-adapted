@@ -33,36 +33,27 @@ class Configuration_cog(commands.Cog):
 
         embed = discord.Embed(title = 'Selenne Configuration Pannel', description = 'Click on the feature that you want to manage.', color = self.bot.color)
 
+        #! ECR = Extra configuration required
         temp_data = {
             'F1': {
                 'enabled': True,
-                'update_on_update': False,
-                'extra_config': {}
+                'ecr': False
+            },
+            'F2': {
+                'enabled': False,
+                'ecr': False
             },
             'F3': {
-                'enabled': False,
-                'update_on_update': True,
-                'extra_config': {}
+                'enabled': True,
+                'ecr': True
             },
             'F4': {
                 'enabled': False,
-                'update_on_update': False,
-                'extra_config': {}
+                'ecr': True
             },
             'F5': {
                 'enabled': True,
-                'update_on_update': False,
-                'extra_config': {}
-            },
-            'F6': {
-                'enabled': False,
-                'update_on_update': False,
-                'extra_config': {}
-            },
-            'F7': {
-                'enabled': False,
-                'update_on_update': False,
-                'extra_config': {}
+                'ecr': False
             },
         }
 
@@ -84,11 +75,24 @@ class ConfigurationView(discord.ui.View):
                 
                 self.__options__ = options
 
+                #! DB
+                ex_data = {
+                    'F4': {},
+                }
+                #! DB
+
                 __options__ = []
 
                 for opt in options:
-                    if options[opt]['enabled']: 
-                        __options__.append(discord.SelectOption(label = opt, emoji='🟩', value = opt))
+                    if options[opt]['enabled']:
+                        if options[opt]['ecr']:
+                            if opt in ex_data.keys(): #! DB Call
+                                __options__.append(discord.SelectOption(label = opt, emoji='🟩', value = opt))
+                            else:
+                                __options__.append(discord.SelectOption(label = opt, emoji='🟧', value = opt))
+
+                        else:
+                            __options__.append(discord.SelectOption(label = opt, emoji='🟩', value = opt))
                     else:
                         __options__.append(discord.SelectOption(label = opt, emoji='🟥', value = opt))
 
@@ -97,12 +101,8 @@ class ConfigurationView(discord.ui.View):
                         
             async def callback(self, interaction: discord.Interaction):
 
-                if self.__options__[self.values[0]]['update_on_update']:
-                    await interaction.response.send_message('PRIVATE CONFIG')
-
-                else:
-                    if self.__options__[self.values[0]]['enabled']: self.__options__[self.values[0]]['enabled'] = False
-                    elif not self.__options__[self.values[0]]['enabled']: self.__options__[self.values[0]]['enabled'] = True
+                if self.__options__[self.values[0]]['enabled']: self.__options__[self.values[0]]['enabled'] = False
+                elif not self.__options__[self.values[0]]['enabled']: self.__options__[self.values[0]]['enabled'] = True
                 
                 await interaction.response.edit_message(view=ConfigurationView(self.__options__))
                     

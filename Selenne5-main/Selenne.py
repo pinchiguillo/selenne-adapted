@@ -37,7 +37,7 @@ class Core(commands.Bot):
     building = True
     SQL = True
     import config
-    #_TOCKEN_LOCK = False
+    #_TOKEN_LOCK = False
     
     def __init__(self):
         #? Check all the bot files

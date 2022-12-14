@@ -115,4 +115,4 @@ async def report_message(interaction: discord.Interaction, message: discord.Mess
     await log_channel.send(embed=embed, view=url_view)
 
 import config
-client.run(config.TOCKEN)
+client.run(config.TOKEN)

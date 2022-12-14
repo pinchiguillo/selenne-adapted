@@ -52,10 +52,11 @@ class Configuration_cog(commands.Cog):
                 'ecr': True
             },
             'F5': {
-                'enabled': True,
+                'enabled': False,
                 'ecr': False
             },
         }
+        
 
         await interaction.response.send_message(embed=embed, view=ConfigurationView(temp_data), ephemeral=True)
 
@@ -87,16 +88,16 @@ class ConfigurationView(discord.ui.View):
                     if options[opt]['enabled']:
                         if options[opt]['ecr']:
                             if opt in ex_data.keys(): #! DB Call
-                                __options__.append(discord.SelectOption(label = opt, emoji='🟩', value = opt))
+                                __options__.append(discord.SelectOption(label = opt, emoji='🟩', description = 'Extension Enabled', value = opt))
                             else:
-                                __options__.append(discord.SelectOption(label = opt, emoji='🟧', value = opt))
+                                __options__.append(discord.SelectOption(label = opt, emoji='🟧', description = 'Missing config to start the extension', value = opt))
 
                         else:
-                            __options__.append(discord.SelectOption(label = opt, emoji='🟩', value = opt))
+                            __options__.append(discord.SelectOption(label = opt, emoji='🟩', description = 'Extension enabled', value = opt))
                     else:
-                        __options__.append(discord.SelectOption(label = opt, emoji='🟥', value = opt))
+                        __options__.append(discord.SelectOption(label = opt, emoji='🟥', description = 'Extension disabled in this server', value = opt))
 
-                super().__init__(placeholder='Features', min_values=1, max_values=1, options=__options__)
+                super().__init__(placeholder='Enable Features', min_values  =1, max_values = 1, options=__options__)
 
                         
             async def callback(self, interaction: discord.Interaction):

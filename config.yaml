@@ -2,7 +2,7 @@
 name: Selenne
 version: Selenium 5 (Block Version)
 prefix: s.
-TOCKEN: REDACTED_DISCORD_TOKEN
+TOKEN: REDACTED_DISCORD_TOKEN
 
 owner: pinchiguillo
 owner_id: 000000000000000000
@@ -36,6 +36,7 @@ extensions:
   - extension.leveling_roles
   - extension.economy
   - extension.configuration
+  - extension.gamedevtools
   #- extension.guild_manager
   - extension.admintools
   #- extension.leveling_roles

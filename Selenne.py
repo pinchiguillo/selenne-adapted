@@ -26,12 +26,14 @@ from discord.ext import commands
 #? 
 
 class Core(commands.Bot): # commands.AutoShardedBot() #! 1000+ Servers
-    VERSION = 'Selenium 5.4b.267d'
+    VERSION = 'Selenium 5.4b.268d'
 
     AUTHOR = 'pinchiguillo'
     log_level = logging.DEBUG
     indents_cfg = discord.Intents.all()
     BIRTH_DAY = '25/5/2021'
+
+    tree_sync = False
 
     #? Error Class
     class Error():
@@ -134,7 +136,7 @@ class Core(commands.Bot): # commands.AutoShardedBot() #! 1000+ Servers
             except Exception as error:
                 self.logger.error(f'{extension} failed to load: {error}')
 
-        #await self.tree.sync() #!New version
+        if self.tree_sync: await self.tree.sync()
 
     async def on_ready(self):
         self.logger.info(f'Bot online using {self.VERSION}')
@@ -172,4 +174,4 @@ class Core(commands.Bot): # commands.AutoShardedBot() #! 1000+ Servers
 
     def boot(self):
         os.system('title Selenne 5 (Block Version)')
-        self.run(self.config['TOCKEN'])
+        self.run(self.config['TOKEN'])

@@ -1,0 +1,11 @@
+Author: 000000000000000000
+
+type: item
+rarity: unike
+
+name: Matrix of Billion Worlds
+description: Una matriz que permite controlar los Mil millones de mundos que coexisten en DSC. De estos mundos el usuario podra extraer tanto energia como conocimiento
+
+requisites: -1 Mental Resistance
+stats:
+  MANA: NULL

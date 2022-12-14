@@ -8,8 +8,8 @@ import json
 # In order to protect important data to be updated to Github files ended in .secure will not be updated #! ONLY IF YOU DONT MODIFY THE .gitignore file
 
 #? Selenne Configuration
-TOCKEN = 'TOCKEN'
-TOCKEN_FILE = 'TOCKEN.secure' #* Optional
+TOKEN = 'TOKEN'
+TOKEN_FILE = 'TOKEN.secure' #* Optional
 
 PREFIX = ['se.', 'Se.'] #* We advise to add the prefix with capitalization beacuse on mobile devices the first letter is usually capitalized
 prefix_database = None #! NOT IN Selenne 5.3
@@ -34,11 +34,11 @@ staff_file = 'db/system/staff.json' #* This file is created on Selenne.setup() i
 
 
 #! Secure vars
-if TOCKEN_FILE:
+if TOKEN_FILE:
     try:
-        with open(TOCKEN_FILE, 'r', encoding='utf8') as f:
-            TOCKEN = f.read()
-    except FileNotFoundError: print(f'Could not found "{TOCKEN_FILE}", using config tocken...')
+        with open(TOKEN_FILE, 'r', encoding='utf8') as f:
+            TOKEN = f.read()
+    except FileNotFoundError: print(f'Could not found "{TOKEN_FILE}", using config token...')
 
 if SQL_FILE:
     try:

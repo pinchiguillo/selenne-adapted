@@ -26,7 +26,7 @@ from discord.ext import commands
 #? 
 
 class Core(commands.Bot): # commands.AutoShardedBot() #! 1000+ Servers
-    VERSION = 'Selenium 5.4b.268d'
+    VERSION = 'Selenium 5.4b.269d'
 
     AUTHOR = 'pinchiguillo'
     log_level = logging.DEBUG

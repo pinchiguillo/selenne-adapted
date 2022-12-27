@@ -120,7 +120,7 @@ class Essentials_cog(commands.Cog):
     )
     async def ban_user(self, interaction: discord.Interaction, user:discord.User, reason: Optional[str] = None):
         """Ban an user with Selenne logging"""
-        await interaction.response.send_message('Feature not avilable')
+        await interaction.response.send_message('Feature not avilable', ephemeral=True)
 
     #!
     @discord.app_commands.command(name = 'kick')
@@ -130,7 +130,7 @@ class Essentials_cog(commands.Cog):
     )
     async def kick_user(self, interaction: discord.Interaction, user:discord.User, reason: Optional[str] = None):
         """Kick an user with Selenne logging"""
-        await interaction.response.send_message('Feature not avilable')
+        await interaction.response.send_message('Feature not avilable', ephemeral=True)
 
     @discord.app_commands.command(name = 'echo')
     @discord.app_commands.default_permissions(manage_messages=True)

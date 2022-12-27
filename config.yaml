@@ -29,16 +29,17 @@ extensions:
   - extension.sync_tools
   - extension.stats
   - extension.essentials
-  - extension.promocode
+  #- extension.promocode
   - extension.dam_tools
-  - extension.dcs
+  #- extension.dcs
   - extension.db_sync
   - extension.leveling_roles
-  - extension.economy
-  - extension.configuration
-  - extension.gamedevtools
+  #- extension.economy
+  #- extension.configuration
+  #- extension.gamedevtools
   #- extension.guild_manager
   - extension.admintools
+  - extension.picklib
   #- extension.leveling_roles
   #- extension.help
   #- extension.config

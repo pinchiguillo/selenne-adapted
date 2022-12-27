@@ -115,14 +115,14 @@ class Create_Game_View(discord.ui.View):
         self.__create__ = create
         super().__init__()
 
-    @discord.ui.button(label = 'Agree', style = discord.ButtonStyle.green, disabled = True)
+    @discord.ui.button(label = 'Agree', style = discord.ButtonStyle.green, disabled = False) #! ENABLE / DISABLE
     async def game_forge_create_btn(self, interaction: discord.Interaction, button: discord.ui.Button):
         match self.__create__:
             case 'game.entity.player.class': 
                 data = {
                     'name': 'None',
                     'description': 'None',
-                    'stats': 'None',
+                    'stats': Game.Entity.Stats(0,0,0,0,0,0,0,0,0,0),
                     'skills': 'None',
                 }
                 embed = Embeds.Class(data)
@@ -229,28 +229,84 @@ class Views():
             async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
                 await interaction.response.send_message('Oops! Something went wrong {}'.format(error), ephemeral=True)
 
-        class Edit_Stats_Modal(discord.ui.Modal, title = 'Crear Cuenta de Forjador'):    
-            name = discord.ui.TextInput(
-                label = 'Nombre',
-                placeholder = '0',
-                required= False,
-            )
-            
-            async def on_submit(self, interaction: discord.Interaction):
-                await interaction.response.send_message('Welcome to the Forge!', ephemeral=True)
+        class Edit_Stats_View(discord.ui.View):
+            def __init__(self, data:dict):
+                self.__data__ = data
+                super().__init__(timeout=300)
 
-            async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
-                await interaction.response.send_message('Oops! Something went wrong {}'.format(error), ephemeral=True)        
+                #? Selector Classes
+
+                class StatSelector(discord.ui.Select):
+                    def __init__(self):
+                                    
+                        options = [
+                            discord.SelectOption(label = 'Vida', emoji='🔲', value = 'game.entity.stat.hp'),
+                            discord.SelectOption(label = 'Defensa', emoji='🔲', value = 'game.entity.stat.def'),
+                            discord.SelectOption(label = 'Resistencia Mental', emoji='🔲', value = 'game.entity.stat.psy'),
+                            discord.SelectOption(label = 'Ataque', emoji='🔲', value = 'game.entity.stat.atk'),
+                            discord.SelectOption(label = 'Estamina', emoji='🔲', value = 'game.entity.stat.stamine'),
+                            discord.SelectOption(label = 'Poder Magico', emoji='🔲', value = 'game.entity.stat.mp'),
+                            discord.SelectOption(label = 'Mana', emoji='🔲', value = 'game.entity.stat.mana'),
+                            discord.SelectOption(label = 'Velocidad', emoji='🔲', value = 'game.entity.stat.vel'),
+                            discord.SelectOption(label = 'Critico', emoji='🔲', value = 'game.entity.stat.critic'),
+                            
+                            ]
+
+                        super().__init__(placeholder='Selecciona una estadistica para editar', min_values=1, max_values=1, options=options)
+
+                                
+                    async def callback(self, interaction: discord.Interaction):
+                        
+                        
+                        await interaction.response.send_modal()
+                            
+                self.add_item(StatSelector())
+
+            @discord.ui.button(label = 'Save', style=discord.ButtonStyle.green, row=1, disabled=False)
+            async def save_stats_btn(self, interaction: discord.Interaction, button: discord.ui.Button):
+                await interaction.response.edit_message(view = Views.Class(self.__data__))
 
         @discord.ui.button(label = 'Edit', style=discord.ButtonStyle.green)
         async def edit(self, interaction: discord.Interaction, button: discord.ui.Button):
             await interaction.response.send_modal(self.Edit_Modal(self.__data__))
 
-        @discord.ui.button(label = 'Edit Stats', style=discord.ButtonStyle.green, disabled=True)
+        @discord.ui.button(label = 'Edit Stats', style=discord.ButtonStyle.green, disabled=False)
         async def edit_stats(self, interaction: discord.Interaction, button: discord.ui.Button):
-            await interaction.response.send_modal(self.Edit_Stats_Modal())
+            await interaction.response.edit_message(view = self.Edit_Stats_View(self.__data__))
         
         @discord.ui.button(label = 'Save', style=discord.ButtonStyle.green)
         async def save(self, interaction: discord.Interaction, button: discord.ui.Button):
             #! SAVE
             await interaction.response.edit_message(view=None)
+
+class Game():
+    class Entity():
+        class Stats():
+            def __init__(self, HP, DEF, PSYTIC, ATK, STAMINA, MP, MANA, VEL, CRITIC_CHANCE, CRITIC_DAMAGE):
+                self.HP = HP
+                self.DEF = DEF
+                self.PSYTIC = PSYTIC
+                self.ATK = ATK
+                self.STAMINA = STAMINA
+                self.MP = MP
+                self.MANA = MANA
+                self.VEL = VEL
+                self.CRITIC_CHANCE = CRITIC_CHANCE
+                self.CRITIC_DAMAGE = CRITIC_DAMAGE
+
+            def __repr__(self) -> str:
+                return f'''HP: {self.HP}
+DEF: {self.DEF}
+PSYTIC: {self.PSYTIC}
+ATK: {self.ATK}
+STAMINA: {self.STAMINA}
+MP: {self.MP}
+MANA: {self.MANA}
+VEL: {self.VEL}
+CRITIC CHANCE: {self.CRITIC_CHANCE}
+CRITIC DAMAGE: {self.CRITIC_DAMAGE}
+'''
+            
+            def to_json(self):
+                return self.__dict__
+                

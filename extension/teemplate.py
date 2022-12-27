@@ -16,8 +16,6 @@ async def setup(bot:Selenne.Core):
     
     #await bot.add_cog(Default_cog(bot))
 
-    #await bot.tree.sync()
-
 async def teardown(bot:Selenne.Core): bot.logger.info('{} unloaded'.format(__EXTENSION_NAME__))
 
 #! Extension Code

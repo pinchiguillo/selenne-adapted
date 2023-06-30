@@ -1,5 +1,5 @@
 #
-#? Selenium 5 (Block version) lauch file
+#? Selenium 5 lauch file
 
 import sys
 sys.dont_write_bytecode

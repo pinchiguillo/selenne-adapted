@@ -5,17 +5,18 @@
         "Selenium 5.4b.267d": "Basic Config Menu Loaded (Not Functional)\nAdded dynamical update to 'Update time' on `/stats` expansions command",
         "Selenium 5.4b.268i": "Added to *expansions* and *releases* dynamic updates",
         "Selenium 5.4b.267i": "Added the ***Releases*** button to `/stats`",
-        "Selenium 5.4b.266i": "Updated the `/stats` command with info about the Bot Releases\nAdded to `/stats` the message count"
+        "Selenium 5.4b.266i": "Updated the `/stats` command with info about the Bot Releases\nAdded to `/stats` the message count",
+        "Selenium 5.5": "Multiple performance improvements, implementation of the latest discord updates at the core level and removal of junk code"
     },
     "expansions": {
-        "Configuration":"15% ",
-        "XPRoles":"80% (Xp can be gained, but roles cant be added)",
-        "Economy": "10%",
-        "Anti AFK": "25%",
-        "APIS2": "90% (Needs adaptation to newest version)",
-        "Minigames": "90% (Needs adaptation to newest version)",
-        "RPG-Game": "1%",
-        "Essentials": "66%",
-        "Media Downloaders": "21%"
+        "Configuration":"15% (Paused)",
+        "XPRoles":"80% (Paused) (Xp can be gained, but roles cant be added)",
+        "Economy": "10% (Paused)",
+        "Anti AFK": "25% (Paused)",
+        "APIS2": "90% (Paused) (Needs adaptation to newest version)",
+        "Minigames": "90% (Paused) (Needs adaptation to newest version)",
+        "RPG-Game": "1% (Paused)",
+        "Essentials": "66% (Paused)",
+        "Media Downloaders": "21% (Paused)"
     }
 }

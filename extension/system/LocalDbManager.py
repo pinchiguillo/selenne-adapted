@@ -23,6 +23,9 @@ __EXTENSION_NAME__ = ''
 async def setup(bot:Selenne.Core):
     bot.logger.info('{} loaded'.format(__EXTENSION_NAME__))
 
+    global selenne
+    selenne = bot
+
     #! Add cog Classes    
     COGS = []
 
@@ -35,6 +38,26 @@ async def teardown(bot:Selenne.Core): bot.logger.info('{} unloaded'.format(__EXT
 if not __EXTENSION_NAME__: __EXTENSION_NAME__ = os.path.splitext(os.path.basename(__file__))[0]
 
 #! Extension Code
+class LocalDB():
+    def __init__(self, name:str) -> None:
+        self.__name__ = name
+        self.__dbp__ = os.path.join(selenne.config.localDB, name)
+        self.tables = []
+
+        if not os.path.exists(self.__dbp__): raise Exception('LocalDB "{}" does not exist'.format(name))
+
+        self.refresh_tables()
+
+    def refresh_tables(self) -> None: 
+        for tbl in os.listdir(self.__dbp__):
+            if tbl.endswith('.tbl'):
+                self.tables.append(tbl.split('.')[0])
+
+    #? Commands
+    def select(self, _from:str, where:str)
+
+    
+
 
 #? Sample
 class Default_Listeners_cog(commands.Cog):

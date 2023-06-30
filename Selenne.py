@@ -25,12 +25,73 @@ from discord.ext import commands
 #? Developed by pinchiguillo
 #? 
 
+#! Missing Config.generate()
+class Config():
+    name:str
+    version:str
+    prefix:str
+    token:str
+    owner:int
+    warn_on_ready:bool
+    description:str
+    activity:str
+    status:str
+    color:int
+    colours:dict[str, int]
+    databases:dict
+    extensions:list
+    localDB:str
+
+    class LoadError(Exception):
+        def __init__(self, filename:str):
+            self.filename = filename
+            self.message = 'Error while loading \'{}\' config file'.format(filename)
+            super().__init__(self.message)
+
+        def __str__(self):
+            return self.message
+
+    def __init__(self, file:str = 'config.yaml') -> None:
+        self.__file__ = file
+        try: self.load()
+        except self.LoadError as e:
+            if input('Generate File? Y/n\n> ').lower() == 'y':
+                self.generate_file()
+                print('File generated in \'{}\''.format(self.__file__))
+                exit()
+
+    
+    def load(self) -> None:
+        with open(self.__file__, 'r', encoding='utf8') as f:
+            self.__config__ = yaml.safe_load(f)
+
+        self.name = self.__config__['name']
+        self.version = self.__config__['version']
+        self.prefix = self.__config__['prefix']
+        self.token = self.__config__['token']
+        self.owner = self.__config__['owner']
+        self.warn_on_ready = self.__config__['warn_on_ready']
+        self.description = self.__config__['description']
+        self.activity = self.__config__['activity']
+        self.status = self.__config__['status']
+        self.color = int(self.__config__['color'], 16)
+        self.colours = self.__config__['colours']
+        self.databases = self.__config__['databases']
+        self.extensions = self.__config__['extensions']
+        self.localDB = self.__config__['LocalDatabase']
+
+    def generate_file(self, as_str:bool = False) -> str|None:
+        string = '''Not Implemented'''
+
+        if as_str: return string
+        with open(self.__file__, 'w', encoding='utf8') as f: f.write(string)
+
 class Core(commands.Bot): # commands.AutoShardedBot() #! 1000+ Servers
-    VERSION = 'Selenium 5.4b.269d'
+    VERSION = 'Selenium 5.5'
 
     AUTHOR = 'pinchiguillo'
     log_level = logging.DEBUG
-    indents_cfg = discord.Intents.all()
+    intents_cfg = discord.Intents.all()
     BIRTH_DAY = '25/5/2021'
 
     tree_sync = False
@@ -45,15 +106,6 @@ class Core(commands.Bot): # commands.AutoShardedBot() #! 1000+ Servers
 
         class CorruptConfig(Exception): 
             def __init__(self): super().__init__('Config file (config.yaml) is corrupted')
-
-        class LanguagesNotFound(Exception): 
-            def __init__(self): super().__init__('Languaje file (language.yaml) not found')
-        
-        class LanguagesLoadFailure(Exception): 
-            def __init__(self): super().__init__('Error while loading language file (language.yaml)')
-
-        class CorruptLanguagesFile(Exception): 
-            def __init__(self): super().__init__('language file (language.yaml) is corrupted')
 
         class CantConnectDatabaseError(Exception): 
             def __init__(self): super().__init__('Error while connecting to databasel')
@@ -70,18 +122,20 @@ class Core(commands.Bot): # commands.AutoShardedBot() #! 1000+ Servers
         self.__node__ = platform.node()
         
         #? Load Config
-        try:
-            with open('config.yaml', 'r', encoding='utf8') as f:
-                self.config = yaml.safe_load(f)
+        try: 
+            self.config = Config('config.yaml')
+            
+            #? Increasing var acces
+            self.nullchar = '\u200b'
+            self.owner:discord.User = self.config.owner #! Owner discord user will be loaded when online
+            del self.config.owner
+            self.color = self.config.color
+            del self.config.color
+            self.colours = self.config.colours
+            del self.config.colours
 
-                #? Saving config as variables
-                self.nullchar = '\u200b'
-                self.owner = self.config['owner']
-                self.oid = self.config['owner_id']
-                self.color = self.config['color']
-                self.colours = self.config['colours']
+            self.logger.info('Config loaded')
 
-                self.logger.info('Config loaded')
         except FileNotFoundError as e: 
             self.logger.critical('Exception while loading config file: {}'.format(e))
             raise self.Error.ConfigNotFound()
@@ -92,38 +146,18 @@ class Core(commands.Bot): # commands.AutoShardedBot() #! 1000+ Servers
             self.logger.critical('Exception while loading config file: {}'.format(e))
             raise self.Error.ConfigLoadFailure()
 
-        #? Load Languages
-        try:
-            with open('languages.yaml', 'r', encoding='utf8') as f:
-                self.__languages__ = yaml.safe_load(f)
-
-
-                self.logger.info('Language loaded')
-        except FileNotFoundError as e: 
-            self.logger.critical('Exception while loading Language file: {}'.format(e))
-            raise self.Error.LanguagesNotFound()
-        except KeyError as e:
-            self.logger.critical('Exception while loading Language file: {}'.format(e))
-            raise self.Error.CorruptLanguagesFile()
-        except Exception as e: 
-            self.logger.critical('Exception while loading Language file: {}'.format(e))
-            raise self.Error.LanguagesLoadFailure()
-        
         #? Import discord bot class
         super().__init__(
-            command_prefix = self.config['prefix'], #! Only for developer actions
-            description = self.config['description'],
-            activity = discord.Game(name = self.config['activity']),
-            status = self.config['status'],
-            intents = self.indents_cfg
+            command_prefix = self.config.prefix,
+            description = self.config.description,
+            activity = discord.Game(name = self.config.activity),
+            status = self.config.status,
+            intents = self.intents_cfg
             )
-        self.logger.debug('Parent data imported')
+        self.logger.debug('Discord.py main bot class data loaded')
 
         #? BOOT
         if autoboot: self.boot()
-
-    def language(self, lan, text) -> str:
-        return self.__languages__[lan][text]
 
     async def setup_hook(self):
         
@@ -143,14 +177,11 @@ class Core(commands.Bot): # commands.AutoShardedBot() #! 1000+ Servers
         self.logger.info(f'Logged in as {self.user} (ID: {self.user.id})')
         
         try:
-            self.owner_user = await self.fetch_user(self.oid)
-        except Exception as e: self.logger.warning('Error while fetching owner: {}'.format(e))
+            self.owner = await self.fetch_user(self.owner)
+        except Exception as e: self.logger.warning('Error while fetching owner discord user: {}'.format(e))
         
         if self.config['warn_on_ready']:
-            try:
-                m = await self.owner_user.send(self.language('es-ES', 'online'))
-                await asyncio.sleep(5)
-                await m.delete()
+            try: await self.owner.send(self.language('es-ES', 'online'), delete_after=5)
             except: self.logger.warning('Error while sending message to owner')
 
     #? Command Error Handler
@@ -173,5 +204,5 @@ class Core(commands.Bot): # commands.AutoShardedBot() #! 1000+ Servers
             raise e
 
     def boot(self):
-        os.system('title Selenne 5 (Block Version)')
+        os.system('title {}'.format(self.config.version))
         self.run(self.config['TOKEN'])

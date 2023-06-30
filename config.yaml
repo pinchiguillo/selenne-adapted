@@ -23,9 +23,14 @@ databases:
   username: root
   password: 
   database: selenium
-    
+
+LocalDatabase: .\LDB
+
 #! Extensions
 extensions:
+  - extension.system.LocalDbManager
+  - extension.system.DatabaseManager
+  #
   - extension.sync_tools
   - extension.stats
   - extension.essentials

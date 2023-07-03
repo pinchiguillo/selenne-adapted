@@ -118,9 +118,9 @@ class Default_Listeners_cog(commands.Cog):
 
     #? Reactions
     def on_reaction_add(reaction:discord.Reaction, user:Union[discord.Member, discord.User]): pass
-    def on_reaction_remove(reaction, user): pass
+    def on_reaction_remove(reaction:discord.Reaction, user:Union[discord.Member, discord.User]): pass
     def on_reaction_clear(message, reactions:list[discord.Reaction]): pass
-    def on_reaction_clear_emoji(reaction): pass
+    def on_reaction_clear_emoji(reaction:discord.Reaction): pass
     def on_raw_reaction_add(payload:discord.RawReactionActionEvent): pass
     def on_raw_reaction_remove(payload:discord.RawReactionActionEvent): pass
     def on_raw_reaction_clear(payload:discord.RawReactionClearEvent): pass
@@ -145,7 +145,7 @@ class Default_Listeners_cog(commands.Cog):
 
     #? Threads
     def on_thread_create(thread:discord.Thread): pass
-    def on_thread_join(thread): pass
+    def on_thread_join(thread:discord.Thread): pass
     def on_thread_update(before, after): pass
     def on_thread_remove(thread): pass
     def on_thread_delete(thread): pass

@@ -28,12 +28,11 @@ LocalDatabase: .\LDB
 
 #! Extensions
 extensions:
-  - extension.system.LocalDbManager
   - extension.system.DatabaseManager
-  #
-  - extension.sync_tools
-  - extension.stats
+  - extension.system.BotStats
+  - extemsion.AdminTools
   - extension.essentials
+  #  
   #- extension.promocode
   - extension.dam_tools
   #- extension.dcs
@@ -43,7 +42,6 @@ extensions:
   #- extension.configuration
   #- extension.gamedevtools
   #- extension.guild_manager
-  - extension.admintools
   - extension.picklib
   #- extension.leveling_roles
   #- extension.help

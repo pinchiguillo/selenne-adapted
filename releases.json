@@ -6,17 +6,25 @@
         "Selenium 5.4b.268i": "Added to *expansions* and *releases* dynamic updates",
         "Selenium 5.4b.267i": "Added the ***Releases*** button to `/stats`",
         "Selenium 5.4b.266i": "Updated the `/stats` command with info about the Bot Releases\nAdded to `/stats` the message count",
-        "Selenium 5.5": "Multiple performance improvements, implementation of the latest discord updates at the core level and removal of junk code"
+        "Selenium 5.5": "Multiple performance improvements, implementation of the latest discord updates at the core level and removal of junk code",
+        "Selenium 5.5d.001s": "Se ha unificado la plantilla optimizada para Selenium 5.5",
+        "Selenium 5.5d.002s": "Se han dividido las extensiones entre sistematicas y no. Las sistematicas son aquellas que vienen de manera intriseca en el bot pero que se han separado para dotar al mismo de mas modularidad",
+        "Selenium 5.5d.004t": "DatabaseManager se ha añadido como extension sistematica. Faltan pruebas de rendimiento y de conexion con otras extensiones",
+        "Selenium 5.5d.005t": "La extension stats ha sido añadida como sistematica y bajo el nombre de BotStats. Se ha actualizado esta a la ultima version",
+        "Selenium 5.5d.006s": "Se ha añadido la extension essentials al pack inicial y se ha actualizado la misma a la ultima version de Selenium. Algunos de sus comandos han sido removidos o cambiados de extension.",
+        "Selenium 5.5d.007s": "Se ha añadido la extension AdminTools al pack inicial y se ha actualizado la misma a la ultima version de Selenium. Ahora incorpora algunos comandos que tenia essentials en sus versiones pasadas.",
+        "Selenium 5.5d.008s": "Se han unificado todos los loggers de discord en una sola extension bajo el nombre de DiscordLogger. Esta extension vendra instalada de forma nativa con Selenium 5.5, pero sera opcional activarla",
+        "Selenium 5.5d.009d": "Se ha creado una beta cerrada de MusicPlayer. Exension que permitira poner musica con comodidades nunca antes encontradas en bots de musica."
     },
     "expansions": {
-        "Configuration":"15% (Paused)",
-        "XPRoles":"80% (Paused) (Xp can be gained, but roles cant be added)",
-        "Economy": "10% (Paused)",
-        "Anti AFK": "25% (Paused)",
-        "APIS2": "90% (Paused) (Needs adaptation to newest version)",
-        "Minigames": "90% (Paused) (Needs adaptation to newest version)",
-        "RPG-Game": "1% (Paused)",
-        "Essentials": "66% (Paused)",
+        "MusicPlayer (Beta)": "10%",
+        "Configuration":"15% (Paused) (abandoned)",
+        "XPRoles":"80% (Paused) (Xp can be gained, but roles cant be added) (abandoned)",
+        "Economy": "10% (Paused) (abandoned)",
+        "Anti AFK": "25% (Paused) (abandoned)",
+        "APIS2": "90% (Paused) (Needs adaptation to newest version) (abandoned)",
+        "Minigames": "90% (Paused) (Needs adaptation to newest version) (abandoned)",
+        "RPG-Game": "1% (Paused) (abandoned)",
         "Media Downloaders": "21% (Paused)"
     }
 }

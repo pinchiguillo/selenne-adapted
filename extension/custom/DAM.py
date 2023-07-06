@@ -1,0 +1,443 @@
+import sys
+sys.dont_write_bytecode = True
+
+import Selenne
+
+#? Discord library and shortcuts
+import discord
+from discord.ext import commands
+from discord import app_commands
+
+#? Required for documentation (can be removed)
+from ctypes import Union
+import datetime
+from typing import Sequence
+
+#? Extra Libraries
+import os, json
+
+#! Extension Name (if not the filename will be used)
+__EXTENSION_NAME__ = ''
+
+#? Configuration
+async def setup(bot:Selenne.Core):
+    bot.logger.info('{} loaded'.format(__EXTENSION_NAME__))
+
+    #! Add cog Classes    
+    COGS = []
+
+    for cog in COGS:
+        try: await bot.add_cog(cog(bot))
+        except Exception as e: bot.logger.error('Failed to load cog: {}: {}'.format(cog.__name__, e))
+
+async def teardown(bot:Selenne.Core): bot.logger.info('{} unloaded'.format(__EXTENSION_NAME__))
+
+if not __EXTENSION_NAME__: __EXTENSION_NAME__ = os.path.splitext(os.path.basename(__file__))[0]
+
+#! Extension Code
+
+#? Sample
+class Default_Listeners_cog(commands.Cog):
+    def __init__(self, bot:Selenne.Core):
+        self.bot = bot
+
+    #! @commands.Cog.listener()
+    #? App Commands
+    def on_raw_app_command_permissions_update(payload:discord.RawAppCommandPermissionsUpdateEvent): pass
+    def on_app_command_completion(interaction:discord.Interaction, command:Union[discord.app_commands.Command, discord.app_commands.ContextMenu]): pass
+    
+    #? AutoMod
+    def on_automod_rule_create(rule:discord.AutoModRule): pass
+    def on_automod_rule_update(rule:discord.AutoModRule): pass
+    def on_automod_rule_delete(rule:discord.AutoModRule): pass
+    def on_automod_action(execution:discord.AutoModAction): pass
+
+    #? Channels
+    def on_guild_channel_delete(channel:discord.abc.GuildChannel): pass
+    def on_guild_channel_update(before:discord.abc.GuildChannel, after:discord.abc.GuildChannel): pass
+    def on_guild_channel_pins_update(channel, last_pin:datetime.datetime): pass
+    def on_private_channel_update(before:discord.GroupChannel, after:discord.GroupChannel): pass
+    def on_private_channel_pins_update(channel:discord.abc.PrivateChannel, last_pin:datetime.datetime): pass
+    def on_typing(channel:discord.abc.Messageable, user:Union[discord.User, discord.Member], when:datetime.datetime): pass
+    def on_raw_typing(payload:discord.RawTypingEvent): pass
+
+    #? Conexion
+    def on_connect(): pass
+    def on_disconnect(): pass
+    def on_shard_connect(shard_id:int): pass
+    def on_shard_disconnect(shard_id:int): pass
+
+    #? Debug
+    def on_error(event:str, *args, **kwargs): pass
+    def on_socket_event_type(event_type:str): pass
+    def on_socket_raw_receive(msg:str): pass
+
+    #? Gateway
+    def on_ready(): pass
+    def on_resumed(): pass
+    def on_shard_ready(shard_id): pass
+    def on_shard_resumed(shard_id): pass
+
+    #? Guilds
+    def on_guild_available(guild:discord.Guild): pass
+    def on_guild_unavailable(guild:discord.Guild): pass
+    def on_guild_join(guild:discord.Guild): pass
+    def on_guild_remove(guild:discord.Guild): pass
+    def on_guild_update(before:discord.Guild, after:discord.Guild): pass
+    def on_guild_emojis_update(guild, before:Sequence[discord.Emoji], after:Sequence[discord.Emoji]): pass
+    def on_guild_stickers_update(guild, before:Sequence[discord.GuildSticker], after:Sequence[discord.GuildSticker]): pass
+    def on_audit_log_entry_create(entry:discord.AuditLogEntry): pass
+    def on_invite_create(invite:discord.Invite): pass
+    def on_invite_delete(invite:discord.Invite): pass
+    def on_integration_create(integration:discord.Integration): pass
+    def on_guild_integrations_update(guild:discord.Guild): pass
+    def on_webhooks_update(channel:discord.abc.GuildChannel): pass
+    def on_raw_integration_delete(payload:discord.RawIntegrationDeleteEvent): pass
+
+    #? Interactios
+    def on_interaction(interaction:discord.Interaction): pass
+
+    #? Members
+    def on_member_join(member:discord.Member): pass
+    def on_member_remove(member:discord.Member): pass
+    def on_raw_member_remove(payload:discord.RawMemberRemoveEvent): pass
+    def on_member_update(before:discord.Member, after:discord.Member): pass
+    def on_user_update(before, after): pass
+    def on_member_ban(guild, user): pass
+    def on_member_unban(guild, user): pass
+    def on_presence_update(before, after): pass
+
+    #? Messages
+    def on_message(message:discord.Message): pass
+    def on_message_edit(before, after): pass
+    def on_message_delete(message): pass
+    def on_bulk_message_delete(messages:list[discord.Message]): pass
+    def on_raw_message_edit(payload:discord.RawMessageUpdateEvent): pass
+    def on_raw_message_delete(payload:discord.RawMessageDeleteEvent): pass
+    def on_raw_bulk_message_delete(payload:discord.RawBulkMessageDeleteEvent): pass
+
+    #? Reactions
+    def on_reaction_add(reaction:discord.Reaction, user:Union[discord.Member, discord.User]): pass
+    def on_reaction_remove(reaction:discord.Reaction, user:Union[discord.Member, discord.User]): pass
+    def on_reaction_clear(message, reactions:list[discord.Reaction]): pass
+    def on_reaction_clear_emoji(reaction:discord.Reaction): pass
+    def on_raw_reaction_add(payload:discord.RawReactionActionEvent): pass
+    def on_raw_reaction_remove(payload:discord.RawReactionActionEvent): pass
+    def on_raw_reaction_clear(payload:discord.RawReactionClearEvent): pass
+    def on_raw_reaction_clear_emoji(payload:discord.RawReactionClearEmojiEvent): pass
+    
+    #? Roles
+    def on_guild_role_create(role:discord.Role): pass
+    def on_guild_role_delete(role): pass
+    def on_guild_role_update(before:discord.Role, after:discord.Role): pass
+
+    #? Scheduled Events
+    def on_scheduled_event_create(event:discord.ScheduledEvent): pass
+    def on_scheduled_event_delete(event:discord.ScheduledEvent): pass
+    def on_scheduled_event_update(before, after): pass
+    def on_scheduled_event_user_add(event, user): pass
+    def on_scheduled_event_user_remove(event, user): pass
+
+    #? Stages
+    def on_stage_instance_create(stage_instance:discord.StageInstance): pass
+    def on_stage_instance_delete(stage_instance:discord.StageInstance): pass
+    def on_stage_instance_update(before:discord.StageInstance, after:discord.StageInstance): pass
+
+    #? Threads
+    def on_thread_create(thread:discord.Thread): pass
+    def on_thread_join(thread:discord.Thread): pass
+    def on_thread_update(before, after): pass
+    def on_thread_remove(thread): pass
+    def on_thread_delete(thread): pass
+    def on_raw_thread_update(payload:discord.RawThreadUpdateEvent): pass
+    def on_raw_thread_delete(payload:discord.RawThreadDeleteEvent): pass
+    def on_thread_member_join(member:discord.ThreadMember): pass
+    def on_thread_member_remove(member:discord.ThreadMember): pass
+    def on_raw_thread_member_remove(payload:discord.RawThreadMembersUpdate): pass
+
+    #? Voice
+    def on_voice_state_update(member:discord.Member, before:discord.VoiceState, after:discord.VoiceState): pass
+
+    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+class DAM(commands.Cog):
+    def __init__(self, bot:Selenne.Core):
+        self.bot = bot
+
+        self.db_path = 'LDB/DAM'
+
+        global db_path
+        db_path = self.db_path
+    
+    @discord.app_commands.command(name = 'dam')
+    @discord.app_commands.describe()
+    async def dam_slashCommand(self, interaction: discord.Interaction):
+        """Notas de DAM del año 2022-2023"""
+        await interaction.response.defer(ephemeral=True, thinking=True)
+        
+        with open(os.path.join(self.db_path, 'users.json'), 'r', encoding='utf-8') as f:
+            data = json.load(f)
+
+        if interaction.user.id in data['DAM1']:
+            embed = discord.Embed(title = 'DAM I - Apuntes', description = 'Herramienta desarrollada por ***pinchiguillo*** para cubrir la falta de profesores', color=self.bot.color)
+
+        elif interaction.user.id in data['DAM2']:
+            embed = discord.Embed(title = 'DAM II - Apuntes', description = 'Herramienta desarrollada por ***pinchiguillo*** para cubrir la falta de profesores :)', color=self.bot.color)
+
+        elif not interaction.user.id in data['admin'].keys():
+            await interaction.followup.send('No tienes acceso a las notas de DAM. Contacta con {} para obtener acceso')
+            return
+        
+        if interaction.user.id in data['admin'].keys():
+            permissions = data['admin'][interaction.user.id]
+        
+        embed.add_field(name = 'Apuntes', value = 'Dentro de este apartado podras encontrar miniresumenes que explican las partes mas importantes y esenciales. Tambien incluye tips para aprenderse algunos contenidos', inline = False)
+        embed.add_field(name = 'Ejercicios extra', value = 'Por si quieres mas ejercicios y/o los de clase no tienen suficiente dificultad aqui tendras multiples ejercicios extra', inline = False)
+        embed.add_field(name = 'Solución de dudas', value = 'Tambien puedes consultar dudas :)', inline = False)
+        embed.set_footer(text = 'Herramienta desarrollada por Pinchiguillo')
+
+        await interaction.followup.send(embed=embed, view=MainView(target='DAM1', permissions=permissions))
+
+#! VIEWS
+class MainView(discord.ui.View):
+    cfg = {
+        'apuntes': False,
+        'Ejercicios': False,
+        'Dudas': False,
+        'Soporte': False,
+        'Calendar': False,
+    }
+    
+    def __init__(self, target:str=None, permissions:str=None):
+        super().__init__()
+
+        self.target = target
+        self.permissions = permissions
+
+    @discord.ui.button(label = 'Apuntes', style=discord.ButtonStyle.blurple)
+    async def apuntes(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await interaction.response.edit_message(embed=None, view = Apuntes_View())
+
+    @discord.ui.button(label = 'Ejercicios', style=discord.ButtonStyle.blurple, disabled=True)#!
+    async def ejercicios(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await interaction.response.send_message('Section Not loaded', ephemeral=True)
+
+    @discord.ui.button(label = 'Dudas', style=discord.ButtonStyle.blurple)
+    async def dudas(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await interaction.response.send_modal(Dudas_Modal())
+
+    @discord.ui.button(label = 'Soporte', style=discord.ButtonStyle.danger, disabled=True)#!
+    async def soporte(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await interaction.response.send_modal(Support_Modal())
+
+    @discord.ui.button(label = 'Calendar', style=discord.ButtonStyle.danger, disabled=True)#!
+    async def calendar(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await interaction.response.send_message('Esta opcion es privada, hablar con **El señor delegado** y convencedlo de que sea publica :)', ephemeral=True)
+
+class Apuntes_View(discord.ui.View):
+    def __init__(self, target:str = None):
+        super().__init__()
+
+        self.target = target
+
+        with open(os.path.join(db_path, 'displays.json')) as f:
+            displays = json.load(f)[target]
+
+        class AsignaturaSelector(discord.ui.Select):
+            def __init__(self):
+
+                options = []
+                
+                if 'code' in displays: options.append(discord.SelectOption(label = 'Programacion', emoji='<:programacion:1042141191925407785>', value = 'code'))
+                if 'html' in displays: options.append(discord.SelectOption(label = 'HTML+CSS', emoji='<:html:1042141187823386725>', value = 'html'))
+                if 'sisi' in displays: options.append(discord.SelectOption(label = 'Sistemas Informaticos', emoji='<:sisi:1042141186414092309>', value = 'sisi'))
+                if 'db' in displays: options.append(discord.SelectOption(label = 'Bases de Datos', emoji='<:db:1042141184119812176>', value = 'db'))
+                if 'ende' in displays: options.append(discord.SelectOption(label = 'Entornos de Desarrollo', emoji='<:ende:1042141190612594738>', value = 'ende'))
+                if 'eng' in displays: options.append(discord.SelectOption(label = 'Ingles', emoji='🗣️', value = 'eng'))
+                if 'fol' in displays: options.append(discord.SelectOption(label = 'Formación Profesional', emoji='👷', value = 'fol'))
+
+                super().__init__(placeholder='Selecciona una asignatura', min_values=1, max_values=1, options=options)
+
+                        
+            async def callback(self, interaction: discord.Interaction):
+                nview = discord.ui.View()
+                match self.values[0]:
+                    case 'code': nview.add_item(code_selector())
+                    case 'html': nview.add_item(html_selector())
+                    case 'sisi': nview.add_item(sisi_selector())
+                    case 'db': nview.add_item(db_selector())
+                    case 'ende': nview.add_item(ende_selector())
+                    case 'eng': nview.add_item(eng_selector())
+                    case 'fol': nview.add_item(fol_selector())
+                
+                embed = discord.Embed(title = 'Lectura',description = '🟩 **Explicado en clase**\n\n🟪 **Contenido extra**\n\n🟨**Contenido recomendable**\n\n🟥 **No explicado en clase**', color=bot_color)
+                await interaction.response.edit_message(embed=embed, view=nview)
+
+        #? Selector Classes
+        class code_selector(discord.ui.Select):
+            def __init__(self):
+
+                with open(os.path.join(db_path, os.path.join(target, 'code'))): pass
+                            
+                options = [
+                    discord.SelectOption(label = 'Estructura basica', description = 'Una pequeña introduccion a la estructura de java', emoji='🟩', value = 'basic_structure'),
+                    discord.SelectOption(label = 'Syntaxis (Correcta)', description = 'Practicas saludables en la syntaxis de java', emoji='🟪', value = 'syntax'),
+                    discord.SelectOption(label = 'Tipos de Datos', description = 'Introducción a los tipos de datos en java', emoji='🟩', value = 'datatypes'),
+                    discord.SelectOption(label = 'Operadores', description = 'Todos los operadores existentes en java', emoji='🟩', value = 'operators'),
+                    discord.SelectOption(label = 'Try/Catch', description = 'Control de exepciones', emoji='🟨', value = 'try'),
+                    discord.SelectOption(label = 'Funciones', description = 'La base necesaria para crear funciones', emoji='🟩', value = 'functions'),
+                    discord.SelectOption(label = 'Bucles while', description = 'Primer tipo de bucle: While (y do-while)', emoji='🟩', value = 'while'),
+                    discord.SelectOption(label = 'Bucles for', description = 'Segundo tipo de bucle: for', emoji='🟩', value = 'for'),
+                    discord.SelectOption(label = 'Clases - Introduccion', description = 'Proximamente', emoji='⛔', value = 'class_intro'),
+                    discord.SelectOption(label = 'Clases - constructores', description = 'Proximamente', emoji='⛔', value = 'class_builder'),
+                ]
+
+                super().__init__(placeholder='Selecciona un tema', min_values=1, max_values=1, options=options)
+
+                        
+            async def callback(self, interaction: discord.Interaction):
+                try:
+                    with open('local_db/dam_apuntes/code/{}.json'.format(self.values[0]), 'r', encoding='utf-8') as f:
+                        embed = discord.Embed.from_dict(json.load(f))
+                    embed.color = bot_color
+                    await interaction.response.edit_message(embed=embed)
+                except Exception as e: 
+                    await interaction.response.send_message('Apuntes no disponibles', ephemeral=True)
+
+        class html_selector(discord.ui.Select):
+            def __init__(self):
+                            
+                options = [
+                    discord.SelectOption(label = 'Introduccion a HTML', description = 'Una introduccion superficial a HTML', emoji='🟨', value = 'basic_html'),
+                    discord.SelectOption(label = 'Estructura de un HTML5', description = 'Estructura basica de HTML', emoji='🟨', value = 'html5'),
+                    discord.SelectOption(label = 'Etiquetas', description = 'Todas las etiquetas de HTML', emoji='🟩', value = 'tags'),
+                    discord.SelectOption(label = 'Imagenes y Videos', description = 'Proximamente', emoji='🟩', value = 'img-vid'),
+                    discord.SelectOption(label = 'Formularios', description = 'Proximamente', emoji='🟩', value = 'form'),
+                    discord.SelectOption(label = 'Headers', description = 'Proximamente', emoji='⛔', value = 'headers'),
+                    discord.SelectOption(label = 'Divisiones', description = 'Proximamente', emoji='⛔', value = 'div'),
+                    discord.SelectOption(label = 'Introduccion a CSS', description = 'Proximamente', emoji='⛔', value = 'intro_css'),
+                    discord.SelectOption(label = 'CSS Basico', description = 'Proximamente', emoji='⛔', value = 'basic_css'),
+                    discord.SelectOption(label = 'Responsitive', description = 'Proximamente', emoji='⛔', value = 'responsitive'),
+                ]
+
+                super().__init__(placeholder='Selecciona un tema', min_values=1, max_values=1, options=options)
+
+                        
+            async def callback(self, interaction: discord.Interaction):
+                try:
+                    with open('local_db/dam_apuntes/html/{}.json'.format(self.values[0]), 'r', encoding='utf-8') as f:
+                        embed = discord.Embed.from_dict(json.load(f))
+                    embed.color = bot_color
+                    await interaction.response.edit_message(embed=embed)
+                except Exception as e: 
+                    await interaction.response.send_message('Apuntes no disponibles', ephemeral=True)
+
+        class sisi_selector(discord.ui.Select):
+            def __init__(self):
+                            
+                options = [
+                    #discord.SelectOption(label = 'Representacion de la Informacion I', description = 'Proximamente', emoji='⛔', value = 'ifno1'),
+                    #discord.SelectOption(label = 'Representacion de la Informacion II', description = 'Proximamente', emoji='⛔', value = 'info2'),
+                    #discord.SelectOption(label = 'Representacion de la Informacion III', description = 'Proximamente', emoji='⛔', value = 'info3'),
+                    
+                    #discord.SelectOption(label = 'Introduccion I', description = 'Proximamente', emoji='⛔', value = 'intro1'),
+                    #discord.SelectOption(label = 'Introduccion II', description = 'Proximamente', emoji='⛔', value = 'intro2'),
+                    #discord.SelectOption(label = 'Introduccion III - Algebra de Boole', description = 'Proximamente', emoji='⛔', value = 'intro3'),
+                    #discord.SelectOption(label = 'Introduccion IV - Computadoras', description = 'Proximamente', emoji='⛔', value = 'intro4'),
+                    
+                    #discord.SelectOption(label = 'Coma Flotante', description = 'Proximamente', emoji='⛔', value = 'floating_point'),
+                    #discord.SelectOption(label = 'Jerarquias de memoria', description = 'Proximamente', emoji='⛔', value = 'memory'),
+                    
+                    discord.SelectOption(label = 'SubNeting', description = 'Resumen Expres de Sub Netting', emoji='🟩', value = 'subneting'),
+                ]
+
+                super().__init__(placeholder='Selecciona un tema', min_values=1, max_values=1, options=options)
+
+                        
+            async def callback(self, interaction: discord.Interaction):
+                try:
+                    with open('local_db/dam_apuntes/sisi/{}.json'.format(self.values[0]), 'r', encoding='utf-8') as f:
+                        embed = discord.Embed.from_dict(json.load(f))
+                    embed.color = bot_color
+                    await interaction.response.edit_message(embed=embed)
+                except Exception as e: 
+                    await interaction.response.send_message('Apuntes no disponibles', ephemeral=True)
+
+        class db_selector(discord.ui.Select):
+            def __init__(self):
+                            
+                options = [
+                    discord.SelectOption(label = 'Try/Catch', description = 'Proximamente', emoji='⛔', value = 'try'),
+                ]
+
+                super().__init__(placeholder='Selecciona un tema', min_values=1, max_values=1, options=options)
+
+                        
+            async def callback(self, interaction: discord.Interaction):
+                try:
+                    with open('local_db/dam_apuntes/code/{}.json'.format(self.values[0]), 'r', encoding='utf-8') as f:
+                        embed = discord.Embed.from_dict(json.load(f))
+                    embed.color = bot_color
+                    await interaction.response.edit_message(embed=embed)
+                except Exception as e: 
+                    await interaction.response.send_message('Apuntes no disponibles', ephemeral=True)
+
+        class ende_selector(discord.ui.Select):
+            def __init__(self):
+                            
+                options = [
+                    discord.SelectOption(label = 'Try/Catch', description = 'Proximamente', emoji='⛔', value = 'try'),
+                ]
+
+                super().__init__(placeholder='Selecciona un tema', min_values=1, max_values=1, options=options)
+
+                        
+            async def callback(self, interaction: discord.Interaction):
+                try:
+                    with open('local_db/dam_apuntes/code/{}.json'.format(self.values[0]), 'r', encoding='utf-8') as f:
+                        embed = discord.Embed.from_dict(json.load(f))
+                    embed.color = bot_color
+                    await interaction.response.edit_message(embed=embed)
+                except Exception as e: 
+                    await interaction.response.send_message('Apuntes no disponibles', ephemeral=True)
+
+        class eng_selector(discord.ui.Select):
+            def __init__(self):
+                            
+                options = [
+                    discord.SelectOption(label = 'Try/Catch', description = 'Proximamente', emoji='⛔', value = 'try'),
+                ]
+
+                super().__init__(placeholder='Selecciona un tema', min_values=1, max_values=1, options=options)
+
+                        
+            async def callback(self, interaction: discord.Interaction):
+                try:
+                    with open('local_db/dam_apuntes/code/{}.json'.format(self.values[0]), 'r', encoding='utf-8') as f:
+                        embed = discord.Embed.from_dict(json.load(f))
+                    embed.color = bot_color
+                    await interaction.response.edit_message(embed=embed)
+                except Exception as e: 
+                    await interaction.response.send_message('Apuntes no disponibles', ephemeral=True)
+
+        class fol_selector(discord.ui.Select):
+            def __init__(self):
+                            
+                options = [
+                    discord.SelectOption(label = 'Try/Catch', description = 'Proximamente', emoji='⛔', value = 'try'),
+                ]
+
+                super().__init__(placeholder='Selecciona un tema', min_values=1, max_values=1, options=options)
+
+                        
+            async def callback(self, interaction: discord.Interaction):
+                try:
+                    with open('local_db/dam_apuntes/code/{}.json'.format(self.values[0]), 'r', encoding='utf-8') as f:
+                        embed = discord.Embed.from_dict(json.load(f))
+                    embed.color = bot_color
+                    await interaction.response.edit_message(embed=embed)
+                except Exception as e: 
+                    await interaction.response.send_message('Apuntes no disponibles', ephemeral=True)
+
+                            
+        self.add_item(AsignaturaSelector())

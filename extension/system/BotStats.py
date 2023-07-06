@@ -23,6 +23,9 @@ __EXTENSION_NAME__ = ''
 async def setup(bot:Selenne.Core):
     bot.logger.info('{} loaded'.format(__EXTENSION_NAME__))
 
+    global selenne
+    selenne = bot
+
     #! Add cog Classes    
     COGS = [BotStats]
 
@@ -53,7 +56,7 @@ class BotStats(commands.Cog):
 
         msg_count = len(cursor.fetchall())
 
-        embed=discord.Embed(title = 'Selenne Stats', description = '**Version**: ***{0}*** - Bot Desarrollado por *DCS*'.format(self.bot.VERSION), color=__bot__.color)
+        embed=discord.Embed(title = 'Selenne Stats', description = '**Version**: ***{0}*** - Bot Desarrollado por *DCS*'.format(self.bot.VERSION), color=self.bot.color)
         embed.add_field(name = 'Bot', value = '**Cumpleaños**: *{}*\n**Version**: *{}*\n**Owner**: ***{}***'.format(self.bot.BIRTH_DAY, self.bot.VERSION, type(self.bot.owner)), inline=False)
         embed.add_field(name = 'Stadisticas', value = '**Nodo**: ***{}***\n**Servidores**: `{}`\n**Usuarios**: `{}`\n**Mensajes leidos**: `{}`'.format(self.bot.__node__, len(list(self.bot.guilds)), len(list(self.bot.users)), msg_count), inline=False)
         
@@ -67,7 +70,7 @@ class ReleasesView(discord.ui.View):
     @discord.ui.button(label = 'Releases', style=discord.ButtonStyle.blurple, disabled=False) #! Remove disabled
     async def releases(self, interaction: discord.Interaction, button: discord.ui.Button):
         
-        embed=discord.Embed(title = 'Selenne Release Notes', description = '***Selenne*** is a bot that is actualy under development.\nUpdates of the last versions:'.format(__bot__.VERSION), color=__bot__.color)
+        embed=discord.Embed(title = 'Selenne Release Notes', description = '***Selenne*** is a bot that is actualy under development.\nUpdates of the last versions:'.format(selenne.VERSION), color=selenne.color)
         
         with open('releases.json', 'r', encoding='utf-8') as f:
             data = json.load(f)
@@ -80,7 +83,7 @@ class ReleasesView(discord.ui.View):
     @discord.ui.button(label = 'Active Expansions Development', style=discord.ButtonStyle.green, disabled=False) #! Remove disabled
     async def expansions_dev(self, interaction: discord.Interaction, button: discord.ui.Button):
         
-        embed=discord.Embed(title = 'Active Expansions Development', description = __bot__.nullchar, color=__bot__.color)
+        embed=discord.Embed(title = 'Active Expansions Development', description = selenne.nullchar, color=selenne.color)
         
         with open('releases.json', 'r', encoding='utf-8') as f:
             data = json.load(f)

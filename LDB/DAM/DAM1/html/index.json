@@ -1,0 +1,93 @@
+{
+    "basic_html": {
+        "title": "Introduccion a HTML",
+        "description": "Una introduccion superficial a HTML",
+        "type": "extra"
+    },
+    "html5": {
+        "title": "Estructura de un HTML5",
+        "description": "",
+        "type": "extra"
+    },
+    "tags": {
+        "title": "HTML5 - Etiquetas",
+        "description": "",
+        "type": "class"
+    },
+    "img-vid": {
+        "title": "HTML5 - Multimedia",
+        "description": "Los conocimientos necesarios para insertar imagenes y videos en un hmtl",
+        "type": "class"
+    },
+    "form": {
+        "title": "HTML5 - Formularios",
+        "description": "",
+        "type": "class"
+    },
+    "headers": {
+        "title": "HTMl5 - Encabezados",
+        "description": "",
+        "type": "extra"
+    },
+    "div": {
+        "title": "HTML5 - Etiqueta div",
+        "description": "",
+        "type": "class"
+    },
+    "intro_css": {
+        "title": "CSS - Introduccion",
+        "description": "Una introduccion al CSS",
+        "type": "extra"
+    },
+    "basic_css": {
+        "title": "CSS - Esencial",
+        "description": "",
+        "type": "class"
+    },
+    "xpath": {
+        "title": "CSS - Marcadores",
+        "description": "Nociones basicas y trucos para los marcadores en css",
+        "type": "class"
+    },
+    "boxes": {
+        "title": "CSS - Movimiento de cajas",
+        "description": "Trucos para mover cajas. (Convenio recomendado)",
+        "type": "class"
+    },
+    "margins": {
+        "title": "CSS - Calculo de margenes",
+        "description": "Las formulas para calcular los margenes",
+        "type": "class"
+    },
+    "bootstrap": {
+        "title": "CSS Framework - Bootstrap",
+        "description": "Una pequeña introduccion a uno de los frameworks de css mas usados",
+        "type": "extra"
+    },    
+    "xml": {
+        "title": "XML - Estructura",
+        "description": "Todo lo necesario para crear XML",
+        "type": "class"
+    },
+    "dtd": {
+        "title": "XML - DTD",
+        "description": "Todo lo necesario para crear restricciones sobre el XML utilizando DTD",
+        "type": "class"
+    },
+    "xsd": {
+        "title": "XSD - Introduccion",
+        "description": "Una breve introduccion a XSD",
+        "type": "class"
+    },
+    "xsd_datatypes": {
+        "title": "XSD - Tipos de datos",
+        "description": "Un listado con los principales tipos de datos y sus caracteristicas",
+        "type": "class"
+    },
+    "xsd_restrictions": {
+        "title": "XSD - Restricciones",
+        "description": "Una guia para crear las restricciones mas utilizadas",
+        "type": "class"
+    }
+}
+

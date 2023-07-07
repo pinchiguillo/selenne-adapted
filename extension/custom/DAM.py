@@ -14,7 +14,7 @@ import datetime
 from typing import Sequence
 
 #? Extra Libraries
-import os, json
+import os, json, yaml
 
 #! Extension Name (if not the filename will be used)
 __EXTENSION_NAME__ = ''
@@ -22,6 +22,9 @@ __EXTENSION_NAME__ = ''
 #? Configuration
 async def setup(bot:Selenne.Core):
     bot.logger.info('{} loaded'.format(__EXTENSION_NAME__))
+
+    global selenne
+    selenne = bot
 
     #! Add cog Classes    
     COGS = []
@@ -272,172 +275,37 @@ class Apuntes_View(discord.ui.View):
                 
                 embed = discord.Embed(title = 'Lectura',description = '🟩 **Explicado en clase**\n\n🟪 **Contenido extra**\n\n🟨**Contenido recomendable**\n\n🟥 **No explicado en clase**', color=bot_color)
                 await interaction.response.edit_message(embed=embed, view=nview)
+        
+        class ContentSelector(discord.ui.Select):
+            def __init__(self, subjetc):
+                self.subjetc = subjetc
 
-        #? Selector Classes
-        class code_selector(discord.ui.Select):
-            def __init__(self):
+                with open(os.path.join(db_path, os.path.join(target, os.path.join(subjetc, 'index.json')))) as idxf:
+                    idx = json.loads(idxf)
 
-                with open(os.path.join(db_path, os.path.join(target, 'code'))): pass
-                            
-                options = [
-                    discord.SelectOption(label = 'Estructura basica', description = 'Una pequeña introduccion a la estructura de java', emoji='🟩', value = 'basic_structure'),
-                    discord.SelectOption(label = 'Syntaxis (Correcta)', description = 'Practicas saludables en la syntaxis de java', emoji='🟪', value = 'syntax'),
-                    discord.SelectOption(label = 'Tipos de Datos', description = 'Introducción a los tipos de datos en java', emoji='🟩', value = 'datatypes'),
-                    discord.SelectOption(label = 'Operadores', description = 'Todos los operadores existentes en java', emoji='🟩', value = 'operators'),
-                    discord.SelectOption(label = 'Try/Catch', description = 'Control de exepciones', emoji='🟨', value = 'try'),
-                    discord.SelectOption(label = 'Funciones', description = 'La base necesaria para crear funciones', emoji='🟩', value = 'functions'),
-                    discord.SelectOption(label = 'Bucles while', description = 'Primer tipo de bucle: While (y do-while)', emoji='🟩', value = 'while'),
-                    discord.SelectOption(label = 'Bucles for', description = 'Segundo tipo de bucle: for', emoji='🟩', value = 'for'),
-                    discord.SelectOption(label = 'Clases - Introduccion', description = 'Proximamente', emoji='⛔', value = 'class_intro'),
-                    discord.SelectOption(label = 'Clases - constructores', description = 'Proximamente', emoji='⛔', value = 'class_builder'),
-                ]
+                options = []
 
-                super().__init__(placeholder='Selecciona un tema', min_values=1, max_values=1, options=options)
-
-                        
-            async def callback(self, interaction: discord.Interaction):
-                try:
-                    with open('local_db/dam_apuntes/code/{}.json'.format(self.values[0]), 'r', encoding='utf-8') as f:
-                        embed = discord.Embed.from_dict(json.load(f))
-                    embed.color = bot_color
-                    await interaction.response.edit_message(embed=embed)
-                except Exception as e: 
-                    await interaction.response.send_message('Apuntes no disponibles', ephemeral=True)
-
-        class html_selector(discord.ui.Select):
-            def __init__(self):
-                            
-                options = [
-                    discord.SelectOption(label = 'Introduccion a HTML', description = 'Una introduccion superficial a HTML', emoji='🟨', value = 'basic_html'),
-                    discord.SelectOption(label = 'Estructura de un HTML5', description = 'Estructura basica de HTML', emoji='🟨', value = 'html5'),
-                    discord.SelectOption(label = 'Etiquetas', description = 'Todas las etiquetas de HTML', emoji='🟩', value = 'tags'),
-                    discord.SelectOption(label = 'Imagenes y Videos', description = 'Proximamente', emoji='🟩', value = 'img-vid'),
-                    discord.SelectOption(label = 'Formularios', description = 'Proximamente', emoji='🟩', value = 'form'),
-                    discord.SelectOption(label = 'Headers', description = 'Proximamente', emoji='⛔', value = 'headers'),
-                    discord.SelectOption(label = 'Divisiones', description = 'Proximamente', emoji='⛔', value = 'div'),
-                    discord.SelectOption(label = 'Introduccion a CSS', description = 'Proximamente', emoji='⛔', value = 'intro_css'),
-                    discord.SelectOption(label = 'CSS Basico', description = 'Proximamente', emoji='⛔', value = 'basic_css'),
-                    discord.SelectOption(label = 'Responsitive', description = 'Proximamente', emoji='⛔', value = 'responsitive'),
-                ]
+                for topic in idx.keys():
+                    match idx['topic']['type']:
+                        case 'class': emj = '🟩'
+                        case 'advice': emj = '🟪'
+                        case 'extra': emj = '🟨'
+                        case _: emj = '⛔'
+                    options.append(
+                        discord.SelectOption(label = idx[topic]['title'], description = idx[topic]['description'], emoji=emj, value = topic),
+                    )
 
                 super().__init__(placeholder='Selecciona un tema', min_values=1, max_values=1, options=options)
 
                         
             async def callback(self, interaction: discord.Interaction):
                 try:
-                    with open('local_db/dam_apuntes/html/{}.json'.format(self.values[0]), 'r', encoding='utf-8') as f:
-                        embed = discord.Embed.from_dict(json.load(f))
-                    embed.color = bot_color
-                    await interaction.response.edit_message(embed=embed)
-                except Exception as e: 
+                    with open(os.path.join(db_path, f'DAM/{target}/{self.subjetc}/{self.values[0]}.json')) as df: 
+                        embed = discord.Embed.from_dict(json.load(df))
+                        embed.color = selenne.color
+                        await interaction.response.edit_message(embed=embed)
+                
+                except:
                     await interaction.response.send_message('Apuntes no disponibles', ephemeral=True)
-
-        class sisi_selector(discord.ui.Select):
-            def __init__(self):
-                            
-                options = [
-                    #discord.SelectOption(label = 'Representacion de la Informacion I', description = 'Proximamente', emoji='⛔', value = 'ifno1'),
-                    #discord.SelectOption(label = 'Representacion de la Informacion II', description = 'Proximamente', emoji='⛔', value = 'info2'),
-                    #discord.SelectOption(label = 'Representacion de la Informacion III', description = 'Proximamente', emoji='⛔', value = 'info3'),
-                    
-                    #discord.SelectOption(label = 'Introduccion I', description = 'Proximamente', emoji='⛔', value = 'intro1'),
-                    #discord.SelectOption(label = 'Introduccion II', description = 'Proximamente', emoji='⛔', value = 'intro2'),
-                    #discord.SelectOption(label = 'Introduccion III - Algebra de Boole', description = 'Proximamente', emoji='⛔', value = 'intro3'),
-                    #discord.SelectOption(label = 'Introduccion IV - Computadoras', description = 'Proximamente', emoji='⛔', value = 'intro4'),
-                    
-                    #discord.SelectOption(label = 'Coma Flotante', description = 'Proximamente', emoji='⛔', value = 'floating_point'),
-                    #discord.SelectOption(label = 'Jerarquias de memoria', description = 'Proximamente', emoji='⛔', value = 'memory'),
-                    
-                    discord.SelectOption(label = 'SubNeting', description = 'Resumen Expres de Sub Netting', emoji='🟩', value = 'subneting'),
-                ]
-
-                super().__init__(placeholder='Selecciona un tema', min_values=1, max_values=1, options=options)
-
-                        
-            async def callback(self, interaction: discord.Interaction):
-                try:
-                    with open('local_db/dam_apuntes/sisi/{}.json'.format(self.values[0]), 'r', encoding='utf-8') as f:
-                        embed = discord.Embed.from_dict(json.load(f))
-                    embed.color = bot_color
-                    await interaction.response.edit_message(embed=embed)
-                except Exception as e: 
-                    await interaction.response.send_message('Apuntes no disponibles', ephemeral=True)
-
-        class db_selector(discord.ui.Select):
-            def __init__(self):
-                            
-                options = [
-                    discord.SelectOption(label = 'Try/Catch', description = 'Proximamente', emoji='⛔', value = 'try'),
-                ]
-
-                super().__init__(placeholder='Selecciona un tema', min_values=1, max_values=1, options=options)
-
-                        
-            async def callback(self, interaction: discord.Interaction):
-                try:
-                    with open('local_db/dam_apuntes/code/{}.json'.format(self.values[0]), 'r', encoding='utf-8') as f:
-                        embed = discord.Embed.from_dict(json.load(f))
-                    embed.color = bot_color
-                    await interaction.response.edit_message(embed=embed)
-                except Exception as e: 
-                    await interaction.response.send_message('Apuntes no disponibles', ephemeral=True)
-
-        class ende_selector(discord.ui.Select):
-            def __init__(self):
-                            
-                options = [
-                    discord.SelectOption(label = 'Try/Catch', description = 'Proximamente', emoji='⛔', value = 'try'),
-                ]
-
-                super().__init__(placeholder='Selecciona un tema', min_values=1, max_values=1, options=options)
-
-                        
-            async def callback(self, interaction: discord.Interaction):
-                try:
-                    with open('local_db/dam_apuntes/code/{}.json'.format(self.values[0]), 'r', encoding='utf-8') as f:
-                        embed = discord.Embed.from_dict(json.load(f))
-                    embed.color = bot_color
-                    await interaction.response.edit_message(embed=embed)
-                except Exception as e: 
-                    await interaction.response.send_message('Apuntes no disponibles', ephemeral=True)
-
-        class eng_selector(discord.ui.Select):
-            def __init__(self):
-                            
-                options = [
-                    discord.SelectOption(label = 'Try/Catch', description = 'Proximamente', emoji='⛔', value = 'try'),
-                ]
-
-                super().__init__(placeholder='Selecciona un tema', min_values=1, max_values=1, options=options)
-
-                        
-            async def callback(self, interaction: discord.Interaction):
-                try:
-                    with open('local_db/dam_apuntes/code/{}.json'.format(self.values[0]), 'r', encoding='utf-8') as f:
-                        embed = discord.Embed.from_dict(json.load(f))
-                    embed.color = bot_color
-                    await interaction.response.edit_message(embed=embed)
-                except Exception as e: 
-                    await interaction.response.send_message('Apuntes no disponibles', ephemeral=True)
-
-        class fol_selector(discord.ui.Select):
-            def __init__(self):
-                            
-                options = [
-                    discord.SelectOption(label = 'Try/Catch', description = 'Proximamente', emoji='⛔', value = 'try'),
-                ]
-
-                super().__init__(placeholder='Selecciona un tema', min_values=1, max_values=1, options=options)
-
-                        
-            async def callback(self, interaction: discord.Interaction):
-                try:
-                    with open('local_db/dam_apuntes/code/{}.json'.format(self.values[0]), 'r', encoding='utf-8') as f:
-                        embed = discord.Embed.from_dict(json.load(f))
-                    embed.color = bot_color
-                    await interaction.response.edit_message(embed=embed)
-                except Exception as e: 
-                    await interaction.response.send_message('Apuntes no disponibles', ephemeral=True)
-
                             
         self.add_item(AsignaturaSelector())

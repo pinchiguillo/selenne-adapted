@@ -1,4 +1,9 @@
 {
-    "DAM1": [],
+    "DAM1": [
+        "code",
+        "html",
+        "sisi",
+        "db"
+    ],
     "DAM2": []
 }

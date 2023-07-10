@@ -130,7 +130,7 @@ class Dudas_Modal(discord.ui.Modal, title = 'Dudas'):
 
     async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
         await interaction.response.send_message('Oops! Something went wrong {}'.format(error), ephemeral=True)
-
+#!
 class Apuntes_View(discord.ui.View):
     def __init__(self):
         super().__init__()
@@ -299,6 +299,7 @@ class Apuntes_View(discord.ui.View):
                 except Exception as e: 
                     await interaction.response.send_message('Apuntes no disponibles', ephemeral=True)
 
+        #!
         class AsignaturaSelector(discord.ui.Select):
             def __init__(self):
                             

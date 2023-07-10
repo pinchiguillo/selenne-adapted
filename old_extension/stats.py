@@ -73,7 +73,7 @@ class Stats_cog(commands.Cog):
     @discord.app_commands.describe()
     async def stats(self, interaction: discord.Interaction):
         """Show Selenne Statistics"""
-
+        await interaction.response.defer(thinking=True)
 
         cursor = self.bot.database.cursor(buffered=True)
         SQL = "SELECT * FROM `message`"
@@ -82,10 +82,10 @@ class Stats_cog(commands.Cog):
         msg_count = len(cursor.fetchall())
 
         embed=discord.Embed(title = 'Selenne Stats', description = '**Version**: ***{0}*** - Bot Desarrollado por *DCS*'.format(self.bot.VERSION), color=__bot__.color)
-        embed.add_field(name = 'Bot', value = '**Cumpleaños**: *{}*\n**Version**: *{}*\n**Owner**: ***{}***'.format(self.bot.BIRTH_DAY, self.bot.VERSION, type(self.bot.owner)), inline=False)
-        embed.add_field(name = 'Stadisticas', value = '**Nodo**: ***{}***\n**Servidores**: `{}`\n**Usuarios**: `{}`\n**Mensajes leidos**: `{}`'.format(self.bot.__node__, len(list(self.bot.guilds)), len(list(self.bot.users)), msg_count), inline=False)
+        embed.add_field(name = 'Bot', value = '**Cumpleaños**: *{}*\n**Version**: *{}*\n**Owner**: ***{}***'.format(self.bot.BIRTH_DAY, self.bot.VERSION, self.bot.owner.display_name), inline=False)
+        embed.add_field(name = 'Estadisticas', value = '**Nodo**: ***{}***\n**Servidores**: `{}`\n**Usuarios**: `{}`\n**Mensajes leidos**: `{}`'.format(self.bot.__node__, len(list(self.bot.guilds)), len(list(self.bot.users)), msg_count), inline=False)
         #len(list(self.bot.guilds))
         #len(list(self.bot.users))
 
-        await interaction.response.send_message(embed=embed, view=ReleasesView())
+        await interaction.followup.send(embed=embed, view=ReleasesView())
     

@@ -26,14 +26,15 @@ class PickLib_cog(commands.Cog):
     def __init__(self, bot:Selenne.Core):
         self.bot = bot
 
-        self.__guild__ = 913949547514974249
-        self.__channel__ = 989683271833124894
+        self.__guild__ = 866477454468841472
+        self.__channel__ = 927376122281357322
 
         self.__references__ = {
             'instagram': 'https://www.instagram.com/',
             'pixiv': 'https://www.pixiv.net/en/artworks/',
             'twitter': 'https://twitter.com/',
             'pinterest': 'https://pin.it',
+            'youtube': 'https://www.youtube.com/',
         }
 
     @commands.command()
@@ -45,8 +46,18 @@ class PickLib_cog(commands.Cog):
         if message.author.bot: return
 
         if not (message.guild.id == self.__guild__ and message.channel.id == self.__channel__): return
+
+        data = message.content.split('https')
+        ndata = list()
+
+        for d in data:
+            if d.startswith('://'): ndata.append('https{}'.format(d))
+
+        if len(ndata) == 0: 
+            await message.reply('That is not a link, and PickLib only support image links', delete_after=10)
+            return
         
-        for link in message.content.split('\n'):
+        for link in ndata:
 
             if not 'https://' in link:
                 await message.reply('That is not a link, and PickLib only support image links', delete_after=10)
@@ -76,3 +87,5 @@ class PickLib_cog(commands.Cog):
     async def picklib_command(self, interaction: discord.Interaction):
         """Description"""
         await interaction.response.send_message('Not avilable', ephemeral=True)
+
+#! DATE UPLOADS: SELECT * FROM `picklib` WHERE `fetch_date` >= '2022-12-31 00:00:00'

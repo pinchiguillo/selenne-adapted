@@ -84,33 +84,6 @@ class DCS_Private_cog(discord.ext.commands.GroupCog, group_name='dcs', group_des
     def __init__(self, bot:Selenne.Core):
         self.bot = bot
 
-    @commands.Cog.listener()
-    async def on_message(self, message:discord.Message):
-        pass
-    
-    picklib_group = app_commands.Group(name='piclib', description='DCS picklib management')
-    admin_group = app_commands.Group(name='admin', description='DCS admin management')
-
-    @picklib_group.command(name= 'short')
-    @discord.app_commands.describe()
-    async def defa(self, interaction: discord.Interaction):
-        """Shorts all the saved metadata"""
-        await interaction.response.send_message('Not avilable')
-
-    @picklib_group.command(name= 'get')
-    @discord.app_commands.describe()
-    async def defa(self, interaction: discord.Interaction):
-        """Get all the saved metadata"""
-        await interaction.response.send_message('Not avilable')
-
-    @picklib_group.command(name= 'download')
-    @discord.app_commands.describe()
-    async def defa(self, interaction: discord.Interaction):
-        """Get full traceback of the metadata"""
-        await interaction.response.send_message('Not avilable')
-
-    @admin_group.command(name= 'status')
-    @discord.app_commands.describe()
-    async def defa(self, interaction: discord.Interaction):
-        """Shows the DCS Network Status"""
-        await interaction.response.send_message('Not avilable')
+    @commands.command()
+    async def tvai(self, ctx:commands.context):
+        os.system('tvai')

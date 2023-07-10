@@ -4,16 +4,23 @@ sys.dont_write_bytecode = True
 import Selenne
 
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 from discord import app_commands
 from typing import Optional
 
-__EXTENSION_NAME__ = 'Guild Manager'
+import mysql.connector
+
+__EXTENSION_NAME__ = 'Database Sync'
 
 #? Configuration
 async def setup(bot:Selenne.Core):
     bot.logger.info('{} loaded'.format(__EXTENSION_NAME__))
     
+    #? Load the AFK changes to the database
+    #await database_sync_core.__sync_db_guilds__(bot)
+    #await database_sync_core.__sync_db_channels__(bot)
+    bot.logger.info('All databases synced')
+
     await bot.add_cog(database_listeners_cog(bot))
     await bot.add_cog(database_sync_core(bot))
 
@@ -50,35 +57,60 @@ class database_listeners_cog(commands.Cog):
 class database_sync_core(commands.Cog):
     def __init__(self, bot:Selenne.Core):
         self.bot = bot
+        
+        self.__sync_db_guilds__.start()
+        self.__sync_db_channels__.start()
 
-    @commands.command()
-    async def __sync_db_guilds__(self, ctx):
-        await ctx.send('Syncing database...')
-
-        try:
-            for x, guild in enumerate(self.bot.guilds):
-                cursor = self.bot.database.cursor(buffered=True)
-                SQL = "INSERT INTO `guild` (`id`, `name`, `owner`, `creation_date`, `index_date`, `update_date`, `premium`, `lang`) SELECT '{}', '{}', '{}', '{}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '0', 'es-ES' WHERE NOT EXISTS(SELECT 1 FROM `guild` WHERE `id` = '{}');INSERT INTO `guild` (`id`, `name`, `owner`, `creation_date`, `index_date`, `update_date`, `premium`, `lang`) SELECT '{}', '{}', '{}', '{}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '0', 'es-ES' WHERE NOT EXISTS(SELECT 1 FROM `guild` WHERE `id` = '{}');".format(guild.id, str(guild).replace("'", r"\'"), guild.owner.id, guild.created_at, guild.id)
+    @tasks.loop(seconds=60.0, count=1)
+    async def __sync_db_guilds__(self): #(self, ctx)
+        self.bot.logger.info('DB SYNC: Syncing guilds...')
+        
+        duplicates = -1
+        for x, guild in enumerate(self.bot.guilds):
+            try:
+                cursor = self.bot.database.cursor(buffered=True)                
+                
+                SQL = """
+INSERT INTO `guild` (`id`, `name`, `owner`, `creation_date`, `index_date`, `update_date`, `premium`, `lang`) 
+VALUES ('{}', '{}', '{}', '{}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '0', 'es-ES');
+""".format(guild.id, guild.name.replace('\'', ''), guild.owner.id, guild.created_at)
+                
                 cursor.execute(SQL)
                 self.bot.database.commit()
-                print('{} registered'.format(x))
                 
-            await ctx.send('Sync complete')
-        except Exception as e:
-            await ctx.send('```{}``` ```{}```'.format(e, SQL))
+            except Exception as e:
+                if 'Duplicate entry' in str(e):
+                    duplicates += 1
+                else:
+                    self.bot.logger.error('DB SYNC: Fail to sync guild {}: {}'.format(x, e))
+                    self.bot.logger.debug('DB SYNC: SQL: {}'.format(SQL))
+        self.bot.logger.info('DB SYNC: {} guilds added/updated'.format(x-duplicates))
 
-    @commands.command()
-    async def __sync_db_channels__(self, ctx):
-        await ctx.send('Syncing database...')
+    @__sync_db_guilds__.before_loop
+    async def __before_sync_db_guilds__(self):
+        await self.bot.wait_until_ready()
 
-        try:
-            for x, guild in enumerate(self.bot.guilds):
-                for channel in list(guild.channels):
+    #!
+    @tasks.loop(seconds=60.0)
+    async def __sync_db_channels__(self): #(self, ctx)
+        self.bot.logger.info('DB SYNC: Syncing channels...')
+
+        duplicates = -1
+        for x, guild in enumerate(self.bot.guilds):
+            for channel in list(guild.channels):
+                try:
                     cursor = self.bot.database.cursor(buffered=True)
                     SQL = "INSERT INTO `channel` (`guild`, `id`) VALUES ('{}', '{}');".format(guild.id, channel.id)
                     cursor.execute(SQL)
                     self.bot.database.commit()
-            await ctx.send('Sync complete')
-        except Exception as e:
-            #await ctx.send('```{}``` ```{}```'.format(e, SQL))
-            pass
+                except Exception as e:
+                    if 'Duplicate entry' in str(e):
+                        duplicates += 1
+                    else:
+                        self.bot.logger.error('DB SYNC: Fail to sync channel {}: {}'.format(x, e))
+                        self.bot.logger.debug('DB SYNC: SQL: {}'.format(SQL))
+        self.bot.logger.info('DB SYNC: {} channels added/updated'.format(type(x - duplicates)))
+
+    @__sync_db_channels__.before_loop
+    async def __before_sync_db_channels__(self):
+        await self.bot.wait_until_ready()

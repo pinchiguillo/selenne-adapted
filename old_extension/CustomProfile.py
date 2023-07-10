@@ -8,7 +8,7 @@ from discord.ext import commands
 from discord import app_commands
 #from typing import Optional
 
-__EXTENSION_NAME__ = ''
+__EXTENSION_NAME__ = 'CustomProfile'
 
 #? Configuration
 async def setup(bot:Selenne.Core):
@@ -41,7 +41,7 @@ class Default_cog(commands.Cog):
         await interaction.followup.send('Not avilable', ephemeral=True)
 
 
-class Default_Slash_cog(discord.ext.commands.GroupCog, group_name = 'name', group_description = 'Description'):
+class CustomProfile_Commands_cog(discord.ext.commands.GroupCog, group_name = 'name', group_description = 'Description'):
     def __init__(self, bot:Selenne.Core):
         self.bot = bot
 
@@ -51,10 +51,19 @@ class Default_Slash_cog(discord.ext.commands.GroupCog, group_name = 'name', grou
         """Description"""
         await interaction.response.send_message('Not avilable', ephemeral=True)
 
-    subgroup = app_commands.Group(name = 'sub-sub command', description = 'Description')
+    customprofile = app_commands.Group(name = 'CustomProfile', description = 'Custom Profile Extension')
 
-    @subgroup.command(name= '')
+    @customprofile.command(name= 'info')
     @discord.app_commands.describe()
-    async def dam_calendar_update(self, interaction: discord.Interaction, yaml: discord.Attachment):
-        """Description"""
+    async def customprofile_info(self, interaction: discord.Interaction):
+        """Gives information about the Custom Profile Extension"""
+
+        embed = discord.Embed(name='Custom Profile Info', color=self.bot.color)
+
+        embed.description = '''Custom Profile es una extension que permite a los usuarios crearse un personaje, subirlo de nivel... al estilo RPG
+Custom Profile de Selenne tiene actualmente:
+Nada -_-
+
+'''
+
         await interaction.response.send_message('Not avilable', ephemeral=True)

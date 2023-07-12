@@ -2,10 +2,10 @@
 name: Selenne
 version: Selenium 5 (Block Version)
 prefix: s.
-TOKEN: REDACTED_DISCORD_TOKEN
+TOKEN: 
 
-owner: pinchiguillo
-owner_id: 000000000000000000
+owner: 
+owner_id: 
 warn_on_ready: False
 
 #! Visible Config

@@ -1,20 +1,12 @@
 {
     "releases": {
+        "Selenium 5.5b": "Core updated to the newest version of dpy. New performance and development improvments.",
         "Selenium 5.4b.269d": "Removed from API unfinished commands",
         "Selenium 5.4b.268d": "Added the GUI of the Game Forge",
         "Selenium 5.4b.267d": "Basic Config Menu Loaded (Not Functional)\nAdded dynamical update to 'Update time' on `/stats` expansions command",
         "Selenium 5.4b.268i": "Added to *expansions* and *releases* dynamic updates",
         "Selenium 5.4b.267i": "Added the ***Releases*** button to `/stats`",
-        "Selenium 5.4b.266i": "Updated the `/stats` command with info about the Bot Releases\nAdded to `/stats` the message count",
-        "Selenium 5.5": "Multiple performance improvements, implementation of the latest discord updates at the core level and removal of junk code",
-        "Selenium 5.5d.001s": "Se ha unificado la plantilla optimizada para Selenium 5.5",
-        "Selenium 5.5d.002s": "Se han dividido las extensiones entre sistematicas y no. Las sistematicas son aquellas que vienen de manera intriseca en el bot pero que se han separado para dotar al mismo de mas modularidad",
-        "Selenium 5.5d.004t": "DatabaseManager se ha añadido como extension sistematica. Faltan pruebas de rendimiento y de conexion con otras extensiones",
-        "Selenium 5.5d.005t": "La extension stats ha sido añadida como sistematica y bajo el nombre de BotStats. Se ha actualizado esta a la ultima version",
-        "Selenium 5.5d.006s": "Se ha añadido la extension essentials al pack inicial y se ha actualizado la misma a la ultima version de Selenium. Algunos de sus comandos han sido removidos o cambiados de extension.",
-        "Selenium 5.5d.007s": "Se ha añadido la extension AdminTools al pack inicial y se ha actualizado la misma a la ultima version de Selenium. Ahora incorpora algunos comandos que tenia essentials en sus versiones pasadas.",
-        "Selenium 5.5d.008s": "Se han unificado todos los loggers de discord en una sola extension bajo el nombre de DiscordLogger. Esta extension vendra instalada de forma nativa con Selenium 5.5, pero sera opcional activarla",
-        "Selenium 5.5d.009d": "Se ha creado una beta cerrada de MusicPlayer. Exension que permitira poner musica con comodidades nunca antes encontradas en bots de musica."
+        "Selenium 5.4b.266i": "Updated the `/stats` command with info about the Bot Releases\nAdded to `/stats` the message count"
     },
     "expansions": {
         "MusicPlayer (Beta)": "10%",

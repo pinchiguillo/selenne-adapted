@@ -2,7 +2,7 @@
 #? Selenium 5 lauch file
 
 import sys
-sys.dont_write_bytecode
+sys.dont_write_bytecode = True
 
 import Selenne
 

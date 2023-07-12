@@ -87,7 +87,7 @@ class Config():
         with open(self.__file__, 'w', encoding='utf8') as f: f.write(string)
 
 class Core(commands.Bot): # commands.AutoShardedBot() #! 1000+ Servers
-    VERSION = 'Selenium 5.5'
+    VERSION = 'Selenium 5.5b'
 
     AUTHOR = 'pinchiguillo'
     log_level = logging.DEBUG

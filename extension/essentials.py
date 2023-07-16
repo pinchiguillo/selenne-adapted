@@ -124,7 +124,7 @@ class ServerInfoView(discord.ui.View):
         super().__init__()
         
     
-    @discord.ui.button(label = 'Emojis', style=discord.ButtonStyle.blurplevent, disabled=True)
+    @discord.ui.button(label = 'Emojis', style=discord.ButtonStyle.blurple, disabled=True)
     async def EmojiBTN(self, interaction: discord.Interaction, button: discord.ui.Button):
         pass
 

@@ -68,17 +68,18 @@ class Config():
         self.name = self.__config__['name']
         self.version = self.__config__['version']
         self.prefix = self.__config__['prefix']
-        self.token = self.__config__['token']
+        self.token = self.__config__['TOKEN']
         self.owner = self.__config__['owner']
         self.warn_on_ready = self.__config__['warn_on_ready']
         self.description = self.__config__['description']
         self.activity = self.__config__['activity']
         self.status = self.__config__['status']
-        self.color = int(self.__config__['color'], 16)
+        self.color = self.__config__['color']
         self.colours = self.__config__['colours']
         self.databases = self.__config__['databases']
         self.extensions = self.__config__['extensions']
         self.localDB = self.__config__['LocalDatabase']
+
 
     def generate_file(self, as_str:bool = False) -> str|None:
         string = '''Not Implemented'''
@@ -164,7 +165,7 @@ class Core(commands.Bot): # commands.AutoShardedBot() #! 1000+ Servers
         self.__load_databases__()
 
         #? Load Extensions
-        for extension in self.config['extensions']:
+        for extension in self.config.extensions:
             try:
                 await self.load_extension(f'{extension}')
             except Exception as error:
@@ -180,7 +181,7 @@ class Core(commands.Bot): # commands.AutoShardedBot() #! 1000+ Servers
             self.owner = await self.fetch_user(self.owner)
         except Exception as e: self.logger.warning('Error while fetching owner discord user: {}'.format(e))
         
-        if self.config['warn_on_ready']:
+        if self.config.warn_on_ready:
             try: await self.owner.send(self.language('es-ES', 'online'), delete_after=5)
             except: self.logger.warning('Error while sending message to owner')
 
@@ -194,10 +195,10 @@ class Core(commands.Bot): # commands.AutoShardedBot() #! 1000+ Servers
     def __load_databases__(self):
         try:
             self.database = mysql.connector.connect(
-                host = self.config['databases']['host'],
-                user = self.config['databases']['username'],
-                password = self.config['databases']['password'],
-                database = self.config['databases']['database'],
+                host = self.config.databases.get('host'),
+                user = self.config.databases.get('username'),
+                password = self.config.databases.get('password'),
+                database = self.config.databases.get('database'),
                 )
         except mysql.connector.errors.DatabaseError as e:
             self.logger.critical('Cant connect to database')
@@ -205,4 +206,4 @@ class Core(commands.Bot): # commands.AutoShardedBot() #! 1000+ Servers
 
     def boot(self):
         os.system('title {}'.format(self.config.version))
-        self.run(self.config['TOKEN'])
+        self.run(self.config.token)

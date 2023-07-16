@@ -2,16 +2,15 @@
 name: Selenne
 version: Selenium 5 (Block Version)
 prefix: s.
-TOKEN: 
+TOKEN: REDACTED_DISCORD_TOKEN
 
-owner: 
-owner_id: 
+owner: 000000000000000000
 warn_on_ready: False
 
 #! Visible Config
 description: Selenne
 activity: DCS
-status: OwO
+status: Online
 
 color: 0xfe2a9b
 colours:
@@ -30,7 +29,7 @@ LocalDatabase: .\LDB
 extensions:
   - extension.system.DatabaseManager
   - extension.system.BotStats
-  - extemsion.AdminTools
+  - extension.AdminTools
   - extension.essentials
   - extension.custom.DAM
   #  

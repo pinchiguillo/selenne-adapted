@@ -1,46 +1,13 @@
-# Selenium 5 Custom Bot
+import yaml, discord, logging, platform, traceback
 
-import sys
-sys.dont_write_bytecode = True
-
-import yaml
-import json
-import asyncio
-import os
-import importlib
-import traceback
-import mysql.connector
-import logging
-import platform
-
-import discord
 from discord.ext import commands
 
-#? 
-#? This is a custom verion of Selenne 5
-#? This version avoids all the modular functions
-#? 
-#! This version ONLY suports slash Commans
-#? 
-#? Developed by pinchiguillo
-#? 
-
-#! Missing Config.generate()
 class Config():
-    name:str
-    version:str
     prefix:str
     token:str
-    owner:int
     warn_on_ready:bool
-    description:str
-    activity:str
-    status:str
     color:int
     colours:dict[str, int]
-    databases:dict
-    extensions:list
-    localDB:str
 
     class LoadError(Exception):
         def __init__(self, filename:str):
@@ -87,31 +54,19 @@ class Config():
         if as_str: return string
         with open(self.__file__, 'w', encoding='utf8') as f: f.write(string)
 
-class Core(commands.Bot): # commands.AutoShardedBot() #! 1000+ Servers
-    VERSION = 'Selenium 5.5b'
 
-    AUTHOR = 'pinchiguillo'
+class Core(commands.Bot): #? CLUSTERING: commands.AutoShardedBot() #! 1000+ Servers
+    """Core of the framework"""
+    
+    __version__ = '6.0'
+
+    prefix:str
     log_level = logging.DEBUG
     intents_cfg = discord.Intents.all()
+
+    AUTHOR = 'pinchiguillo'
     BIRTH_DAY = '25/5/2021'
 
-    tree_sync = False
-
-    #? Error Class
-    class Error():
-        class ConfigNotFound(Exception): 
-            def __init__(self): super().__init__('Config file (config.yaml) not found')
-        
-        class ConfigLoadFailure(Exception): 
-            def __init__(self): super().__init__('Error while loading config file (config.yaml)')
-
-        class CorruptConfig(Exception): 
-            def __init__(self): super().__init__('Config file (config.yaml) is corrupted')
-
-        class CantConnectDatabaseError(Exception): 
-            def __init__(self): super().__init__('Error while connecting to databasel')
-
-    
     def __init__(self, autoboot = True):
         
         #? Load Logging
@@ -126,63 +81,60 @@ class Core(commands.Bot): # commands.AutoShardedBot() #! 1000+ Servers
         try: 
             self.config = Config('config.yaml')
             
-            #? Increasing var acces
+            #? Increasing var access
             self.nullchar = '\u200b'
-            self.owner:discord.User = self.config.owner #! Owner discord user will be loaded when online
-            del self.config.owner
             self.color = self.config.color
-            del self.config.color
             self.colours = self.config.colours
-            del self.config.colours
 
             self.logger.info('Config loaded')
 
         except FileNotFoundError as e: 
             self.logger.critical('Exception while loading config file: {}'.format(e))
-            raise self.Error.ConfigNotFound()
+            raise Exceptions.ConfigNotFound()
         except KeyError as e:
             self.logger.critical('Exception while loading config file: {}'.format(e))
-            raise self.Error.CorruptConfig()
+            raise Exceptions.CorruptConfig()
         except Exception as e: 
             self.logger.critical('Exception while loading config file: {}'.format(e))
-            raise self.Error.ConfigLoadFailure()
+            raise Exceptions.ConfigLoadFailure()
 
         #? Import discord bot class
         super().__init__(
             command_prefix = self.config.prefix,
             description = self.config.description,
-            activity = discord.Game(name = self.config.activity),
-            status = self.config.status,
+            activity = discord.Game(name = 'Under Development'), #!!!
+            status = 'Under Development', #!!!
             intents = self.intents_cfg
             )
         self.logger.debug('Discord.py main bot class data loaded')
 
         #? BOOT
         if autoboot: self.boot()
-
+    
     async def setup_hook(self):
         
         self.__load_databases__()
 
         #? Load Extensions
-        for extension in self.config.extensions:
-            try:
-                await self.load_extension(f'{extension}')
-            except Exception as error:
-                self.logger.error(f'{extension} failed to load: {error}')
+        with open('configs\\extensions.yaml') as f:
+            extensions = yaml.load_all(f, Loader=yaml.FullLoader)
+        for extension in extensions:
+            self.extension = Extension(extension)
+            self.load_extension(self.extension.filename)
 
-        if self.tree_sync: await self.tree.sync()
+    def __load_databases__(self): #!!!
+        pass
 
     async def on_ready(self):
-        self.logger.info(f'Bot online using {self.VERSION}')
+        self.logger.info(f'Bot online using {self.__version__}')
         self.logger.info(f'Logged in as {self.user} (ID: {self.user.id})')
         
-        try:
-            self.owner = await self.fetch_user(self.owner)
-        except Exception as e: self.logger.warning('Error while fetching owner discord user: {}'.format(e))
+        self.app_data = await self.application_info()
+        
+        self.owner = self.app_data.owner
         
         if self.config.warn_on_ready:
-            try: await self.owner.send(self.language('es-ES', 'online'), delete_after=5)
+            try: await self.owner.send('Selenne Online!', delete_after=5)
             except: self.logger.warning('Error while sending message to owner')
 
     #? Command Error Handler
@@ -192,18 +144,80 @@ class Core(commands.Bot): # commands.AutoShardedBot() #! 1000+ Servers
             exception = getattr(exception, 'original', exception)
             self.logger.error(''.join(traceback.format_exception(exception)))
 
-    def __load_databases__(self):
-        try:
-            self.database = mysql.connector.connect(
-                host = self.config.databases.get('host'),
-                user = self.config.databases.get('username'),
-                password = self.config.databases.get('password'),
-                database = self.config.databases.get('database'),
-                )
-        except mysql.connector.errors.DatabaseError as e:
-            self.logger.critical('Cant connect to database')
-            raise e
+class Exceptions(): 
+    class LoadError(Exception):
+        def __init__(self, filename:str):
+            self.filename = filename
+            self.message = 'Error while loading \'{}\' file'.format(filename)
+            super().__init__(self.message)
 
-    def boot(self):
-        os.system('title {}'.format(self.config.version))
-        self.run(self.config.token)
+    class ConfigNotFound(Exception): 
+        def __init__(self, cfg_file): super().__init__('Config file ({}) not found'.format(cfg_file))
+
+    class CorruptConfig(Exception): 
+        def __init__(self, cfg_file): super().__init__('Config file ({}) is corrupted'.format(cfg_file))
+
+    class ConfigLoadFailure(Exception): 
+        def __init__(self, cfg_file): super().__init__('Error while loading config file ({})'.format(cfg_file))
+
+class Databases(): 
+    """Framework database Manager"""
+
+    @staticmethod
+    def load(self) -> 'Databases':
+        with open('configs\\databases.yaml') as f:
+            return Databases(yaml.load_all(f, Loader=yaml.FullLoader))
+
+    def __init__(self, databases) -> None:
+        for database in databases:
+            setattr(self, database['name'], database['connection'])
+
+class Model(): 
+    """Default Model for the framework"""
+    
+    database = None
+    table = None
+
+    @staticmethod
+    def exists() -> bool:
+        pass
+
+    def create() -> bool:
+        pass
+
+class Extension(): 
+    """Extensions for the framework"""
+
+    filename:str
+
+    name:str
+    description:str
+    version:str
+    validVersion:list[str]
+    requires:list['Extension']
+
+    def __init__(self, data):
+        
+        self.filename = data['filename']
+        
+        self.name:str = data['name']
+        self.description:str = data['description']
+        self.version = data['version']
+
+        self.validVersion = data['validVersions']
+        
+        self.requires = [Extension(data) for data in data['requires']]
+
+
+class Display(): 
+    """Display Manager for the framework"""
+
+    @staticmethod
+    def load(self) -> 'Display':
+        with open('configs\\display.yaml') as f:
+            return Display(yaml.load_all(f, Loader=yaml.FullLoader))
+
+    def __init__(self, displays) -> None:
+        for display in displays:
+            setattr(self, display['name'], display['path'])
+            

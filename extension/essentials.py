@@ -106,6 +106,7 @@ class Essentials(commands.Cog):
         await interaction.followup.send(embed=embed)
 
     @discord.app_commands.command(name = 'echo')
+    @discord.app_commands.default_permissions(manage_messages=True)
     @discord.app_commands.describe(
         message = 'The message you want Selenne to say',
         times = 'The number of times the message will repeat'

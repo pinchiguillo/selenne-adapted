@@ -6,7 +6,7 @@
         "Selenium 5.4b.267d": "Basic Config Menu Loaded (Not Functional)\nAdded dynamical update to 'Update time' on `/stats` expansions command",
         "Selenium 5.4b.268i": "Added to *expansions* and *releases* dynamic updates",
         "Selenium 5.4b.267i": "Added the ***Releases*** button to `/stats`",
-        "Selenium 5.4b.266i": "Updated the `/stats` command with info about the Bot Releases\nAdded to `/stats` the message count"
+        "Selenium 5.4b.266i": "Updated the `/stats` command with info about the Bot Releases"
     },
     "expansions": {
         "MusicPlayer (Beta)": "10%",

@@ -75,15 +75,9 @@ class Stats_cog(commands.Cog):
         """Show Selenne Statistics"""
         await interaction.response.defer(thinking=True)
 
-        cursor = self.bot.database.cursor(buffered=True)
-        SQL = "SELECT * FROM `message`"
-        cursor.execute(SQL)
-
-        msg_count = len(cursor.fetchall())
-
         embed=discord.Embed(title = 'Selenne Stats', description = '**Version**: ***{0}*** - Bot Desarrollado por *DCS*'.format(self.bot.VERSION), color=__bot__.color)
         embed.add_field(name = 'Bot', value = '**Cumpleaños**: *{}*\n**Version**: *{}*\n**Owner**: ***{}***'.format(self.bot.BIRTH_DAY, self.bot.VERSION, self.bot.owner.display_name), inline=False)
-        embed.add_field(name = 'Estadisticas', value = '**Nodo**: ***{}***\n**Servidores**: `{}`\n**Usuarios**: `{}`\n**Mensajes leidos**: `{}`'.format(self.bot.__node__, len(list(self.bot.guilds)), len(list(self.bot.users)), msg_count), inline=False)
+        embed.add_field(name = 'Estadisticas', value = '**Nodo**: ***{}***\n**Servidores**: `{}`\n**Usuarios**: `{}`'.format(self.bot.__node__, len(list(self.bot.guilds)), len(list(self.bot.users))), inline=False)
         #len(list(self.bot.guilds))
         #len(list(self.bot.users))
 

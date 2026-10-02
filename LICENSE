@@ -1,0 +1,12 @@
+Copyright (c) 2022-2026 Javier Aguado Abajo. All rights reserved.
+
+This repository is published so that its source code can be read and evaluated,
+for example as part of a job application. No licence is granted to use, copy,
+modify, merge, publish, distribute, sublicense or sell the software or any part
+of it without the prior written permission of the copyright holder.
+
+Third-party code that appears in the history of this repository, such as the
+vendored copies of discord.py and nextcord, remains under its own licence.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED.

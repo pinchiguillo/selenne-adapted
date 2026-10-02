@@ -10,9 +10,9 @@ extensions were never finished, and the code reflects what I knew at the time. T
 holds the final state of version "Selenium 5.5b" (July 2023). Earlier versions and an unfinished
 6.0 restart are kept in archival branches (see [Branches](#branches)).
 
-Before publishing, the repository was cleaned: credentials, logs, database dumps and other
-people's data were removed from the history of every branch, and a few server-specific extensions
-were dropped.
+Before publishing, the repository was cleaned with the help of AI coding assistants: credentials,
+logs, database dumps and other people's data were removed from the history of every branch, and a
+few server-specific extensions were dropped.
 
 ## Branches
 
@@ -94,4 +94,7 @@ on startup.
 
 ## License
 
-No license has been chosen for this repository yet.
+Copyright © 2022–2026 Javier Aguado Abajo. All rights reserved. The code is published so it can be
+read and evaluated; it may not be used, copied or redistributed without permission. See
+[LICENSE](LICENSE). Third-party code in the history of this repository, such as the vendored
+discord.py and nextcord copies, keeps its own licence.

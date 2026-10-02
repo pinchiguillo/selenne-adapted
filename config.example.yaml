@@ -1,10 +1,14 @@
+# Copy this file to config.yaml (ignored by git) and fill in your own values.
+
 #! Bot data
 name: Selenne
 version: Selenium 5 (Block Version)
 prefix: s.
-TOKEN: REDACTED_DISCORD_TOKEN
+# Discord bot token. Prefer the SELENNE_TOKEN environment variable over writing it here.
+TOKEN: YOUR_DISCORD_BOT_TOKEN
 
-owner: 000000000000000000
+# Discord user ID of the bot owner (or set SELENNE_OWNER_ID).
+owner: 0
 warn_on_ready: False
 
 #! Visible Config
@@ -16,11 +20,11 @@ color: 0xfe2a9b
 colours:
   red: blue
 
-#! Bases de datos
+#! Databases
 databases:
   host: localhost
   username: root
-  password: 
+  password: ''  # or set SELENNE_DB_PASSWORD
   database: selenium
 
 LocalDatabase: .\LDB

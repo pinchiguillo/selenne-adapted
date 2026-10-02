@@ -68,15 +68,17 @@ class Config():
         self.name = self.__config__['name']
         self.version = self.__config__['version']
         self.prefix = self.__config__['prefix']
-        self.token = self.__config__['TOKEN']
-        self.owner = self.__config__['owner']
+        #? Secrets and personal IDs can come from the environment instead of config.yaml
+        self.token = os.environ.get('SELENNE_TOKEN') or self.__config__['TOKEN']
+        self.owner = int(os.environ.get('SELENNE_OWNER_ID') or self.__config__['owner'])
         self.warn_on_ready = self.__config__['warn_on_ready']
         self.description = self.__config__['description']
         self.activity = self.__config__['activity']
         self.status = self.__config__['status']
         self.color = self.__config__['color']
         self.colours = self.__config__['colours']
-        self.databases = self.__config__['databases']
+        self.databases = dict(self.__config__['databases'])
+        if os.environ.get('SELENNE_DB_PASSWORD') is not None: self.databases['password'] = os.environ['SELENNE_DB_PASSWORD']
         self.extensions = self.__config__['extensions']
         self.localDB = self.__config__['LocalDatabase']
 

@@ -22,6 +22,6 @@ pip cache purge
 call .\env\Scripts\desactivate
 
 echo Done.
-echo Modify config.yaml so the bot can boot
+echo Copy config.example.yaml to config.yaml and fill it in (or set SELENNE_TOKEN) so the bot can boot
 echo Run Selenne.bat to launch the bot.
 pause

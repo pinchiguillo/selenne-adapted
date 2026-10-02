@@ -38,14 +38,12 @@ extensions:
   - extension.custom.DAM
   #  
   #- extension.promocode
-  #- extension.dcs
   #!- extension.db_sync
   #!- extension.leveling_roles
   #- extension.economy
   #- extension.configuration
   #- extension.gamedevtools
   #- extension.guild_manager
-  #!- extension.picklib
   #- extension.leveling_roles
   #- extension.help
   #- extension.config

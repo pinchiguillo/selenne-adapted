@@ -18,3 +18,6 @@ LDB/DAM/users.json
 *.sqlite3
 cache/
 db/
+
+# Local data written by old extensions (for example old_extension/dam_tools.py)
+local_db/

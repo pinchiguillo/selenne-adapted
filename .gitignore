@@ -1,5 +1,20 @@
-
-*.log
+# Python
 __pycache__/
-dev/
+*.py[cod]
 env/
+dev/
+
+# Local configuration and secrets (see config.example.yaml)
+config.yaml
+.env
+
+# Per-server access lists (see LDB/DAM/users.example.json)
+LDB/DAM/users.json
+
+# Runtime data, logs and database files
+*.log
+*.db
+*.sqlite
+*.sqlite3
+cache/
+db/

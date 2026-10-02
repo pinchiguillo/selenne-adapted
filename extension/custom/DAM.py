@@ -55,7 +55,11 @@ class DAM(commands.Cog):
         """Notas de DAM del año 2022-2023"""
         await interaction.response.defer(ephemeral=True, thinking=True)
         
-        with open(os.path.join(self.db_path, 'users.json'), 'r', encoding='utf-8') as f:
+        #? Access lists hold Discord user IDs, so they live in an untracked users.json
+        users_file = os.path.join(self.db_path, 'users.json')
+        if not os.path.exists(users_file): users_file = os.path.join(self.db_path, 'users.example.json')
+
+        with open(users_file, 'r', encoding='utf-8') as f:
             data = json.load(f)
 
         if interaction.user.id in data['DAM1']:

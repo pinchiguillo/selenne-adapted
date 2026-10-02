@@ -70,7 +70,7 @@ class Create_Promocode(discord.ui.Modal, title = 'Redeem code'):
     async def on_submit(self, interaction: discord.Interaction):
 
         cursor = database.cursor(buffered=True)
-        cursor.execute("INSERT INTO `promocodes` (`code`, `creation_date`, `expiration_date`, `last_use`, `uses_remaining`) VALUES ('{}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, '{}');".format(self.code.value, self.uses.value))
+        cursor.execute("INSERT INTO `promocodes` (`code`, `creation_date`, `expiration_date`, `last_use`, `uses_remaining`) VALUES (%s, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, %s);", (self.code.value, self.uses.value))
         database.commit()
 
         await interaction.response.send_message(f'Your code: , {self.code.value}, uses: {self.uses.value}!', ephemeral=True)
@@ -87,13 +87,16 @@ class Promocode(discord.ui.Modal, title = 'Redeem code'):
 
     async def on_submit(self, interaction: discord.Interaction):
         cursor = database.cursor(buffered=True)
-        cursor.execute("SELECT * FROM `promocodes` WHERE `code` LIKE '{}'".format(self.code.value))
+        #? Exact match: with LIKE a code such as '%' would have matched any stored code
+        cursor.execute("SELECT * FROM `promocodes` WHERE `code` = %s", (self.code.value,))
         codes = cursor.fetchall()
 
-        if len(codes) == 0: await interaction.response.send_message('Invalid promocode', ephemeral=True)
+        if len(codes) == 0:
+            await interaction.response.send_message('Invalid promocode', ephemeral=True)
+            return
 
-        cursor.execute("UPDATE promocodes SET uses_remaining = uses_remaining - 1 WHERE `code` LIKE '{}';".format(self.code.value))
-        cursor.execute("DELETE FROM promocodes WHERE uses_remaining <= 0;".format(self.code.value))
+        cursor.execute("UPDATE promocodes SET uses_remaining = uses_remaining - 1 WHERE `code` = %s;", (self.code.value,))
+        cursor.execute("DELETE FROM promocodes WHERE uses_remaining <= 0;")
         database.commit()
 
         await interaction.response.send_message('Valid promocode', ephemeral=True)

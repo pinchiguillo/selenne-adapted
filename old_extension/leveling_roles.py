@@ -33,12 +33,12 @@ class Leveling_core(commands.Cog):
     async def on_message(self, message:discord.Message):
         if message.author.bot: return
         cursor = self.bot.database.cursor(buffered=True)
-        SQL = "INSERT INTO leveling_xp(guild, user, xp) SELECT '{}', '{}', 0  WHERE NOT EXISTS(SELECT 1 FROM leveling_xp WHERE guild = '{}' AND user = '{}');".format(message.guild.id, message.author.id, message.guild.id, message.author.id)
-        try: cursor.execute(SQL)
+        SQL = "INSERT INTO leveling_xp(guild, user, xp) SELECT %s, %s, 0  WHERE NOT EXISTS(SELECT 1 FROM leveling_xp WHERE guild = %s AND user = %s);"
+        try: cursor.execute(SQL, (message.guild.id, message.author.id, message.guild.id, message.author.id))
         except Exception as e: 
             self.bot.logger.error('SQL ERROR on \'{}\' by \'{}\': {}'.format(message.guild.id, message.author.id, e))
-        SQL = "UPDATE `leveling_xp` SET `xp`= `xp` + 1 WHERE `leveling_xp`.`guild` = '{}' AND `leveling_xp`.`user` = '{}';".format(message.guild.id, message.author.id)
-        cursor.execute(SQL)
+        SQL = "UPDATE `leveling_xp` SET `xp`= `xp` + 1 WHERE `leveling_xp`.`guild` = %s AND `leveling_xp`.`user` = %s;"
+        cursor.execute(SQL, (message.guild.id, message.author.id))
         self.bot.database.commit()
 
 class Leveling_cog(discord.ext.commands.GroupCog, group_name = 'xprole', group_description = 'Level up in the server sending messages!'):

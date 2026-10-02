@@ -1,6 +1,6 @@
 import sqlite3
 
-file = 'LDB/CustomProfile.sqlite'
+file = 'LDB/CustomProfile.sqlite' #! Local file, ignored by git
 
 db = sqlite3.connect(file)
 #! Functions
@@ -48,36 +48,36 @@ CREATE TABLE inventory (
 
 def create_user(id:str): 
     cursor = db.cursor()
-    SQL = "INSERT INTO user (id) VALUES ('{}');".format(id)
-    cursor.execute(SQL)
+    SQL = "INSERT INTO user (id) VALUES (?);"
+    cursor.execute(SQL, (id,))
     db.commit()
 
 def create_guild(name:str, owner:str):
     cursor = db.cursor()
-    SQL = "INSERT INTO guilds (name, owner) VALUES ('{}', '{}');".format(name, owner)
-    cursor.execute(SQL)
+    SQL = "INSERT INTO guilds (name, owner) VALUES (?, ?);"
+    cursor.execute(SQL, (name, owner))
     db.commit()
 
 def change_class(id:str, _class:str): 
     cursor = db.cursor()
-    SQL = "UPDATE user SET class = '{}' WHERE id = '{}';".format(id, _class)
-    cursor.execute(SQL)
+    SQL = "UPDATE user SET class = ? WHERE id = ?;"
+    cursor.execute(SQL, (_class, id))
     db.commit()
 
 def level_up(id:str):
     cursor = db.cursor()
-    SQL = "UPDATE user SET lvl = lvl + 1 WHERE id = '{}';".format(id)
-    cursor.execute(SQL)
+    SQL = "UPDATE user SET lvl = lvl + 1 WHERE id = ?;"
+    cursor.execute(SQL, (id,))
     db.commit()
 
 def xp(id:str, xp:int): 
     cursor = db.cursor()
-    SQL = "SELECT xp from user WHERE id = '{}'".format(id)
-    cursor.execute(SQL)
+    SQL = "SELECT xp from user WHERE id = ?"
+    cursor.execute(SQL, (id,))
     oldxp = cursor.fetchone()[0]
 
-    SQL = "SELECT lvl from user WHERE id = '{}'".format(id)
-    cursor.execute(SQL)
+    SQL = "SELECT lvl from user WHERE id = ?"
+    cursor.execute(SQL, (id,))
     lvl = cursor.fetchone()[0]
     
     while True:
@@ -92,44 +92,45 @@ def xp(id:str, xp:int):
             print(txp)
         else: break
 
-    SQL = "UPDATE user SET xp = {} WHERE id = '{}';".format(txp, id)
-    cursor.execute(SQL)
+    SQL = "UPDATE user SET xp = ? WHERE id = ?;"
+    cursor.execute(SQL, (txp, id))
     db.commit()
 
 def join_guild(id:str, guild:int): 
     cursor = db.cursor()
-    SQL = "UPDATE user SET guild = '{}' WHERE id = '{}';".format(guild, id)
-    cursor.execute(SQL)
+    SQL = "UPDATE user SET guild = ? WHERE id = ?;"
+    cursor.execute(SQL, (guild, id))
     db.commit()
 
 def leave_guild(id:str): 
     cursor = db.cursor()
-    SQL = "UPDATE user SET guild = NULL WHERE id = '{}';".format(id)
-    cursor.execute(SQL)
+    SQL = "UPDATE user SET guild = NULL WHERE id = ?;"
+    cursor.execute(SQL, (id,))
     db.commit()
 
 def save_item(id:str, item:str, quantity:int = 1):
     cursor = db.cursor()
     try:
-        SQL = """INSERT INTO inventory (player_id, item_name, quantity) VALUES ('{}', '{}', {});""".format(id, item, quantity)
+        SQL = """INSERT INTO inventory (player_id, item_name, quantity) VALUES (?, ?, ?);"""
         
-        cursor.execute(SQL)
+        cursor.execute(SQL, (id, item, quantity))
     except Exception as e:
         print('ERR:{0}', e)
-        SQL = """UPDATE inventory SET quantity = quantity + 1 WHERE player_id = '0' AND item_name = 'sword';""".format(id, item, quantity)
-        cursor.execute(SQL)
+        SQL = """UPDATE inventory SET quantity = quantity + ? WHERE player_id = ? AND item_name = ?;"""
+        cursor.execute(SQL, (quantity, id, item))
     db.commit()
 
 def delete_item(id, item):
     cursor = db.cursor()
     SQL = """UPDATE inventory
 SET quantity = quantity - 1
-WHERE player_id = '{}' AND item_name = '{}';
-
-DELETE FROM inventory
-WHERE player_id = '{}' AND item_name = '{}' AND quantity = 0;
-""".format(id, item, id, item)
-    cursor.execute(SQL)
+WHERE player_id = ? AND item_name = ?;
+"""
+    cursor.execute(SQL, (id, item))
+    SQL = """DELETE FROM inventory
+WHERE player_id = ? AND item_name = ? AND quantity = 0;
+"""
+    cursor.execute(SQL, (id, item))
     db.commit()
 
 #create_user(0)

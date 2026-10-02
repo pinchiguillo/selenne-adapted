@@ -37,8 +37,8 @@ class GameALFA_cog(discord.ext.commands.GroupCog, group_name = 'game', group_des
         """Create a new item in the Game Forge"""
 
         cursor = self.bot.database.cursor(buffered=True)
-        SQL = "SELECT * FROM `blacksmith` WHERE `id` LIKE '000000000000000000'"
-        cursor.execute(SQL)
+        SQL = "SELECT * FROM `blacksmith` WHERE `id` = %s"
+        cursor.execute(SQL, (interaction.user.id,))
         if len(cursor.fetchall()) == 0:
             embed = discord.Embed(title = 'Game Forge', description = 'Parece que no tienes cuenta de forjador, si quieres crear una haz click en crear cuenta.\n**Todos los datos se asociaran a tu id de discord guardado en nuestras bases de datos (no las de discord)**', color=self.bot.color)
 
@@ -102,8 +102,8 @@ class Create_Account_Modal(discord.ui.Modal, title = 'Crear Cuenta de Forjador')
     async def on_submit(self, interaction: discord.Interaction):
 
         cursor = bot_database.cursor(buffered=True)
-        SQL = "INSERT INTO `blacksmith` (`id`, `name`) VALUES ('{}', '{}');".format(interaction.user.id, self.name.value)
-        cursor.execute(SQL)
+        SQL = "INSERT INTO `blacksmith` (`id`, `name`) VALUES (%s, %s);"
+        cursor.execute(SQL, (interaction.user.id, self.name.value))
 
         await interaction.response.send_message('Welcome to the Forge!', ephemeral=True)
 
